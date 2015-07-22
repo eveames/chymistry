@@ -1,5 +1,5 @@
 suites:
     main:
-        namespace: App
-        psr4_prefix: App
+        namespace: chymistry
+        psr4_prefix: chymistry
         src_path: app

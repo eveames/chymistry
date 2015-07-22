@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace chymistry\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

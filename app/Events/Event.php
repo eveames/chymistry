@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events;
+namespace chymistry\Events;
 
 abstract class Event
 {
