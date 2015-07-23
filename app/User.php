@@ -8,6 +8,8 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use chymistry\Course;
+use chymistry\State;
+use chymistry\Action;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
@@ -34,15 +36,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     protected $hidden = ['password', 'remember_token'];
     public function courses(){
-        return $this->hasMany('Chemiatria\Course');
+        return $this->hasMany('chymistry\Course');
     }
     public function ownsCourse(Course $course) {
         return $this->id == $course->owner;
     }
     public function isAdmin() {
-        $type = $this->getAttribute('type');
-        if ($type == 'admin') return true;
-        else return false;
+        return $this->isAdmin;
     }
     public function isTeacher() {
         $type = $this->getAttribute('type');
@@ -53,5 +53,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $type = $this->getAttribute('type');
         if ($type == 'student') return true;
         else return false;
+    }
+    public function actions() {
+        return $this->hasMany('chymistry\Action');
+    }
+    public function states() {
+        return $this->hasMany('chymistry\State');
     }
 }

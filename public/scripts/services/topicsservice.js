@@ -10,6 +10,7 @@
 angular.module('chemiatriaApp')
   .service('TopicsService', ['VocabListService', function (VocabListService) {
     // AngularJS will instantiate a singleton by calling "new" on this function
+    
     //level corresponds roughly to chapter location in a textbook. 
     //should let teachers set levels for their classes
     //should set topicsList by user, indicating previously studied, previously mastered, next up, etc

@@ -26,7 +26,7 @@ angular.module('chemiatriaApp')
         var type = studyArrayItem.type;
         //console.log(type);
         var subtype, qID, idArray, stage;
-        var timesStudied = studyArrayItem;
+        //var timesStudied = studyArrayItem.;
 
         //in here, put logic to determine subtype, idArray, flags
         switch(type)  {

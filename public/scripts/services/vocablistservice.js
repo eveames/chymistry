@@ -10,6 +10,8 @@
 angular.module('chemiatriaApp')
   .service('VocabListService', function () {
     // AngularJS will instantiate a singleton by calling "new" on this function
+    
+    //should talk to db, get vocablist for each vocab-unit (possibly do this inside method?)
     var vocabList = [
     {word: 'matter', prompts: ['the stuff everything is made of', 
     'stuff', 'anything that has mass and occupies space', 'the physical material of everything'], 
@@ -58,6 +60,7 @@ angular.module('chemiatriaApp')
         return map;
       };
 
+    //also, use type here
     this.getEntry = function(index) {
     	return vocabList[index];
     };

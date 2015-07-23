@@ -4,8 +4,11 @@
 
 <div class="container" ng-controller="MainCtrl as ctrl">
   <h1>Chemiatria: Learn Chemistry</h1>
-  <p>
-    How to use the site: Don't look up answers if you don't know them, this will confuse the algorithm. If you have any feedback, if it's too hard or too easy, don't be shy! Use the "bug report" or "I'm frustrated" buttons and tell me all about it!<br>
+  <p ng-hide="session">Welcome to Chemiatria!</p>
+  <p ng-show="session">
+    How to use the site: Don't look up answers if you don't know them, this will confuse the algorithm. 
+    If you have any feedback, if it's too hard or too easy, don't be shy! 
+    Use the "bug report" or "I'm frustrated" buttons and tell me all about it!<br>
     <span ng-show="currentQ.showBackgroundText">@{{currentQ.qBackgroundText}}</span>
   </p>
   <div ng-hide="noQuestion">
@@ -26,12 +29,10 @@
 
 <div ng-hide="session">
   <form ng-submit="startSession()" name="sessionStartForm">
-    Please enter a username (5 character minimum):<input type="text" ng-model="username" required ng-minlength="5" autofocus>
-    <span ng-show="sessionStartForm.username.$error.required">Please enter a username</span>
-    <span ng-show="sessionStartForm.username.$error.minlength">Your username must have at least 5 characters</span>
-    <br><br>
 
-    <p>Please choose the topics you want to study today. You can order them according to your priorities.</p>
+    <p>Please choose the topics you want to study today. You can order them according to your priorities.
+    	The site works best if you leave all the topics you've already studied checked. That way,
+    	you will review them as necessary. </p>
     <div ui-sortable ng-model="topicsList">
       <p class="input-group" ng-repeat="topic in topicsList" style="padding:5px 10px; cursor: move;"> 
         <input type="checkbox" ng-model="topic.selected">

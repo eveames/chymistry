@@ -15,6 +15,7 @@ angular.module('chemiatriaApp')
 
     this.initializeStudyArray = function(studyArray) {
     	var addFields = function(element, index) {
+            //all this should be imported from db
     		element.lastStudied = null;
     		element.accuracyArray = [];
     		element.rtArray = [];
