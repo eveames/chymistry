@@ -11,6 +11,16 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'MainController@index');
+Route::get('about', 'MainController@about');
+Route::get('home', ['middleware' => 'auth', 'uses' => 'MainController@home']);
+
+Route::get('reg', 'Reg\RegistrationController@register');
+Route::post('reg', 'Reg\RegistrationController@postRegister');
+Route::get('login', 'Login\LoginController@login');
+Route::post('login', 'Login\LoginController@postLogin');
+Route::get('logout', 'Login\LoginController@logout');
+
+Route::controllers([
+   'password' => 'Auth\PasswordController',
+]);
