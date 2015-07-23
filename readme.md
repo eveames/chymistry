@@ -1,6 +1,6 @@
 ## Chemiatria: chemistry study app
 
-This is a word in progress. It will be a web app that helps students study chemistry (or other fields, maybe). It uses a combination of spaced repetition (for learning facts) and perceptual learning (many examples quickly, for skills). 
+This is a work in progress. It will be a web app that helps students study chemistry (or other fields, maybe). It uses a combination of spaced repetition (for learning facts) and perceptual learning (many examples quickly, for skills). 
 
 ## Official Documentation
 

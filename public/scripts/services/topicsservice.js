@@ -8,20 +8,44 @@
  * Service in the chemiatriaApp.
  */
 angular.module('chemiatriaApp')
-  .service('TopicsService', ['VocabListService', function (VocabListService) {
+  .service('TopicsService', ['VocabListService', '$http', function (VocabListService, $http) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     
     //level corresponds roughly to chapter location in a textbook. 
     //should let teachers set levels for their classes
     //should set topicsList by user, indicating previously studied, previously mastered, next up, etc
     //in ng-repeat, will order by level
-    this.topicsList = 
+    
+    /*this.topicsList = 
     [{type: 'SigFigPL', factory: 'SigFigPLFactory', level: 1, 
     	name: 'Recognizing sig figs', selected: true,
     	subtypes: ['noDecimalPlace', 'decimalPlace', 'allAfterPoint', 'decimalPointNoPlaces'], sequenceByID: false, priorityCalcAlgorithm: 'PL'},
       {type: 'VocabBasic', factory: 'VocabFactory', subtypes: 
       ['wordRecall'], level: 1.1,
       	name: 'Basic Vocab', selected: true, sequenceByID: true, priorityCalcAlgorithm: 'fact'}];
+    */
+
+    this.getTopicsList = function() {
+        //console.log('in getTopicsList function');
+        var topicsList = [];
+        //console.log(topicsList);
+        $http.get('/api/student/typesList').then(function(response) {
+            //console.log('response.data is: ',response.data);
+            var temp = response.data;
+            
+            for (var i = 0; i < temp.length; i++) {
+                topicsList.push(temp[i]);
+                //console.log(topicsList[i].selected);
+                topicsList[i].selected = Boolean(topicsList[i].selected);
+                topicsList[i].subtypes = JSON.parse(topicsList[i].subtypes);
+                console.log(topicsList[i].subtypes);
+            }
+        }, function(errResponse) {
+            console.error('Error while fetching notes');
+        });
+        //console.log(topicsList);
+        return topicsList;
+    } 
 
       	//subtypes of vocab coming soon: 'defineMultipleChoice', 'classifyExample', 
       //'classifyExampleMultipleChoice'

@@ -20,7 +20,7 @@ angular.module('chemiatriaApp')
     $scope.stats = {};
     $scope.frustrationDescription = '';
     $scope.bugDescription = '';
-    $scope.topicsList = TopicsService.topicsList;
+    $scope.topicsList = TopicsService.getTopicsList();
     $scope.topicsSelected = [];
     $scope.currentQ = {};
     $scope.answer = '';

@@ -20,6 +20,9 @@ class TypesTableSeeder extends Seeder
     	"sequenceByID" => false, "priorityCalcAlgorithm" => 'PL', 'course' => 1],
       ["type" => 'VocabBasic', "factory" => 'VocabFactory', "subtypes" => 
       ['wordRecall'], "level" => 1.1, "name" => 'Basic Vocab', "selected" => true, 
+      "sequenceByID" => true, "priorityCalcAlgorithm" => 'fact', 'course' => 1],
+      ["type" => 'Vocab2', "factory" => 'VocabFactory', "subtypes" => 
+      ['wordRecall'], "level" => 2.1, "name" => 'Vocab Unit 2', "selected" => true, 
       "sequenceByID" => true, "priorityCalcAlgorithm" => 'fact', 'course' => 1]];
 
       	for ($i = 0 ; $i < count($typesList) ; ++$i) {
