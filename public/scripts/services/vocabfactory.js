@@ -21,7 +21,7 @@ angular.module('chemiatriaApp')
     return {
       //returns an array of qID that includes fields starting at position 2 in qID (no type, subtype)
 
-      getQuestion : function(subtype, idArray, flags) {
+      getQuestion : function(type_id, subtype, idArray, flags) {
         var qToReturn = {type: 'VocabBasic', qHint: []};
         qToReturn.factOrSkill = 'fact';
         qToReturn.instructions = 'If you don\'t know the answer, enter 0 (zero). ' +
@@ -29,7 +29,7 @@ angular.module('chemiatriaApp')
         var idParseArray = QIDService.parseID(idArray[0]);
         var word = idParseArray[2];
         //console.log('in vocabFactory:', idParseArray);
-        var entry = VocabListService.getEntry(idParseArray[3]);
+        var entry = VocabListService.getEntry(type_id, idParseArray[3]);
         if (word !== entry.word) {console.log('index does not match word');}
 
         //for vocab, correctAnswer is an array containing prompt and alternates

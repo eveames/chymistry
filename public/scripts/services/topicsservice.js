@@ -25,25 +25,30 @@ angular.module('chemiatriaApp')
       	name: 'Basic Vocab', selected: true, sequenceByID: true, priorityCalcAlgorithm: 'fact'}];
     */
 
+    var asynchRequest = function() {
+        
+    };
+
     this.getTopicsList = function() {
-        //console.log('in getTopicsList function');
+        console.log('in getTopicsList function');
         var topicsList = [];
-        //console.log(topicsList);
         $http.get('/api/student/typesList').then(function(response) {
-            //console.log('response.data is: ',response.data);
-            var temp = response.data;
-            
-            for (var i = 0; i < temp.length; i++) {
-                topicsList.push(temp[i]);
-                //console.log(topicsList[i].selected);
-                topicsList[i].selected = Boolean(topicsList[i].selected);
-                topicsList[i].subtypes = JSON.parse(topicsList[i].subtypes);
-                console.log(topicsList[i].subtypes);
-            }
+            //something funny is happening with the timing here! 
+            //function returns before finished, but still works
+            //
+        var temp = response.data;
+        
+        for (var i = 0; i < temp.length; i++) {
+            topicsList.push(temp[i]);
+            //console.log(topicsList[i].selected);
+            topicsList[i].selected = Boolean(topicsList[i].selected);
+            topicsList[i].subtypes = JSON.parse(topicsList[i].subtypes);
+            //console.log('inside asynchRequest for: ',topicsList[i].subtypes);
+        }
+        //console.log('outside for before return: ',topicsList);
         }, function(errResponse) {
-            console.error('Error while fetching notes');
+            console.error('Error while fetching topicsList');
         });
-        //console.log(topicsList);
         return topicsList;
     } 
 
@@ -58,10 +63,13 @@ angular.module('chemiatriaApp')
     	var studyArray = [];
     	for (var i = 0; i < selectedTopics.length; i++) {
     		var type = selectedTopics[i].type;
+            var type_id = selectedTopics[i].id;
+            var factory = selectedTopics[i].factory;
     		var alg = selectedTopics[i].priorityCalcAlgorithm;
     		if (selectedTopics[i].sequenceByID) {
     			console.log('about to call VocabListService');
-    			var vocabList = VocabListService.getIDList(type);
+                console.log(selectedTopics[i]);
+    			var vocabList = VocabListService.getIDList(type_id);
     			for (var k = 0; k < vocabList.length; k++) {
     				var qID = type + '-all-' + vocabList[k];
     				var subtypes = selectedTopics[i].subtypes;
@@ -72,7 +80,8 @@ angular.module('chemiatriaApp')
     			for (var j = 0; j < selectedTopics[i].subtypes.length; j++) {
     			var subtype = selectedTopics[i].subtypes[j]; 
     			console.log(subtype);
-    			studyArray.push({type: type, subtype: [subtype], qID: '', priorityCalcAlgorithm: alg});
+    			studyArray.push({type: type, subtype: [subtype], qID: '', 
+                    priorityCalcAlgorithm: alg, type_id: type_id, factory: factory});
     			}
     		}
     	}

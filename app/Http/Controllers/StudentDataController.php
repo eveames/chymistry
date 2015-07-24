@@ -7,12 +7,16 @@ use Illuminate\Http\Request;
 use chymistry\Http\Requests;
 use chymistry\Http\Controllers\Controller;
 use chymistry\Type;
+use chymistry\Word;
 
 class StudentDataController extends Controller
 {
     //controls API used by angular
-    public function getVocabList($typesList) {
-    	//returns json object: {{type: type, list: {word: word, prompts: [], alternates: []}}, {type, list} }
+    public function getVocabList($type_id) {
+    	//returns json object:  {{word: word, prompts: [], alternates: []}, {}, etc}
+    	$type = Type::find($type_id);
+    	$vocabList = $type->words;
+    	return $vocabList;
     }
 
     public function getTypesList() {

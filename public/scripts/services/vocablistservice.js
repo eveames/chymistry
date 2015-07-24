@@ -8,11 +8,11 @@
  * Service in the chemiatriaApp.
  */
 angular.module('chemiatriaApp')
-  .service('VocabListService', function () {
+  .service('VocabListService', ['$http', function ($http) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     
     //should talk to db, get vocablist for each vocab-unit (possibly do this inside method?)
-    var vocabList = [
+    /*var vocabList = [
     {word: 'matter', prompts: ['the stuff everything is made of', 
     'stuff', 'anything that has mass and occupies space', 'the physical material of everything'], 
     alternates: []},
@@ -47,21 +47,45 @@ angular.module('chemiatriaApp')
     ['a combination of substances that usually has properties similar or in between compared to the properties of the pure substances',
      'a material whose composition changes from sample to sample', 'a combo of materials that is not a compound']}
     ];
+    */
+    //initialized by getIDList function
+    //referred to by getEntry function
+    var vocabListArray = {};
 
-    this.getIDList = function(type) {
-        //when multiple lists, add switch or similar to choose which array using type
+    this.getIDList = function(type_id) {
+        
         console.log('in VocabListService.getIDList');
+        //var route = '/api/student/vocabList/' + type_id;
+        //console.log(route);
+        var vocabList = [];
         var map = [];
         var idMaker = function(entry, index) {
-        	var numPrompts = entry.prompts.length;
-          return entry.word +'-' + index + '-' +numPrompts;
-      	};
-        map = vocabList.map(idMaker);
+                var numPrompts = entry.prompts.length;
+                return entry.word +'-' + index + '-' +numPrompts;
+            };
+        $http.get('/api/student/vocabList/' + type_id).then(function(response) {
+            console.log('response.data is: ',response.data);
+            var temp = response.data;
+            for (var i = 0; i < temp.length; i++) {
+                vocabList.push(temp[i]);
+                //console.log(vocabList[i].selected);
+                vocabList[i].prompts = JSON.parse(vocabList[i].prompts);
+                vocabList[i].alternates = JSON.parse(vocabList[i].alternates);
+                //console.log(topicsList[i].subtypes);
+            }
+            console.log('vocabList is: ',vocabList);
+            vocabListArray[type_id] = vocabList;
+            map = vocabList.map(idMaker);
+            
+        }, function(errResponse) {
+            console.error('Error while fetching notes');
+        });
+        console.log('map is: ', map);
         return map;
-      };
+    };
 
     //also, use type here
-    this.getEntry = function(index) {
-    	return vocabList[index];
+    this.getEntry = function(type_id, index) {
+    	return vocabListArray[type_id][index];
     };
-  });
+  }]);

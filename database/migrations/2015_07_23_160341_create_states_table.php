@@ -14,14 +14,14 @@ class CreateStatesTable extends Migration
     {
         Schema::create('states', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user');
-            $table->foreign('user')->references('id')->on('users');
-            $table->unsignedInteger('type');
-            $table->foreign('type')->references('id')->on('types');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedInteger('type_id');
+            $table->foreign('type_id')->references('id')->on('types');
             $table->string('subtype', 50);
             $table->string('qID', 100);
-            $table->unsignedInteger('word')->nullable();
-            $table->foreign('word')->references('id')->on('words');
+            $table->unsignedInteger('word_id')->nullable();
+            $table->foreign('word_id')->references('id')->on('words');
             $table->unsignedInteger('lastStudied');
             $table->json('accuracyArray');
             $table->json('rtArray');

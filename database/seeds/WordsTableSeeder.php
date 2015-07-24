@@ -50,7 +50,7 @@ class WordsTableSeeder extends Seeder
 
     for ($i = 0 ; $i < count($vocabList) ; ++$i) {
       		DB::table('words')->insert([
-            'type' => 2,
+            'type_id' => 2,
             'word' => $vocabList[$i]['word'],
             'prompts' => json_encode($vocabList[$i]['prompts']),
             'alternates' => json_encode($vocabList[$i]['alternates']) 

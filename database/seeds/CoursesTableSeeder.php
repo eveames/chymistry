@@ -13,12 +13,12 @@ class CoursesTableSeeder extends Seeder
     {
         DB::table('courses')->insert([
             'name' => 'General Chemistry 1',
-            'owner' => '1',
+            'user_id' => '1',
         ]);
 
         DB::table('courses')->insert([
             'name' => 'Intro to Medical Chemistry',
-            'owner' => '1',
+            'user_id' => '1',
         ]);
     }
 }

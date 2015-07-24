@@ -35,7 +35,7 @@ class TypesTableSeeder extends Seeder
             'subtypes' => json_encode($typesList[$i]['subtypes']),
             'sequenceByID' => $typesList[$i]['sequenceByID'],
             'priorityCalcAlgorithm' => $typesList[$i]['priorityCalcAlgorithm'],
-            'course' => $typesList[$i]['course']
+            'course_id' => $typesList[$i]['course']
         ]);
       	}
         

@@ -24,19 +24,21 @@ angular.module('chemiatriaApp')
       getQuestion: function(studyArrayItem) {
         var qToReturn = {};
         var type = studyArrayItem.type;
+        var factory = studyArrayItem.factory;
+        var type_id = studyArrayItem.type_id;
         //console.log(type);
         var subtype, qID, idArray, stage;
         //var timesStudied = studyArrayItem.;
 
         //in here, put logic to determine subtype, idArray, flags
-        switch(type)  {
-          case 'SigFigPL': 
+        switch(factory)  {
+          case 'SigFigPLFactory': 
             subtype = studyArrayItem.subtype[0];
 
             qToReturn = SigFigPLFactory.getQuestion(subtype, [], {});
             //qToReturn.showBackgroundText = 
             break;
-          case 'VocabBasic':
+          case 'VocabFactory':
             subtype = 'wordRecall'; 
             qID = studyArrayItem.qID;
             var idParseArray = QIDService.parseID(qID);
@@ -51,7 +53,7 @@ angular.module('chemiatriaApp')
               }
             };
             var flags = choosePrompt(numPrompts, stage);
-            qToReturn = VocabFactory.getQuestion(subtype, idArray, flags);
+            qToReturn = VocabFactory.getQuestion(type_id, subtype, idArray, flags);
             //console.log('in QuestionFactory');
             break;
           default:

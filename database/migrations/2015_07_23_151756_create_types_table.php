@@ -15,8 +15,8 @@ class CreateTypesTable extends Migration
         Schema::create('types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 50)->unique();
-            $table->unsignedInteger('course');
-            $table->foreign('course')->references('course_id')->on('courses');
+            $table->unsignedInteger('course_id');
+            $table->foreign('course_id')->references('course_id')->on('courses');
             $table->string('type', 20);
             $table->string('factory', 20);
             $table->decimal('level', 5, 2);

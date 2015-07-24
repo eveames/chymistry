@@ -10,7 +10,7 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-
+// '/' needs to redirect if authenticated to home
 Route::get('/', 'MainController@index');
 Route::get('about', 'MainController@about');
 Route::get('home', ['middleware' => 'auth', 'uses' => 'MainController@home']);
@@ -23,7 +23,7 @@ Route::post('login', 'Login\LoginController@postLogin');
 Route::get('logout', 'Login\LoginController@logout');
 
 Route::group(['middleware' => 'auth', 'prefix' => 'api/student'], function () {
-    Route::get('vocabList', 'StudentDataController@getVocabList');
+    Route::get('vocabList/{type_id}', 'StudentDataController@getVocabList');
     Route::get('typesList', 'StudentDataController@getTypesList');
     Route::get('states', 'StudentDataController@getStatesList');
     Route::post('states', 'StudentDataController@updateState');
