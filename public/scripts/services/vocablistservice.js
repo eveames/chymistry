@@ -87,7 +87,10 @@ angular.module('chemiatriaApp')
         var map = [];
         var idMaker = function(entry, index) {
             var numPrompts = entry.prompts.length;
-          return entry.word +'-' + index + '-' +numPrompts;
+            var returnObj = {};
+            returnObj.word_id = entry.id;
+            returnObj.qID = entry.word +'-' + index + '-' +numPrompts;
+          return returnObj;
         };
         map = vocabListArray[type_id].map(idMaker);
         console.log(map);

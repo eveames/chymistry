@@ -79,9 +79,11 @@ angular.module('chemiatriaApp')
 		//initialize variables if needed 
 		topicsList = selectedTopics;
 		studyArray = TopicsService.toStudyArray(selectedTopics);
+        console.log('selectedTopics[1]: ', selectedTopics[1]);
 		studyArray = StudyArrayService.initializeStudyArray(studyArray);
 		//set first question
-        console.log('about to call QuestionFactory');
+        console.log('studyArray: ', studyArray);
+        console.log('sample item: ', studyArray[1]);
 		currentQ = QuestionFactory.getQuestion(selectNextQuestion());
 		console.log("in openSession: ", currentQ);
 		setCurrentQ(currentQ);

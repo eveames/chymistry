@@ -37,7 +37,7 @@ class StudentDataController extends Controller
     public function getStatesList() {
     	//returns full list of states for all items in study array, by user
     	$user = Auth::user();
-    	$states = $user->states;
+    	$states = $user->states->sortBy('type_id');
     	return $states;
     }
 

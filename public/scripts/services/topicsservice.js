@@ -69,9 +69,10 @@ angular.module('chemiatriaApp')
                 console.log(selectedTopics[i]);
     			var vocabList = VocabListService.getIDList(type_id);
     			for (var k = 0; k < vocabList.length; k++) {
-    				var qID = type + '-all-' + vocabList[k];
+    				var qID = type + '-all-' + vocabList[k].qID;
     				var subtypes = selectedTopics[i].subtypes;
-    				studyArray.push({type: type, subtype: subtypes, qID: qID, 
+                    var word_id = vocabList[k].word_id;
+    				studyArray.push({type: type, subtype: subtypes, qID: qID, word_id: word_id,
                         priorityCalcAlgorithm: alg, type_id: type_id, factory: factory});
     			}
     		}

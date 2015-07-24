@@ -12,6 +12,7 @@ angular.module('chemiatriaApp')
   .service('StudyArrayService', ['PLPriorityService', 'FactPriorityService', '$http',  
   	function (PLPriorityService, FactPriorityService, $http) {
     // AngularJS will instantiate a singleton by calling "new" on this function
+    var historyArray = {};
 
     this.setup = function() {
         // needs to be updated and tested
@@ -19,31 +20,70 @@ angular.module('chemiatriaApp')
             console.log('response.data is: ',response.data);
             var temp = response.data;
             for (var i = 0; i < temp.length; i++) {
+                //
                 var type_id = temp[i].type_id;
-                if (!vocabListArray[type_id]) vocabListArray[type_id] = [];
-                vocabListArray[type_id].push(temp[i]);
-                //console.log(vocabList[i].selected);
-                vocabListArray[type_id].prompts = JSON.parse(vocabListArray[type_id].prompts);
-                vocabListArray[type_id].alternates = JSON.parse(vocabListArray[type_id].alternates);
-                //console.log(topicsList[i].subtypes);
+                console.log('object to parse: ', temp[i]);
+                console.log(temp[i].accuracyArray);
+                temp[i].accuracyArray = JSON.parse(temp[i].accuracyArray);
+                console.log(temp[i].rtArray);
+                temp[i].rtArray = JSON.parse(temp[i].rtArray);
+                console.log(temp[i].subtype);
+                temp[i].subtype = JSON.parse(temp[i].subtype);
+                if (!historyArray[type_id]) historyArray[type_id] = [];
+                historyArray[type_id].push(temp[i]);
+               
+                
             }
-            //console.log('vocabList is: ',vocabList);
-            //vocabListArray[type_id] = vocabList;
+            
             return 'Loaded';
         }, function(errResponse) {
             console.error('Error while fetching notes');
         });
-        //console.log('map is: ', map);
+        
         return promise;
     }
     
     this.initializeStudyArray = function(studyArray) {
-    	var addFields = function(element, index) {
+    	console.log(historyArray);
+        console.log(historyArray[1]);
+        var addFields = function(element, index) {
             //all this should be imported from db
-    		element.lastStudied = null;
-    		element.accuracyArray = [];
-    		element.rtArray = [];
-    		element.priority = 1;
+
+            //check for item in history array, get data from there if present
+            var type_id = element.type_id;
+            var match = {};
+            if (element.word_id) {
+                for (var i = 0; i < historyArray[type_id].length; i++) {
+                    if (element.word_id === historyArray[type_id][i].word_id) {
+                        match = historyArray[type_id][i];
+                        break;
+                    }
+                }
+            }
+            else {
+                for (var i = 0; i < historyArray[type_id].length; i++) {
+                    if (element.subtype === historyArray[type_id][i].subtype) {
+                        match = historyArray[type_id][i];
+                        break;
+                    }
+                }
+            }
+            if (Object.getOwnPropertyNames(match).length !== 0) {
+                console.log('match is: ', match);
+                element.lastStudied = match.lastStudied;
+                element.accuracyArray = match.accuracyArray;
+                element.rtArray = match.rtArray;
+                element.priority = match.priority;
+                element.states_id = match.id;
+                
+            }
+            else {
+                element.lastStudied = null;
+                element.accuracyArray = [];
+                element.rtArray = [];
+                element.priority = 1;
+        
+            }
     		element.indexInStudyArray = index;
     		switch (element.priorityCalcAlgorithm) {
     			case 'PL' :
