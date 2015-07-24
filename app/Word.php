@@ -8,7 +8,7 @@ use chymistry\State;
 class Word extends Model
 {
     //
-    protected $fillable = ['word', 'type', 'prompts', 'alternates'];
+    protected $fillable = ['word', 'type_id', 'prompts', 'alternates'];
   	public function type() {
     	return $this->belongsTo('chymistry\Type');
 	}

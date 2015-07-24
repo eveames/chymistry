@@ -74,7 +74,7 @@ angular.module('chemiatriaApp')
             //vocabListArray[type_id] = vocabList;
             return 'Loaded';
         }, function(errResponse) {
-            console.error('Error while fetching notes');
+            console.error('Error while fetching vocab list');
         });
         //console.log('map is: ', map);
         return promise;

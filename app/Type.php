@@ -10,7 +10,7 @@ use chymistry\Course;
 class Type extends Model
 {
     //protected $table = 'types';
-    protected $fillable = ['name','course', 'type','factory', 'level', 
+    protected $fillable = ['name','course_id', 'type','factory', 'level', 
     'selected', 'subtypes', 'sequenceByID', 'priorityCalcAlgorithm'];
   	public function course() {
     	return $this->belongsTo('chymistry\Course');

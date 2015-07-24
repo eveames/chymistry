@@ -10,7 +10,7 @@ use chymistry\Word;
 class State extends Model
 {
     //
-    protected $fillable = ['type','subtype', 'qID','word', 'lastStudied', 
+    protected $fillable = ['type_id','subtype', 'qID','word_id', 'lastStudied', 
     'accuracyArray', 'rtArray', 'stage', 'priority'];
   	public function type() {
     	return $this->belongsTo('chymistry\Type');

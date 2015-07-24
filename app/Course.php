@@ -10,7 +10,7 @@ class Course extends Model
 {
     //
     protected $table = 'courses';
-    protected $fillable = ['name','owner'];
+    protected $fillable = ['name'];
   	public function owner() {
     	return $this->belongsTo('chymistry\User');
 	}

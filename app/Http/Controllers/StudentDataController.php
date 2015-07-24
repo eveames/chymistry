@@ -9,6 +9,7 @@ use chymistry\Http\Controllers\Controller;
 use chymistry\Type;
 use chymistry\Word;
 use chymistry\User;
+use chymistry\State;
 use Auth;
 
 class StudentDataController extends Controller
@@ -41,8 +42,33 @@ class StudentDataController extends Controller
     	return $states;
     }
 
-    public function updateState() {
+    public function updateFullState() {
     	//updates states table
+    }
+
+    public function updateState(Request $request, $id) {
+        //updates states table
+        $state = new State($request->all());
+        Auth::user()->states()->find($id)->update($state);
+        
+
+
+    }
+
+    public function newState(Request $request) {
+        //add to states table
+        try {
+            $state = new State($request->all());
+        Auth::user()->states()->save($state);
+        }
+        catch(Exception $e) {
+            $errorMessage = 'Caught exception: ' . $e->getMessage();
+
+            return $errorMessage;
+        }
+        
+
+        
     }
 
     public function postAction() {

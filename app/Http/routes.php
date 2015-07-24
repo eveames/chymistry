@@ -27,7 +27,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'api/student'], function () {
     Route::get('vocabList/{type_id}', 'StudentDataController@getVocabList');
     Route::get('typesList', 'StudentDataController@getTypesList');
     Route::get('states', 'StudentDataController@getStatesList');
-    Route::post('states', 'StudentDataController@updateState');
+    Route::post('states', 'StudentDataController@updateFullState');
+    Route::post('states/new', 'StudentDataController@newState');
+    Route::post('states/{id}', 'StudentDataController@updateState');
     Route::post('actions', 'StudentDataController@postAction');
 });
 

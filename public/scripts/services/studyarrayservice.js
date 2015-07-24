@@ -37,7 +37,7 @@ angular.module('chemiatriaApp')
             
             return 'Loaded';
         }, function(errResponse) {
-            console.error('Error while fetching notes');
+            console.error('Error while fetching states');
         });
         
         return promise;
@@ -52,37 +52,38 @@ angular.module('chemiatriaApp')
             //check for item in history array, get data from there if present
             var type_id = element.type_id;
             var match = {};
-            if (element.word_id) {
-                for (var i = 0; i < historyArray[type_id].length; i++) {
-                    if (element.word_id === historyArray[type_id][i].word_id) {
-                        match = historyArray[type_id][i];
-                        break;
+            if (historyArray[type_id]) {
+                if (element.word_id) {
+                    for (var i = 0; i < historyArray[type_id].length; i++) {
+                        if (element.word_id === historyArray[type_id][i].word_id) {
+                            match = historyArray[type_id][i];
+                            break;
+                        }
                     }
                 }
-            }
-            else {
-                for (var i = 0; i < historyArray[type_id].length; i++) {
-                    if (element.subtype === historyArray[type_id][i].subtype) {
-                        match = historyArray[type_id][i];
-                        break;
+                else {
+                    for (var i = 0; i < historyArray[type_id].length; i++) {
+                        if (element.subtype === historyArray[type_id][i].subtype) {
+                            match = historyArray[type_id][i];
+                            break;
+                        }
                     }
                 }
+                if (Object.getOwnPropertyNames(match).length !== 0) {
+                    console.log('match is: ', match);
+                    element.lastStudied = match.lastStudied;
+                    element.accuracyArray = match.accuracyArray;
+                    element.rtArray = match.rtArray;
+                    element.priority = match.priority;
+                    element.states_id = match.id; 
+                }
             }
-            if (Object.getOwnPropertyNames(match).length !== 0) {
-                console.log('match is: ', match);
-                element.lastStudied = match.lastStudied;
-                element.accuracyArray = match.accuracyArray;
-                element.rtArray = match.rtArray;
-                element.priority = match.priority;
-                element.states_id = match.id;
-                
-            }
+            
             else {
                 element.lastStudied = null;
                 element.accuracyArray = [];
                 element.rtArray = [];
                 element.priority = 1;
-        
             }
     		element.indexInStudyArray = index;
     		switch (element.priorityCalcAlgorithm) {
@@ -122,6 +123,27 @@ angular.module('chemiatriaApp')
     		default: 
     			console.log('priorityCalcAlgorithm not recognized');
     	}
+        //send studyArray[index] to db
+        var stateItem = studyArray[index];
+        stateItem.accuracyArray = JSON.stringify(stateItem.accuracyArray);
+        stateItem.rtArray = JSON.stringify(stateItem.rtArray);
+        stateItem.subtype = JSON.stringify(stateItem.subtype);
+        delete stateItem.type;
+
+        //console.log('does it have a type_id? ',typeof(stateItem.type_id), stateItem.type_id );
+
+        //check if state exists
+        var route = 'api/student/states/';
+        if (stateItem.states_id) {
+            route += stateItem.states_id;
+        }
+        else route += 'new';
+
+        $http.post(route, stateItem).then(function() {}, function(errResponse) {
+            console.error(errResponse.data);
+        });
+        
+
     	return studyArray;
     };
 
