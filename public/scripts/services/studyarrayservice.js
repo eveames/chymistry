@@ -9,10 +9,34 @@
  */
 
 angular.module('chemiatriaApp')
-  .service('StudyArrayService', ['PLPriorityService', 'FactPriorityService', 
-  	function (PLPriorityService, FactPriorityService) {
+  .service('StudyArrayService', ['PLPriorityService', 'FactPriorityService', '$http',  
+  	function (PLPriorityService, FactPriorityService, $http) {
     // AngularJS will instantiate a singleton by calling "new" on this function
 
+    this.setup = function() {
+        // needs to be updated and tested
+        var promise = $http.get('/api/student/states').then(function(response) {
+            console.log('response.data is: ',response.data);
+            var temp = response.data;
+            for (var i = 0; i < temp.length; i++) {
+                var type_id = temp[i].type_id;
+                if (!vocabListArray[type_id]) vocabListArray[type_id] = [];
+                vocabListArray[type_id].push(temp[i]);
+                //console.log(vocabList[i].selected);
+                vocabListArray[type_id].prompts = JSON.parse(vocabListArray[type_id].prompts);
+                vocabListArray[type_id].alternates = JSON.parse(vocabListArray[type_id].alternates);
+                //console.log(topicsList[i].subtypes);
+            }
+            //console.log('vocabList is: ',vocabList);
+            //vocabListArray[type_id] = vocabList;
+            return 'Loaded';
+        }, function(errResponse) {
+            console.error('Error while fetching notes');
+        });
+        //console.log('map is: ', map);
+        return promise;
+    }
+    
     this.initializeStudyArray = function(studyArray) {
     	var addFields = function(element, index) {
             //all this should be imported from db

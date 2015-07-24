@@ -8,6 +8,8 @@ use chymistry\Http\Requests;
 use chymistry\Http\Controllers\Controller;
 use chymistry\Type;
 use chymistry\Word;
+use chymistry\User;
+use Auth;
 
 class StudentDataController extends Controller
 {
@@ -19,6 +21,12 @@ class StudentDataController extends Controller
     	return $vocabList;
     }
 
+    public function getFullVocabList() {
+    	//returns json object:  {{word: word, prompts: [], alternates: []}, {}, etc}
+    	$vocabList = Word::orderBy('type_id')->get();
+    	return $vocabList;
+    }
+
     public function getTypesList() {
     	//returns json object list all available topics
     	//maybe someday sorts them by course, student progress?
@@ -26,8 +34,11 @@ class StudentDataController extends Controller
     	return $typesList;
     }
 
-    public function getStatesList($studyArray) {
+    public function getStatesList() {
     	//returns full list of states for all items in study array, by user
+    	$user = Auth::user();
+    	$states = $user->states;
+    	return $states;
     }
 
     public function updateState() {

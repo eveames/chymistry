@@ -23,6 +23,7 @@ Route::post('login', 'Login\LoginController@postLogin');
 Route::get('logout', 'Login\LoginController@logout');
 
 Route::group(['middleware' => 'auth', 'prefix' => 'api/student'], function () {
+	Route::get('vocabList/', 'StudentDataController@getFullVocabList');
     Route::get('vocabList/{type_id}', 'StudentDataController@getVocabList');
     Route::get('typesList', 'StudentDataController@getTypesList');
     Route::get('states', 'StudentDataController@getStatesList');

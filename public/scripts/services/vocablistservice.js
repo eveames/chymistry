@@ -52,35 +52,45 @@ angular.module('chemiatriaApp')
     //referred to by getEntry function
     var vocabListArray = {};
 
-    this.getIDList = function(type_id) {
-        
-        console.log('in VocabListService.getIDList');
-        //var route = '/api/student/vocabList/' + type_id;
-        //console.log(route);
-        var vocabList = [];
-        var map = [];
-        var idMaker = function(entry, index) {
-                var numPrompts = entry.prompts.length;
-                return entry.word +'-' + index + '-' +numPrompts;
-            };
-        $http.get('/api/student/vocabList/' + type_id).then(function(response) {
+    this.setup = function() {
+        //var vocabList = [];
+    
+        var promise = $http.get('/api/student/vocabList/').then(function(response) {
             console.log('response.data is: ',response.data);
             var temp = response.data;
             for (var i = 0; i < temp.length; i++) {
-                vocabList.push(temp[i]);
-                //console.log(vocabList[i].selected);
-                vocabList[i].prompts = JSON.parse(vocabList[i].prompts);
-                vocabList[i].alternates = JSON.parse(vocabList[i].alternates);
+                //console.log('temp[i] is:', temp[i]);
+                var type_id = temp[i].type_id;
+                temp[i].prompts = JSON.parse(temp[i].prompts);
+                temp[i].alternates = JSON.parse(temp[i].alternates);
+                if (!vocabListArray[type_id]) vocabListArray[type_id] = [];
+                vocabListArray[type_id].push(temp[i]);
+                //console.log(vocabListArray[type_id]);
+                //vocabListArray[type_id].prompts = JSON.parse(vocabListArray[type_id].prompts);
+                //vocabListArray[type_id].alternates = JSON.parse(vocabListArray[type_id].alternates);
                 //console.log(topicsList[i].subtypes);
             }
-            console.log('vocabList is: ',vocabList);
-            vocabListArray[type_id] = vocabList;
-            map = vocabList.map(idMaker);
-            
+            //console.log('vocabList is: ',vocabList);
+            //vocabListArray[type_id] = vocabList;
+            return 'Loaded';
         }, function(errResponse) {
             console.error('Error while fetching notes');
         });
-        console.log('map is: ', map);
+        //console.log('map is: ', map);
+        return promise;
+    } 
+
+    this.getIDList = function(type_id) {
+        
+        console.log('in VocabListService.getIDList');
+        console.log(vocabListArray);
+        var map = [];
+        var idMaker = function(entry, index) {
+            var numPrompts = entry.prompts.length;
+          return entry.word +'-' + index + '-' +numPrompts;
+        };
+        map = vocabListArray[type_id].map(idMaker);
+        console.log(map);
         return map;
     };
 

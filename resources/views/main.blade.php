@@ -4,14 +4,25 @@
 
 <div class="container" ng-controller="MainCtrl as ctrl">
   <h1>Chemiatria: Learn Chemistry</h1>
-  <p ng-hide="session">Welcome to Chemiatria! The initial page load can be a little slow, 
+  <div ng-hide="session"><p>Welcome to Chemiatria! The initial page load can be a little slow, 
     please be patient. Once everything loads, you won't have to wait.</p>
-  <p ng-cloak ng-show="session">
+    <p>While you wait, please note that I may sometimes use slightly different settings 
+      to compare which seem to work better (like, changing how long between seeing a particular
+      word). Technically, this might be considered doing social science experiments on you, so by 
+      using the site, I assume you consent. I will never do anything intended to make you feel bad
+      or otherwise cause you harm. I'll always be choosing between settings that seem reasonable to 
+      see which seems to cause the best learning and least frustration.</p>
+    <p>You can also review the site use instructions while things load.</p>
+  <p ng-show="session">
     How to use the site: Don't look up answers if you don't know them, this will confuse the algorithm. 
     If you have any feedback, if it's too hard or too easy, don't be shy! 
     Use the "bug report" or "I'm frustrated" buttons and tell me all about it!<br>
     <span ng-cloak ng-show="currentQ.showBackgroundText">@{{currentQ.qBackgroundText}}</span>
   </p>
+  <div ng-hide="session">
+    <span>Question data loaded? @{{questionsNotLoaded}}<br>
+      Study history loaded? @{{historyNotLoaded}}</span>
+  </div>
   <div ng-cloak ng-hide="noQuestion">
     <div>@{{currentQ.instructions}}</div><br>
     <div>@{{answerDetail.messageSent}}</div><br>

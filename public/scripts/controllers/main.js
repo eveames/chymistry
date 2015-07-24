@@ -8,8 +8,8 @@
  * Controller of the chemiatriaApp
  */
 angular.module('chemiatriaApp')
-  .controller('MainCtrl', ['$scope', 'SessionLog', 'SessionManagerService', 'TopicsService', function ($scope, 
-  	SessionLog, SessionManagerService, TopicsService) {
+  .controller('MainCtrl', ['$scope', 'SessionLog', 'SessionManagerService', 'TopicsService', 'VocabListService', 'StudyArrayService', function ($scope, 
+  	SessionLog, SessionManagerService, TopicsService, VocabListService, StudyArrayService) {
   	$scope.noQuestion = true;
   	$scope.session = false;
     $scope.isFrustrated = false;
@@ -20,11 +20,21 @@ angular.module('chemiatriaApp')
     $scope.stats = {};
     $scope.frustrationDescription = '';
     $scope.bugDescription = '';
+    $scope.questionsNotLoaded = 'Not yet';
+    VocabListService.setup().then(function(d) {
+        $scope.questionsNotLoaded = d;
+    });
+    $scope.historyLoaded = 'Not yet';
+    StudyArrayService.setup().then(function(d) {
+        $scope.historyNotLoaded = d;
+    });
     $scope.topicsList = TopicsService.getTopicsList();
     $scope.topicsSelected = [];
     $scope.currentQ = {};
     $scope.answer = '';
     $scope.answerDetail = {}; //used to display message
+    //call services here to get db data: vocab list and states list
+
     $scope.startSession = function() {
     	//console.log($scope.topicsList[0].selected, $scope.topicsList[1].selected);
     	$scope.session = true;
