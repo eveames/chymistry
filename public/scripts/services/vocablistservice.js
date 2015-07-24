@@ -56,7 +56,7 @@ angular.module('chemiatriaApp')
         //var vocabList = [];
     
         var promise = $http.get('/api/student/vocabList/').then(function(response) {
-            console.log('response.data is: ',response.data);
+            //console.log('response.data is: ',response.data);
             var temp = response.data;
             for (var i = 0; i < temp.length; i++) {
                 //console.log('temp[i] is:', temp[i]);
@@ -82,8 +82,8 @@ angular.module('chemiatriaApp')
 
     this.getIDList = function(type_id) {
         
-        console.log('in VocabListService.getIDList');
-        console.log(vocabListArray);
+        //console.log('in VocabListService.getIDList');
+        //console.log(vocabListArray);
         var map = [];
         var idMaker = function(entry, index) {
             var numPrompts = entry.prompts.length;
@@ -93,7 +93,7 @@ angular.module('chemiatriaApp')
           return returnObj;
         };
         map = vocabListArray[type_id].map(idMaker);
-        console.log(map);
+        //console.log(map);
         return map;
     };
 

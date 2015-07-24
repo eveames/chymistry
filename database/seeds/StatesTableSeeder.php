@@ -30,7 +30,8 @@ class StatesTableSeeder extends Seeder
             'subtype' => json_encode($statesList[$i]['subtype']),
             'accuracyArray' => json_encode($statesList[$i]['accuracyArray']),
             'rtArray' => json_encode($statesList[$i]['rtArray']),
-            'stage' => $statesList[$i]['stage']
+            'stage' => $statesList[$i]['stage'],
+            'priority' => $statesList[$i]['priority']
         ]);
       	}
     }

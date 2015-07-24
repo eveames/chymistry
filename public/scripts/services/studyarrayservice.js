@@ -17,17 +17,17 @@ angular.module('chemiatriaApp')
     this.setup = function() {
         // needs to be updated and tested
         var promise = $http.get('/api/student/states').then(function(response) {
-            console.log('response.data is: ',response.data);
+            //console.log('response.data is: ',response.data);
             var temp = response.data;
             for (var i = 0; i < temp.length; i++) {
                 //
                 var type_id = temp[i].type_id;
-                console.log('object to parse: ', temp[i]);
-                console.log(temp[i].accuracyArray);
+                //console.log('object to parse: ', temp[i]);
+                //console.log(temp[i].accuracyArray);
                 temp[i].accuracyArray = JSON.parse(temp[i].accuracyArray);
-                console.log(temp[i].rtArray);
+                //console.log(temp[i].rtArray);
                 temp[i].rtArray = JSON.parse(temp[i].rtArray);
-                console.log(temp[i].subtype);
+                //console.log(temp[i].subtype);
                 temp[i].subtype = JSON.parse(temp[i].subtype);
                 if (!historyArray[type_id]) historyArray[type_id] = [];
                 historyArray[type_id].push(temp[i]);
@@ -44,8 +44,8 @@ angular.module('chemiatriaApp')
     }
     
     this.initializeStudyArray = function(studyArray) {
-    	console.log(historyArray);
-        console.log(historyArray[1]);
+    	//console.log(historyArray);
+        //console.log(historyArray[1]);
         var addFields = function(element, index) {
             //all this should be imported from db
 
@@ -76,30 +76,32 @@ angular.module('chemiatriaApp')
                     element.rtArray = match.rtArray;
                     element.priority = match.priority;
                     element.states_id = match.id; 
+                    element.stage = match.stage;
                 }
             }
             
-            else {
+            if (Object.getOwnPropertyNames(match).length === 0) {
                 element.lastStudied = null;
                 element.accuracyArray = [];
                 element.rtArray = [];
                 element.priority = 1;
+                switch (element.priorityCalcAlgorithm) {
+                    case 'PL' :
+                        element.stage = 'discovery';
+                        break;
+                    case 'fact' :
+                     element.stage = '0';
+                     break;
+                    default: 
+                        element.stage = 'AlgorithmRecognitionError';
+                        break;
+                }
             }
     		element.indexInStudyArray = index;
-    		switch (element.priorityCalcAlgorithm) {
-    			case 'PL' :
-    				element.stage = 'discovery';
-    				break;
-    			case 'fact' :
-    				element.stage = '0';
-    				break;
-    			default: 
-    				element.stage = 'AlgorithmRecognitionError';
-    				break;
-    		}
+    		
     		return element;
     	};
-    	console.log('in initializeStudyArray');	
+    	//console.log('in initializeStudyArray');	
     	return studyArray.map(addFields);
     };
 
@@ -130,7 +132,7 @@ angular.module('chemiatriaApp')
         stateItem.subtype = JSON.stringify(stateItem.subtype);
         delete stateItem.type;
 
-        //console.log('does it have a type_id? ',typeof(stateItem.type_id), stateItem.type_id );
+        console.log('priority set? ',typeof(stateItem.priority), stateItem.priority);
 
         //check if state exists
         var route = 'api/student/states/';

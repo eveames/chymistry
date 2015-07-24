@@ -28,7 +28,7 @@ angular.module('chemiatriaApp')
     
 
     this.getTopicsList = function() {
-        console.log('in getTopicsList function');
+        //console.log('in getTopicsList function');
         var topicsList = [];
         $http.get('/api/student/typesList').then(function(response) {
             //something funny is happening with the timing here! 
@@ -65,8 +65,8 @@ angular.module('chemiatriaApp')
             var factory = selectedTopics[i].factory;
     		var alg = selectedTopics[i].priorityCalcAlgorithm;
     		if (selectedTopics[i].sequenceByID) {
-    			console.log('about to call VocabListService');
-                console.log(selectedTopics[i]);
+    			//console.log('about to call VocabListService');
+                //console.log(selectedTopics[i]);
     			var vocabList = VocabListService.getIDList(type_id);
     			for (var k = 0; k < vocabList.length; k++) {
     				var qID = type + '-all-' + vocabList[k].qID;
@@ -79,13 +79,13 @@ angular.module('chemiatriaApp')
     		else {
     			for (var j = 0; j < selectedTopics[i].subtypes.length; j++) {
     			var subtype = selectedTopics[i].subtypes[j]; 
-    			console.log(subtype);
+    			//console.log(subtype);
     			studyArray.push({type: type, subtype: [subtype], qID: '', 
                     priorityCalcAlgorithm: alg, type_id: type_id, factory: factory});
     			}
     		}
     	}
-    	console.log(studyArray);
+    	//console.log(studyArray);
     	return studyArray;
     };
 
