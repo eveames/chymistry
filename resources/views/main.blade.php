@@ -13,6 +13,7 @@
       or otherwise cause you harm. I'll always be choosing between settings that seem reasonable to 
       see which seems to cause the best learning and least frustration.</p>
     <p>You can also review the site use instructions while things load.</p>
+  </div>
   <p ng-show="session">
     How to use the site: Don't look up answers if you don't know them, this will confuse the algorithm. 
     If you have any feedback, if it's too hard or too easy, don't be shy! 
@@ -22,6 +23,7 @@
   <div ng-hide="session">
     <span>Question data loaded? @{{questionsNotLoaded}}<br>
       Study history loaded? @{{historyNotLoaded}}</span>
+      <br><br>
   </div>
   <div ng-cloak ng-hide="noQuestion">
     <div>@{{currentQ.instructions}}</div><br>

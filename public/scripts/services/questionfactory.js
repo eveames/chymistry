@@ -25,6 +25,8 @@ angular.module('chemiatriaApp')
         var qToReturn = {};
         var type = studyArrayItem.type;
         var factory = studyArrayItem.factory;
+        console.log(studyArrayItem);
+        console.log("factory is: ", factory);
         var type_id = studyArrayItem.type_id;
         //console.log(type);
         var subtype, qID, idArray, stage;
@@ -62,6 +64,7 @@ angular.module('chemiatriaApp')
         }
       // Public API here
       qToReturn.indexInStudyArray = studyArrayItem.indexInStudyArray;
+      console.log("leaving question factory", qToReturn);
       return qToReturn;
     }
   };

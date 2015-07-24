@@ -58,7 +58,7 @@ angular.module('chemiatriaApp')
     		}
     		return element;
     	};
-    		
+    	console.log('in initializeStudyArray');	
     	return studyArray.map(addFields);
     };
 

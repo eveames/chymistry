@@ -49,7 +49,7 @@ angular.module('chemiatriaApp')
     	//console.log($scope.username);
     	$scope.currentQ = SessionManagerService.openSession($scope.username, $scope.topicsSelected);
     	SessionLog.addEvent({type: 'question posted', detail: $scope.currentQ});
-    	//console.log($scope.currentQ.type);
+    	console.log('in MainCtrl: ', $scope.currentQ);
     };
 
     //

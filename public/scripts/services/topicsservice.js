@@ -25,9 +25,7 @@ angular.module('chemiatriaApp')
       	name: 'Basic Vocab', selected: true, sequenceByID: true, priorityCalcAlgorithm: 'fact'}];
     */
 
-    var asynchRequest = function() {
-        
-    };
+    
 
     this.getTopicsList = function() {
         console.log('in getTopicsList function');
@@ -73,7 +71,8 @@ angular.module('chemiatriaApp')
     			for (var k = 0; k < vocabList.length; k++) {
     				var qID = type + '-all-' + vocabList[k];
     				var subtypes = selectedTopics[i].subtypes;
-    				studyArray.push({type: type, subtype: subtypes, qID: qID, priorityCalcAlgorithm: alg});
+    				studyArray.push({type: type, subtype: subtypes, qID: qID, 
+                        priorityCalcAlgorithm: alg, type_id: type_id, factory: factory});
     			}
     		}
     		else {
