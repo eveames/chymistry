@@ -10,6 +10,7 @@ use chymistry\Type;
 use chymistry\Word;
 use chymistry\User;
 use chymistry\State;
+use chymistry\Action;
 use Auth;
 
 class StudentDataController extends Controller
@@ -84,8 +85,20 @@ class StudentDataController extends Controller
         
     }
 
-    public function postAction() {
+    public function postAction(Request $request) {
     	//posts action to actions table
+        try {
+            $action = new Action($request->all());
+            Auth::user()->actions()->save($action);
+            return Auth::user()->name;
+        }
+        catch(Exception $e) {
+            $errorMessage = 'Caught exception: ' . $e->getMessage();
+
+            return $errorMessage;
+        }
+
+
     }
 
 }

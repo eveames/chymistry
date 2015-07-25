@@ -25,7 +25,8 @@ angular.module('chemiatriaApp')
         var qToReturn = {type: 'VocabBasic', qHint: []};
         qToReturn.factOrSkill = 'fact';
         qToReturn.instructions = 'If you don\'t know the answer, enter 0 (zero). ' +
-            'The answer will be displayed, and you\'ll see it again soon. ';
+            'The answer will be displayed, and you\'ll see it again soon. ' +
+            'Answers are case-sensitive. Use all lower-case unless there is a proper name. ';
         var idParseArray = QIDService.parseID(idArray[0]);
         var word = idParseArray[2];
         //console.log('in vocabFactory:', idParseArray);

@@ -33,7 +33,7 @@ angular.module('chemiatriaApp')
 		currentQResult.answersGiven = [];
 		currentQResult.hintRequests = 0;
 		currentQResult.gotIt = false;
-		timeQDisplayed = Date.now;
+		timeQDisplayed = Date.now();
 		currentQResult.timeDisplayed = timeQDisplayed;
 		timeLastAction = timeQDisplayed;
 
@@ -111,7 +111,10 @@ angular.module('chemiatriaApp')
     	var answerDetail = currentQ.checkMethod(currentQ.qAnswer, answer);
     	//console.log('answerDetail from checkMethod is: ',answerDetail);
     	answerDetail.timeStamp = Date.now();
+        console.log('answerDetail.timeStamp: ', answerDetail.timeStamp);
+        console.log('timeLastAction: ', timeLastAction);
     	answerDetail.timeToReply = answerDetail.timeStamp - timeLastAction;
+        console.log('timeToReply: ', answerDetail.timeToReply);
     	var correct = answerDetail.correct;
     	//console.log('correct is: ', correct);
     	var moveOn = false;

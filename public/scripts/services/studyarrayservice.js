@@ -65,8 +65,8 @@ angular.module('chemiatriaApp')
                 }
                 else {
                     for (var i = 0; i < historyArray[type_id].length; i++) {
-                        console.log('element.subtype: ', element.subtype);
-                        console.log('historyArray.subtype: ', historyArray[type_id][i].subtype)
+                        //console.log('element.subtype: ', element.subtype);
+                        //console.log('historyArray.subtype: ', historyArray[type_id][i].subtype)
                         if (element.subtype[0] === historyArray[type_id][i].subtype[0]) {
                             match = historyArray[type_id][i];
                             break;
@@ -112,17 +112,20 @@ angular.module('chemiatriaApp')
     this.update = function(studyArray, currentQResult) {
         var index = currentQResult.indexInStudyArray;
         console.log('study array item before update: ', studyArray[index]);
+        console.log('currentQResult.answersGiven: ', currentQResult.answersGiven);
         //console.log('update lastStudied?', Date.now(), studyArray[index].lastStudied);
     	studyArray[index].lastStudied = Date.now();
     	var tries = currentQResult.answersGiven.length;
-        console.log('lastStudied updated? ', studyArray[index]);
+        //console.log('lastStudied updated? ', studyArray[index]);
     	studyArray[index].accuracyArray.push(tries - 1);
-        console.log('accuracyArray after update: ', studyArray[index].accuracyArray);
+        console.log('rtArray before update: ', studyArray[index].rtArray);
     	var qTimeArray = [];
     	for (var i = 0; i < currentQResult.answersGiven.length; i++) {
     		qTimeArray.push(currentQResult.answersGiven[i].timeToReply);
     	}
+        console.log('qTimeArray: ', qTimeArray);
     	studyArray[index].rtArray.push(qTimeArray);
+        console.log('rtArray after update: ', studyArray[index].rtArray);
     	switch (studyArray[index].priorityCalcAlgorithm) {
     		case 'PL': 
     			studyArray[index] = PLPriorityService.update(studyArray[index]);

@@ -54,10 +54,20 @@
 		</div>
 	</nav>
 
+	<div>
 	@yield('content')
+	</div>
+
+	<div class="footer">
+      <div class="container">
+        <p><span class="glyphicon glyphicon-heart"></span> Chemiatria, by Emily V Eames, is provided 
+        	free and open source, under a Creative Commons Attribution Noncommercial license.</p>
+      </div>
+    </div>
 
 	<!-- Scripts -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	
 </body>
 </html>

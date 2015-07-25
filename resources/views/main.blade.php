@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="container" ng-controller="MainCtrl as ctrl">
+<div class="container no-js" ng-app="chemiatriaApp" ng-controller="MainCtrl as ctrl">
   <h1>Chemiatria: Learn Chemistry</h1>
   <div ng-hide="session"><p>Welcome to Chemiatria! The initial page load can be a little slow, 
     please be patient. Once everything loads, you won't have to wait.</p>
@@ -103,5 +103,6 @@
   <button class="btn" ng-click="imFrustrated()">I'm frustrated</button>
   <button class="btn" ng-click="reportBug(false)">Report a bug</button>
   <button class="btn" ng-click="endSession()">End Session</button>
+</div>
 </div>
 @endsection
