@@ -77,6 +77,7 @@ angular.module('chemiatriaApp')
     	
     	thisItem.stage = newStage;
     	thisItem.priority = newPriority;
+        console.log('compare priorities: ', newPriority, thisItem.priority);
         console.log('after update: ', thisItem);
     	return thisItem;
     };

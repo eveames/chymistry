@@ -29,7 +29,7 @@ angular.module('chemiatriaApp')
     	//for now, just move bins based on right/wrong
     	//later, dynamically adjust bin sizes using response time?
     	var thisItem = studyArrayItem;
-        console.log('study array item: ',thisItem);
+        //console.log('study array item: ',thisItem);
     	var timesStudied = thisItem.accuracyArray.length;
     	var correct = thisItem.accuracyArray[timesStudied - 1];
     	var stage = Number(thisItem.stage);

@@ -18,14 +18,14 @@ class CreateStatesTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedInteger('type_id');
             $table->foreign('type_id')->references('id')->on('types');
-            $table->string('subtype', 50);
+            $table->json('subtype');
             $table->string('qID', 100);
             $table->unsignedInteger('word_id')->nullable();
             $table->foreign('word_id')->references('id')->on('words');
-            $table->unsignedInteger('lastStudied');
+            $table->bigInteger('lastStudied')->unsigned();
             $table->json('accuracyArray');
             $table->json('rtArray');
-            $table->unsignedInteger('priority');
+            $table->bigInteger('priority')->unsigned();
             $table->string('stage', 20);
             $table->timestamps();
         });

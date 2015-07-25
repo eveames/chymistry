@@ -48,13 +48,13 @@ class StudentDataController extends Controller
 
     public function updateState(Request $request, $id) {
         //updates states table
-        $update = $request->all();
+        //$update = $request->all();
         $state = Auth::user()->states()->find($id);
-        $state->lastStudied = $update->lastStudied;
-        $state->accuracyArray = $update->accuracyArray;
-        $state->rtArray = $update->rtArray;
-        $state->stage = $update->stage;
-        $state->priority = $update->priority;
+        $state->lastStudied = $request->lastStudied;
+        $state->accuracyArray = json_encode($request->accuracyArray);
+        $state->rtArray = json_encode($request->rtArray);
+        $state->stage = $request->stage;
+        $state->priority = $request->priority;
 
         $state->save();
         
@@ -65,8 +65,14 @@ class StudentDataController extends Controller
     public function newState(Request $request) {
         //add to states table
         try {
+            $index = $request->indexInStudyArray;
+            
             $state = new State($request->all());
+            $state->accuracyArray = json_encode($state->accuracyArray);
+            $state->rtArray = json_encode($state->rtArray);
+            $state->subtype = json_encode($state->subtype);
             Auth::user()->states()->save($state);
+            return [$state->id, $index];
         }
         catch(Exception $e) {
             $errorMessage = 'Caught exception: ' . $e->getMessage();

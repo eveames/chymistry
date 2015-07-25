@@ -45,12 +45,13 @@ angular.module('chemiatriaApp')
     	//var nextQ;
     	var readiest;
     	var readiestUnready;
+        console.log('in selectNextQuestion, ', studyArray);
     	for (var i = 0; i < studyArray.length; i++) {
     		if (studyArray[i].priority === 1) {
     			if (readiest) {return readiest;} 
     			else {return studyArray[i];}
     		}
-    		else if (studyArray[i] <= currentTime) {
+    		else if (studyArray[i].priority <= currentTime) {
     			if (readiest) {
     				if (readiest.priority > studyArray[i].priority) {
     				readiest = studyArray[i];
@@ -137,6 +138,7 @@ angular.module('chemiatriaApp')
     	if (moveOn) {
     		sessionHistory.push(currentQResult);
     		studyArray = StudyArrayService.update(studyArray, currentQResult);
+            console.log('in SessionManagerService after update:', studyArray);
     	}
 
     	qSinceProgressReport++;

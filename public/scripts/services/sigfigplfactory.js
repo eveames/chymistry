@@ -63,14 +63,14 @@ angular.module('chemiatriaApp')
             break;
           case 'decimalPlace':
             number = String(RandomFactory.getRandomDigit(10, 1));
-            console.log(number);
+            //console.log(number);
             firstDigits = RandomFactory.getRandomString(RandomFactory.getRandomDigit(3, 1), 3);
             number += String(firstDigits);
             number += '.';
-            console.log(number);
+            //console.log(number);
             afterDigits = RandomFactory.getRandomString(RandomFactory.getRandomDigit(3, 1), 3);
             number += String(afterDigits);
-            console.log(number);
+            //console.log(number);
             qToReturn.qAnswer = firstDigits.length + 1 + afterDigits.length;
             qToReturn.subtype = 'decimalPlace';
             qToReturn.qText = 'How many significant figures does ' + number + ' have?';
@@ -99,7 +99,7 @@ angular.module('chemiatriaApp')
             middleDigits = RandomFactory.getRandomString(RandomFactory.getRandomDigit(3, 0), 3);
             number += String(middleDigits);
             number += String(RandomFactory.getRandomDigit(10, 1));
-            numZeros = RandomFactory.getRandomDigit(3, 0);
+            numZeros = RandomFactory.getRandomDigit(3, 1);
             zeros = zeroString.slice(0, numZeros);
             number += zeros;
             qToReturn.qAnswer = number.length;

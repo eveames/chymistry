@@ -12,7 +12,7 @@ class StatesTableSeeder extends Seeder
     public function run()
     {
         //
-        $statesList = [["user_id" => 2, "type_id" => 1, "subtype" => 'noDecimalPlace', 
+        $statesList = [["user_id" => 2, "type_id" => 1, "subtype" => ['noDecimalPlace'], 
         'qID' => '', 'word_id' => null, 'lastStudied' => 1437757698094, 'accuracyArray' =>
         [1,0,1], 'rtArray' => [294, 140, 500], 'priority' => 1437757798094, 'stage' => 'discover'],
         ["user_id" => 2, "type_id" => 2, "subtype" => ['wordRecall'], 
