@@ -59,12 +59,13 @@
 	@yield('content')
 	</div>
 
-	<div class="footer">
+	<footer class="footer navbar-fixed-bottom">
       <div class="container">
         <p><span class="glyphicon glyphicon-heart"></span> Chemiatria, by Emily V Eames, is provided 
-        	free and open source, under a Creative Commons Attribution Noncommercial license.</p>
+        	free and open source, under a Creative Commons Attribution Noncommercial license. 
+        	The code is available on <a href="http://github.com/eveames/chymistry">Github</a> with an MIT license.</p>
       </div>
-    </div>
+    </footer>
 
 	<!-- Scripts : may need to add bower components here? and others? for now hope elixir does it-->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
