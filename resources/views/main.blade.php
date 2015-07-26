@@ -3,8 +3,7 @@
 @section('content')
 
 <div class="container no-js" ng-app="chemiatriaApp" ng-controller="MainCtrl as ctrl">
-  <h1>Chemiatria: Learn Chemistry</h1>
-  <div ng-hide="session"><p>Welcome to Chemiatria! The initial page load can be a little slow, 
+  <div ng-hide="session"><h4>Welcome to Chemiatria!</h4><p> The initial page load can be a little slow, 
     please be patient. Once everything loads, you won't have to wait.</p>
     <p>While you wait, please note that I may sometimes use slightly different settings 
       to compare which seem to work better (like, changing how long between seeing a particular
@@ -15,7 +14,6 @@
     <p>Right now, things will work best if you stay connected to the web the whole time, so your 
       progress is saved. Reload the page when you want to start a new session to make sure you get all 
       the available questions and start up where you left off.</p>
-    <p>You can also review the site use instructions while things load.</p>
   </div>
   <div ng-show="session">
     <p>How to use the site: Don't look up answers if you don't know them, this will confuse the algorithm. 
@@ -23,10 +21,9 @@
     Use the "bug report" or "I'm frustrated" buttons and tell me all about it!<p>
   </div>
 
-  <div ng-hide="session">
+  <div ng-hide="session" class="alert" role="alert" ng-class="dataLoaded">
     <span>Question data loaded? <span ng-bind="questionsNotLoaded"></span><br>
       Study history loaded? <span ng-bind="historyNotLoaded"></span></span>
-      <br><br>
   </div>
 
 
@@ -55,8 +52,8 @@
       </div>
 
       <div ng-cloak ng-hide="noQuestion">
-        <div class="panel panel-default"><div class="panel-body">@{{currentQ.instructions}}</div></div><br>
-        <div class="alert" role="alert">@{{answerDetail.messageSent}}</div><br>
+        <div class="panel panel-default" ng-show="currentQ.instructions"><div class="panel-body">@{{currentQ.instructions}}</div></div><br>
+        <div class="alert" role="alert" ng-show="answerDetail.messageSent" ng-class="responseType">@{{answerDetail.messageSent}}</div><br>
         <div>@{{currentQ.qText}}</div>
         <form role="form" ng-submit="handleAnswer()">
           <div class="form-group">

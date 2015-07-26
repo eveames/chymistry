@@ -20,15 +20,27 @@ angular.module('chemiatriaApp')
     $scope.stats = {};
     $scope.frustrationDescription = '';
     $scope.bugDescription = '';
+    $scope.responseType = 'alert-success';
+    $scope.dataLoaded = 'alert-warning';
+
+    //is this slowing it down? maybe use one-time data binding?
     $scope.questionsNotLoaded = 'Not yet';
     VocabListService.setup().then(function(d) {
         $scope.questionsNotLoaded = d;
+        if ($scope.historyNotLoaded === 'Loaded') {
+            $scope.dataLoaded = 'alert-success';
+        }
     });
     $scope.historyLoaded = 'Not yet';
     StudyArrayService.setup().then(function(d) {
         $scope.historyNotLoaded = d;
+        if ($scope.questionsNotLoaded === 'Loaded') {
+            $scope.dataLoaded = 'alert-success';
+        }
     });
+
     $scope.topicsList = TopicsService.getTopicsList();
+    
     $scope.topicsSelected = [];
     $scope.currentQ = {};
     $scope.answer = '';
