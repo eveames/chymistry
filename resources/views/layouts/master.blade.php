@@ -59,7 +59,7 @@
 	</div>
 
 	<footer class="footer navbar-fixed-bottom">
-      <div class="container">
+      <div class="container-fluid">
         <p><span class="glyphicon glyphicon-heart"></span> Chemiatria, by Emily V Eames, is provided 
         	free and open source, under a Creative Commons Attribution Noncommercial license. 
         	The code is available on <a href="http://github.com/eveames/chymistry">Github</a> with an MIT license.</p>
@@ -69,6 +69,6 @@
 	<!-- Scripts -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/js/bootstrap.min.js"></script>
-	
+
 </body>
 </html>

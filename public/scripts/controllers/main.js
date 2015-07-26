@@ -15,6 +15,8 @@ angular.module('chemiatriaApp')
     $scope.isFrustrated = false;
     $scope.bugToReport = false;
     $scope.showResponseToFeedback = false;
+    $scope.showHint = false;
+    $scope.currentHint = 0;
     $scope.username = '';
     $scope.showStats = false;
     $scope.stats = {};
@@ -66,6 +68,8 @@ angular.module('chemiatriaApp')
 
     //
     $scope.handleAnswer = function() {
+        $scope.showHint = false;
+        $scope.currentHint = 0;
     	var responseObj = SessionManagerService.respondToResponse($scope.answer);
     	$scope.answerDetail = responseObj.answerDetail;
     	SessionLog.addEvent({type: 'answer given', detail: $scope.answerDetail});
@@ -105,6 +109,18 @@ angular.module('chemiatriaApp')
     	$scope.topicsList = TopicsService.topicsList;
 
     };
+
+    $scope.giveHint = function() {
+        if ($scope.showHint) {
+            if ($scope.currentQ.qHint.length - 1 > $scope.currentHint) $scope.currentHint++;
+        }
+        else {
+            $scope.showHint = true;
+        }
+        var eventObj = {type: 'hint given', detail: 
+        {hint: $scope.currentQ.qHint[$scope.currentHint], qID: $scope.currentQ.qID}};
+        SessionLog.addEvent(eventObj);
+    }
     $scope.describeFrustration = function() {
     	//save description into log
     	var eventObj = {type: 'frustrated'};

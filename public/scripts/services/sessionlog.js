@@ -28,14 +28,38 @@ angular.module('chemiatriaApp')
     };
     this.addEvent = function(eventObj) {
     	eventObj.time = Date.now();
-    	log.history.push(eventObj);
         var action = {};
         action.type = eventObj.type;
-        action.detail = JSON.stringify(eventObj.detail);
-        action.whichButton = eventObj.whichButton;
-        action.description = eventObj.description;
+        console.log('eventObj.detail: ', eventObj.detail);
+        //case: question posted or answer given
+        if (eventObj.detail) {
+            if (eventObj.type === 'answer given') {
+                action.detail = eventObj.detail.messageSent;
+                action.description = eventObj.detail.answer;
+
+                action.qID = eventObj.detail.qID;
+                action.answerType = eventObj.detail.correct;
+            }
+            else if (eventObj.type === 'question posted') {
+                //should this be qPrompt or qText?
+                console.log('qID: ', eventObj.detail.qID);
+                action.description = eventObj.detail.qText + eventObj.detail.qPrompt;
+                action.qID = eventObj.detail.qID;
+                console.log('action.qID: ', action.qID);
+            }
+            else if (eventObj.type === 'hint given') {
+                action.description = eventObj.detail.hint;
+                action.qID = eventObj.detail.qID;
+            }
+            else console.log('error making action object');
+        }
+        else {
+            action.whichButton = eventObj.whichButton;
+            action.description = eventObj.description;
+        }
         action.time = eventObj.time;
         postToDB(action);
+        log.history.push(action);
     	return log.history.length;
     };
     this.closeSession = function() {
@@ -50,8 +74,8 @@ angular.module('chemiatriaApp')
     var postToDB = function(action) {
         // make http post call w/ data
         $http.post('api/student/actions', action).then(function(d) {
-            if (d.data) {
-                console.log(d.data);
+            if (true) {
+                console.log('action data returned: ', d.data);
                 log.username = d.data;
                 //console.log('updated w/ states_id: ', studyArray[index], 'index should be ', d.data[1]);
             }

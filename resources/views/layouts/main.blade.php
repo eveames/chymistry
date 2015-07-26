@@ -60,7 +60,7 @@
 	</div>
 
 	<footer class="footer navbar-fixed-bottom">
-      <div class="container">
+      <div class="container-fluid">
         <p><span class="glyphicon glyphicon-heart"></span> Chemiatria, by Emily V Eames, is provided 
         	free and open source, under a Creative Commons Attribution Noncommercial license. 
         	The code is available on <a href="http://github.com/eveames/chymistry">Github</a> with an MIT license.</p>

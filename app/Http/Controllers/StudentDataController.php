@@ -90,7 +90,7 @@ class StudentDataController extends Controller
         try {
             $action = new Action($request->all());
             Auth::user()->actions()->save($action);
-            return Auth::user()->name;
+            return [$request->qID, $action->type];
         }
         catch(Exception $e) {
             $errorMessage = 'Caught exception: ' . $e->getMessage();

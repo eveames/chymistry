@@ -17,9 +17,11 @@ class CreateActionsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('type', 25);
-            $table->json('detail')->nullable();
+            $table->text('detail')->nullable();
             $table->string('whichButton', 30)->nullable();
             $table->text('description')->nullable();
+            $table->string('qID', 100)->nullable();
+            $table->string('answerType', 20)->nullable();
             $table->unsignedInteger('time');
             $table->timestamps();
         });

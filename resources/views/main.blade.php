@@ -52,8 +52,15 @@
       </div>
 
       <div ng-cloak ng-hide="noQuestion">
-        <div class="panel panel-default" ng-show="currentQ.instructions"><div class="panel-body">@{{currentQ.instructions}}</div></div><br>
-        <div class="alert" role="alert" ng-show="answerDetail.messageSent" ng-class="responseType">@{{answerDetail.messageSent}}</div><br>
+        <div class="panel panel-default" ng-show="currentQ.instructions">
+          <div class="panel-body">@{{currentQ.instructions}}</div>
+        </div><br>
+        <div class="alert" role="alert" ng-show="answerDetail.messageSent" ng-class="responseType">
+          @{{answerDetail.messageSent}}
+        </div><br>
+        <div class="panel panel-default" ng-show="showHint">
+          <div class="panel-body">@{{currentQ.qHint[currentHint]}}</div>
+        </div>
         <div>@{{currentQ.qText}}</div>
         <form role="form" ng-submit="handleAnswer()">
           <div class="form-group">
@@ -64,7 +71,7 @@
           </div>
         </form>
       </div>
-
+      <br><br>
       <div ng-cloak ng-show="showStats">
         @{{stats | json}}
       </div>
