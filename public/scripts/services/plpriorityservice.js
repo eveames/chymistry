@@ -25,7 +25,7 @@ angular.module('chemiatriaApp')
     	//for now, just move bins based on right/wrong
     	//later, dynamically adjust bin sizes using response time?
         var thisItem = studyArrayItem;
-        console.log('studyArrayItem: ', thisItem);
+        //console.log('studyArrayItem: ', thisItem);
     	var timesStudied = thisItem.accuracyArray.length;
     	var correct = thisItem.accuracyArray[timesStudied - 1];
     	var stage = thisItem.stage;
@@ -47,7 +47,7 @@ angular.module('chemiatriaApp')
     			metrics.averageRTLast10 < rtCriterionForReview) {
     			if (stage === 'master') {
     				newStage = 'review';
- 					console.log(thisItem.type + ' ' + thisItem.subtype + ' now mastered!');
+ 					//console.log(thisItem.type + ' ' + thisItem.subtype + ' now mastered!');
     			}
     		}
 
@@ -55,7 +55,7 @@ angular.module('chemiatriaApp')
     			metrics.accuracyLast10 <= accCriterionForMaster) {
     			if (stage === 'discover') {
     				newStage = 'master';
-    				console.log(thisItem.type + ' ' + thisItem.subtype + ' now discovered!');
+    				//console.log(thisItem.type + ' ' + thisItem.subtype + ' now discovered!');
     			}
     		}
     	}
@@ -77,8 +77,8 @@ angular.module('chemiatriaApp')
     	
     	thisItem.stage = newStage;
     	thisItem.priority = newPriority;
-        console.log('compare priorities: ', newPriority, thisItem.priority);
-        console.log('after update: ', thisItem);
+        //console.log('compare priorities: ', newPriority, thisItem.priority);
+        //console.log('after update: ', thisItem);
     	return thisItem;
     };
   }]);

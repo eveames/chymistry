@@ -30,7 +30,7 @@ angular.module('chemiatriaApp')
     	eventObj.time = Date.now();
         var action = {};
         action.type = eventObj.type;
-        console.log('eventObj.detail: ', eventObj.detail);
+        //console.log('eventObj.detail: ', eventObj.detail);
         //case: question posted or answer given
         if (eventObj.detail) {
             if (eventObj.type === 'answer given') {
@@ -45,7 +45,7 @@ angular.module('chemiatriaApp')
                 console.log('qID: ', eventObj.detail.qID);
                 action.description = eventObj.detail.qText + eventObj.detail.qPrompt;
                 action.qID = eventObj.detail.qID;
-                console.log('action.qID: ', action.qID);
+                //console.log('action.qID: ', action.qID);
             }
             else if (eventObj.type === 'hint given') {
                 action.description = eventObj.detail.hint;
@@ -75,7 +75,7 @@ angular.module('chemiatriaApp')
         // make http post call w/ data
         $http.post('api/student/actions', action).then(function(d) {
             if (true) {
-                console.log('action data returned: ', d.data);
+                //console.log('action data returned: ', d.data);
                 log.username = d.data;
                 //console.log('updated w/ states_id: ', studyArray[index], 'index should be ', d.data[1]);
             }

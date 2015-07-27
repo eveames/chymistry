@@ -17,7 +17,7 @@ angular.module('chemiatriaApp')
         qToReturn.qAnswerFormat = 'small-text-box';
         var number, middleDigits, numZeros, zeros, firstDigits, afterDigits;
         //console.log(qToReturn.factOrSkill);
-        console.log('getQuestion: ',subtype);
+        //console.log('getQuestion: ',subtype);
 
         qToReturn.checkMethod = function(correctAnswer, givenAnswer) {
           var answerDetailToReturn = {answer: givenAnswer};

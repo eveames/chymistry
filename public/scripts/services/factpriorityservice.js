@@ -46,14 +46,14 @@ angular.module('chemiatriaApp')
     	else {
     		newStage = stage -1;
     	}
-        console.log('newStage', newStage);
-        console.log('lastStudied: ', thisItem.lastStudied);
-        console.log('delay: ', stageArray[newStage]);
+        //console.log('newStage', newStage);
+        //console.log('lastStudied: ', thisItem.lastStudied);
+        //console.log('delay: ', stageArray[newStage]);
     	var newPriority = thisItem.lastStudied + stageArray[newStage];
     	thisItem.stage = newStage;
     	thisItem.priority = newPriority;
-        console.log('newPriority: ', newPriority);
-        console.log('after update: ', thisItem);
+        //console.log('newPriority: ', newPriority);
+        //console.log('after update: ', thisItem);
     	return thisItem;
     };
   });

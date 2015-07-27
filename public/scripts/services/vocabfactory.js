@@ -36,12 +36,12 @@ angular.module('chemiatriaApp')
         //for vocab, correctAnswer is an array containing prompt and alternates
         qToReturn.checkMethod = function(correctAnswer, givenAnswer) {
           var answerDetailToReturn = {answer: givenAnswer};
-          console.log('correct is: ', correctAnswer);
-          console.log('given is: ', givenAnswer);
+          //console.log('correct is: ', correctAnswer);
+          //console.log('given is: ', givenAnswer);
 
           //likely problem here
           var indexOfAnswer = correctAnswer.indexOf(givenAnswer);
-          console.log(indexOfAnswer);
+          //console.log(indexOfAnswer);
           answerDetailToReturn.correct = indexOfAnswer > -1;
           answerDetailToReturn.detail = {};
           if (indexOfAnswer > 0) {
@@ -50,7 +50,7 @@ angular.module('chemiatriaApp')
           if (givenAnswer === '0') {
             answerDetailToReturn.detail = {dontKnow: true};
           }
-          console.log(answerDetailToReturn.detail);
+          //console.log(answerDetailToReturn.detail);
           return answerDetailToReturn;
         };
 
@@ -60,11 +60,11 @@ angular.module('chemiatriaApp')
             qToReturn.qAnswerFormat = 'small-text-box';
             qToReturn.subtype = 'wordRecall';
             var answerArray = [word];
-            console.log('entry.alternates is:', entry.alternates);
+            //console.log('entry.alternates is:', entry.alternates);
 
             //statement below not working
             answerArray = answerArray.concat(entry.alternates);
-            console.log('answerArray:', answerArray);
+            //console.log('answerArray:', answerArray);
             qToReturn.qAnswer = answerArray;   
             var prompt = entry.prompts[flags[0] || 0];
             qToReturn.qPrompt = prompt;

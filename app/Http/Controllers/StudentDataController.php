@@ -26,8 +26,16 @@ class StudentDataController extends Controller
 
     public function getFullVocabList() {
     	//returns json object:  {{word: word, prompts: [], alternates: []}, {}, etc}
-    	$vocabList = Word::orderBy('type_id')->get();
-    	return $vocabList;
+    	try {
+            $vocabList = Word::orderBy('type_id')->with('alternates')->get();
+            Debugbar::info($vocabList);
+            return $vocabList;
+        }
+        catch (Exception $e) {
+            $errorMessage = 'Caught exception: ' . $e->getMessage();
+
+            return $errorMessage;
+        }
     }
 
     public function getTypesList() {

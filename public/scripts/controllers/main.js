@@ -22,6 +22,7 @@ angular.module('chemiatriaApp')
     $scope.stats = {};
     $scope.frustrationDescription = '';
     $scope.bugDescription = '';
+    $scope.questionsAnswered = 0;
     $scope.responseType = 'alert-success';
     $scope.dataLoaded = 'alert-warning';
     $scope.dataSaved = 'One moment please, while we confirm that your progress is saved';
@@ -54,6 +55,7 @@ angular.module('chemiatriaApp')
     	//console.log($scope.topicsList[0].selected, $scope.topicsList[1].selected);
     	$scope.session = true;
     	$scope.noQuestion = false;
+        $scope.showStats = false;
     	$scope.topicsSelected = $scope.topicsList.filter(function(entry) {
     		//if(entry.selected) {return entry;}
     		return entry.selected;
@@ -64,7 +66,7 @@ angular.module('chemiatriaApp')
     	//console.log($scope.username);
     	$scope.currentQ = SessionManagerService.openSession($scope.username, $scope.topicsSelected);
     	SessionLog.addEvent({type: 'question posted', detail: $scope.currentQ});
-    	console.log('in MainCtrl: ', $scope.currentQ);
+    	//console.log('in MainCtrl: ', $scope.currentQ);
     };
 
     //

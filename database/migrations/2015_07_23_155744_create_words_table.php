@@ -18,7 +18,6 @@ class CreateWordsTable extends Migration
             $table->unsignedInteger('type_id');
             $table->foreign('type_id')->references('id')->on('types');
             $table->json('prompts');
-            $table->json('alternates')->nullable();
             $table->timestamps();
         });
     }

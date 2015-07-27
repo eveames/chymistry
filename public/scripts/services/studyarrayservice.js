@@ -47,8 +47,8 @@ angular.module('chemiatriaApp')
     }
     
     this.initializeStudyArray = function(studyArray) {
-    	console.log(historyArray);
-        console.log(historyArray[2]);
+    	//console.log(historyArray);
+        //console.log(historyArray[2]);
         sessionStartTime = Date.now();
         var addFields = function(element, index) {
             //all this should be imported from db
@@ -107,14 +107,14 @@ angular.module('chemiatriaApp')
     		//console.log('studyArrayelement ', element);
     		return element;
     	};
-    	console.log('in initializeStudyArray');	
+    	//console.log('in initializeStudyArray');	
     	return studyArray.map(addFields);
     };
 
     this.update = function(studyArray, currentQResult) {
         var index = currentQResult.indexInStudyArray;
-        console.log('study array item before update: ', studyArray[index]);
-        console.log('currentQResult.answersGiven: ', currentQResult.answersGiven);
+        //console.log('study array item before update: ', studyArray[index]);
+        //console.log('currentQResult.answersGiven: ', currentQResult.answersGiven);
         //console.log('update lastStudied?', Date.now(), studyArray[index].lastStudied);
     	studyArray[index].lastStudied = Date.now();
     	var tries = currentQResult.answersGiven.length;
@@ -141,11 +141,11 @@ angular.module('chemiatriaApp')
         //send studyArray[index] to db
         var stateItem = studyArray[index];
         
-        console.log('checking subtype? ', studyArray[index]);
+        //console.log('checking subtype? ', studyArray[index]);
 
         //check if state exists
         var route = 'api/student/states/';
-        console.log('states_id? :', stateItem.states_id);
+        //console.log('states_id? :', stateItem.states_id);
         if (stateItem.states_id) {
             route += stateItem.states_id;
         }
@@ -153,9 +153,9 @@ angular.module('chemiatriaApp')
 
         $http.post(route, stateItem).then(function(d) {
             if (d.data) {
-                console.log(d.data);
+                //console.log(d.data);
                 studyArray[d.data[1]].states_id = Number(d.data[0]);
-                console.log('updated w/ states_id: ', studyArray[index], 'index should be ', d.data[1]);
+                //console.log('updated w/ states_id: ', studyArray[index], 'index should be ', d.data[1]);
                 
             }
         }, function(errResponse) {
@@ -170,7 +170,7 @@ angular.module('chemiatriaApp')
 
         $http.post('api/student/states', studiedToday).then(function(d) {
             if (d.data) {
-                console.log(d.data);
+                //console.log(d.data);
                 //studyArray[d.data[1]].states_id = Number(d.data[0]);
                 //console.log('updated w/ states_id: ', studyArray[index], 'index should be ', d.data[1]);
                 return d.data;

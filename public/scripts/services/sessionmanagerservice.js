@@ -46,7 +46,7 @@ angular.module('chemiatriaApp')
     	//var nextQ;
     	var readiest;
     	var readiestUnready;
-        console.log('in selectNextQuestion, ', studyArray);
+        //console.log('in selectNextQuestion, ', studyArray);
     	for (var i = 0; i < studyArray.length; i++) {
     		if (studyArray[i].priority === 1) {
     			if (readiest) {return readiest;} 
@@ -82,13 +82,13 @@ angular.module('chemiatriaApp')
 		topicsList = selectedTopics;
         sessionStartTime = Date.now();
 		studyArray = TopicsService.toStudyArray(selectedTopics);
-        console.log('selectedTopics[1]: ', selectedTopics[1]);
+        //console.log('selectedTopics[1]: ', selectedTopics[1]);
 		studyArray = StudyArrayService.initializeStudyArray(studyArray);
 		//set first question
-        console.log('studyArray: ', studyArray);
-        console.log('sample item: ', studyArray[1]);
+        //console.log('studyArray: ', studyArray);
+        //console.log('sample item: ', studyArray[1]);
 		currentQ = QuestionFactory.getQuestion(selectNextQuestion());
-		console.log("in openSession: ", currentQ);
+		//console.log("in openSession: ", currentQ);
 		setCurrentQ(currentQ);
 		return currentQ;
 
@@ -127,10 +127,10 @@ angular.module('chemiatriaApp')
     	var answerDetail = currentQ.checkMethod(currentQ.qAnswer, answer);
     	//console.log('answerDetail from checkMethod is: ',answerDetail);
     	answerDetail.timeStamp = Date.now();
-        console.log('answerDetail.timeStamp: ', answerDetail.timeStamp);
-        console.log('timeLastAction: ', timeLastAction);
+        //console.log('answerDetail.timeStamp: ', answerDetail.timeStamp);
+        //console.log('timeLastAction: ', timeLastAction);
     	answerDetail.timeToReply = answerDetail.timeStamp - timeLastAction;
-        console.log('timeToReply: ', answerDetail.timeToReply);
+        //console.log('timeToReply: ', answerDetail.timeToReply);
     	var correct = answerDetail.correct;
     	//console.log('correct is: ', correct);
     	var moveOn = false;

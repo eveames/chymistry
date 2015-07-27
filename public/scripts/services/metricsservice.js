@@ -14,6 +14,14 @@ angular.module('chemiatriaApp')
     var plusStart = function(start) {
             return function(a,b, c) {
                 if (c < start) {return 0;}
+                if (isNaN(a)) {
+                    console.log('NaN in rtArray');
+                    a = 0;
+                }
+                if (isNaN(b)) {
+                    console.log('NaN in rtArray');
+                    b = 0;
+                }
                 else {return a + b;}
             };
         };
@@ -52,7 +60,7 @@ angular.module('chemiatriaApp')
     };
 
     var getQuickMetrics = function(studyArrayItem) {
-        console.log(studyArrayItem);
+        //console.log(studyArrayItem);
         var accArray = studyArrayItem.accuracyArray;
         var rtArray = studyArrayItem.rtArray;
         var timesStudied = accArray.length;
@@ -62,13 +70,14 @@ angular.module('chemiatriaApp')
         //console.log('errors: ', accArray.reduce(plusStart(timesStudied - 10)));
         var chunkSize = Math.min(10, timesStudied);
         var accuracyLastChunk = 100 *(chunkSize - accArray.reduce(plusStart(timesStudied - 10)))/chunkSize;
+        accuracyLastChunk = Math.max(accuracyLastChunk, 0);
 
         //calculate average rt last 10
-        //console.log('rtArray: ', rtArray);
+        console.log('rtArray: ', rtArray);
         var lastRTArray = rtArray.reduce(function(a,b) {
             return a.concat(b.pop());
         });
-        //console.log('lastRTArray: ', lastRTArray);
+        console.log('lastRTArray: ', lastRTArray);
         //this gives the total time to right answer (adds rt for each response to one q)
         var rtLastChunk = (lastRTArray.reduce(plusStart(timesStudied - 10)))/(1000 * chunkSize);
 

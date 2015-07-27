@@ -87,7 +87,7 @@
           <tr class="" ng-repeat="topic in stats"> 
             <td>@{{topic.label}}</td>
             <td>@{{topic.score | number: 0}}</td>
-            <td>@{{topic.time | number: 0}}</td>
+            <td>@{{topic.time | number: 1}}</td>
             <td>@{{topic.comment}}</td>
           </tr>
         </table>
