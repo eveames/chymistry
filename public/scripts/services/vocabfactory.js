@@ -37,20 +37,23 @@ angular.module('chemiatriaApp')
 
         //for vocab, correctAnswer is an array containing prompt and certain alternates
         qToReturn.checkMethod = function(correctAnswer, givenAnswer) {
-          var answerDetailToReturn = {answer: givenAnswer, messageSent: ''};
-          //console.log('correct is: ', correctAnswer);
+          var answerDetailToReturn = {answer: givenAnswer, messageSent: '', correct: ''};
+          console.log('correct is: ', correctAnswer);
+          console.log('correct length: ', correctAnswer.length);
           //console.log('given is: ', givenAnswer);
 
           //set correct (correct/close/knownWrong/unknownWrong/noAnswer/formatError/dontKnow)
           //check for no answer
           if (!givenAnswer) {
             answerDetailToReturn.correct = 'noAnswer';
+            answerDetailToReturn.messageSent = 'If you don\'t know the answer to a vocab question, enter zero. ';
           }
           else if (givenAnswer == 0) {
             answerDetailToReturn.correct = 'dontKnow';
           }
           else {
             for (var i = 0; i < correctAnswer.length ; i++){
+              console.log('i is ', i);
               if (givenAnswer === correctAnswer[i].alt) {
                 answerDetailToReturn.correct = correctAnswer[i].correct;
                 if (correctAnswer[i].message) answerDetailToReturn.messageSent = correctAnswer[i].message + ' ';
@@ -64,8 +67,9 @@ angular.module('chemiatriaApp')
                 } 
               }
             }
-            if (!correctAnswer[i].correct) {
-              correctAnswer[i].correct = 'unknownWrong';
+            if (!answerDetailToReturn.correct) {
+              answerDetailToReturn.correct = 'unknownWrong';
+              answerDetailToReturn.messageSent = 'I don\'t recognize your answer. Spell carefully! ';
             }
           }
 
@@ -110,8 +114,8 @@ angular.module('chemiatriaApp')
             qToReturn.qAnswer = [0];
         }
 
-        qToReturn.responseToWrong = ['Try again! Spell carefully.', 
-        'Answer to ' + qToReturn.qPrompt + ' is ' + qToReturn.qAnswer[0] + '. We\'ll come back to it.'];
+        qToReturn.responseToWrong = ['Try again: ', 
+        'Answer to "' + qToReturn.qPrompt + '" is "' + qToReturn.qAnswer[0] + '." We\'ll come back to it.'];
 
       return qToReturn;
       }
