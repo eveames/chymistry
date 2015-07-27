@@ -26,6 +26,13 @@
       Study history loaded? <span ng-bind="historyNotLoaded"></span></span>
   </div>
 
+  <div ng-cloak ng-show="!session && !noQuestion" class="form-group">
+    <form>
+      <p>@{{dataSaved}}</p>
+      <button class="btn btn-block btn-warning" ng-click="resendProgress()">Resend Progress</button>
+    </form>
+  </div> 
+
 
   <div ng-cloak ng-hide="session">
     <form ng-submit="startSession()" name="sessionStartForm">
@@ -73,8 +80,19 @@
       </div>
       <br><br>
       <div ng-cloak ng-show="showStats">
-        @{{stats | json}}
+        <h4>Here's a summary of your progress.</h4>
+        <p>You studied @{{questionsAnswered}} questions in this session.</p>
+        <table ng-model="stats" class="table table-bordered table-compact table-hover">
+          <tr><th>Question</th><th>Score (%)</th><th>Average response time (s)</th><th>Status</th></tr>
+          <tr class="" ng-repeat="topic in stats"> 
+            <td>@{{topic.label}}</td>
+            <td>@{{topic.score | number: 0}}</td>
+            <td>@{{topic.time | number: 0}}</td>
+            <td>@{{topic.comment}}</td>
+          </tr>
+        </table>
       </div>
+      <br><br>
     </div>
 
     <div class="col-md-4">

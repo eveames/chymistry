@@ -24,6 +24,7 @@ angular.module('chemiatriaApp')
     $scope.bugDescription = '';
     $scope.responseType = 'alert-success';
     $scope.dataLoaded = 'alert-warning';
+    $scope.dataSaved = 'One moment please, while we confirm that your progress is saved';
 
     //is this slowing it down? maybe use one-time data binding?
     $scope.questionsNotLoaded = 'Not yet';
@@ -91,24 +92,34 @@ angular.module('chemiatriaApp')
     	SessionLog.addEvent(eventObj);
     };
     $scope.endSession = function() {
-    	//confirm intent
+    	//confirm intent?
 
+        SessionLog.closeSession();
     	
     	//display stats
-    	$scope.session = true;
+    	$scope.session = false;
     	$scope.showResponseToFeedback = false;
     	$scope.noQuestion = true;
     	$scope.isFrustrated = false;
     	$scope.bugToReport = false;
-    	$scope.stats = SessionLog.closeSession();
-    	$scope.showStats = true;
+    	
 
+        //update all states on db, just in case
+        var closeObj = SessionManagerService.closeSession();
+        $scope.dataSaved = closeObj.saved;
+        $scope.stats = closeObj.stats;
+        $scope.questionsAnswered = closeObj.questionsAnswered;
+        $scope.showStats = true;
 
     	//something smart with the session log
     	$scope.session = false;
-    	$scope.topicsList = TopicsService.topicsList;
+    	$scope.topicsList = TopicsService.getTopicsList();
 
     };
+
+    $scope.resendProgress = function() {
+        $scope.dataSaved = SessionManagerService.closeSession();
+    }
 
     $scope.giveHint = function() {
         if ($scope.showHint) {

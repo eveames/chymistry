@@ -13,6 +13,7 @@ angular.module('chemiatriaApp')
   	function (PLPriorityService, FactPriorityService, $http) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     var historyArray = {};
+    var sessionStartTime;
 
     this.setup = function() {
         // needs to be updated and tested
@@ -48,6 +49,7 @@ angular.module('chemiatriaApp')
     this.initializeStudyArray = function(studyArray) {
     	console.log(historyArray);
         console.log(historyArray[2]);
+        sessionStartTime = Date.now();
         var addFields = function(element, index) {
             //all this should be imported from db
 
@@ -138,18 +140,7 @@ angular.module('chemiatriaApp')
     	}
         //send studyArray[index] to db
         var stateItem = studyArray[index];
-        /*stateItem.accuracyArray = JSON.stringify(stateItem.accuracyArray);
-        stateItem.rtArray = JSON.stringify(stateItem.rtArray);
-        console.log('subtype before stringify: ', studyArray[index]);
-        if (stateItem.priorityCalcAlgorithm !== 'fact') {
-            if (typeof(stateItem.subtype) !== 'string') {
-                console.log('subtype beginning if: ', studyArray[index]);
-                stateItem.subtype = stateItem.subtype[0];
-                console.log('subtype end if: ', studyArray[index]);
-            }
-        }
-        stateItem.subtype = JSON.stringify(stateItem.subtype);
-        */
+        
         console.log('checking subtype? ', studyArray[index]);
 
         //check if state exists
@@ -165,27 +156,28 @@ angular.module('chemiatriaApp')
                 console.log(d.data);
                 studyArray[d.data[1]].states_id = Number(d.data[0]);
                 console.log('updated w/ states_id: ', studyArray[index], 'index should be ', d.data[1]);
-                //reverse the changes to restore study array item to original state
-                /*stateItem.accuracyArray = JSON.parse(stateItem.accuracyArray);
-                stateItem.rtArray = JSON.parse(stateItem.rtArray);
-                stateItem.subtype = JSON.parse(stateItem.subtype);
-                console.log('subtype before parse: ', studyArray[index]);
-                if (stateItem.priorityCalcAlgorithm !== 'fact') {
-                    if (typeof(stateItem.subtype) === 'string') {
-                        console.log('reverse beginning if: ', studyArray[index]);
-                        stateItem.subtype = [stateItem.subtype];
-                        console.log('reverse end if: ', studyArray[index]);
-                    }
-                }*/
+                
             }
         }, function(errResponse) {
             console.error(errResponse.data);
         });
         
-        
-        
-
     	return studyArray;
     };
+
+    this.updateAllOnDB = function(studiedToday) {
+        //adjust this method so it only sends questions that were studied in this session
+
+        $http.post('api/student/states', studiedToday).then(function(d) {
+            if (d.data) {
+                console.log(d.data);
+                //studyArray[d.data[1]].states_id = Number(d.data[0]);
+                //console.log('updated w/ states_id: ', studyArray[index], 'index should be ', d.data[1]);
+                return d.data;
+            }
+        }, function(errResponse) {
+            console.error(errResponse.data);
+        });
+    }
 
   }]);

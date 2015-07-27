@@ -10,8 +10,8 @@
 angular.module('chemiatriaApp')
 	//insert complete list of available question generator factories
 	//may want to redesign as provider?
-  .service('SessionManagerService', ['QuestionFactory', 'TopicsService', 'StudyArrayService',
-  	function (QuestionFactory, TopicsService, StudyArrayService) {
+  .service('SessionManagerService', ['QuestionFactory', 'TopicsService', 'StudyArrayService', 'MetricsService',
+  	function (QuestionFactory, TopicsService, StudyArrayService, MetricsService) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     var currentQ = {};
     var currentQResult = {};
@@ -23,6 +23,7 @@ angular.module('chemiatriaApp')
     var qSinceProgressReport = 0;
     var topicsList = [];
     var studyArray = [];
+    var sessionStartTime;
 
     var setCurrentQ = function(currentQ) {
     	currentQResult = {};
@@ -79,6 +80,7 @@ angular.module('chemiatriaApp')
 
 		//initialize variables if needed 
 		topicsList = selectedTopics;
+        sessionStartTime = Date.now();
 		studyArray = TopicsService.toStudyArray(selectedTopics);
         console.log('selectedTopics[1]: ', selectedTopics[1]);
 		studyArray = StudyArrayService.initializeStudyArray(studyArray);
@@ -90,6 +92,20 @@ angular.module('chemiatriaApp')
 		setCurrentQ(currentQ);
 		return currentQ;
 
+    };
+
+    this.closeSession = function() {
+        var studiedThisSession = function(studyArrayItem) {
+            return (studyArrayItem.lastStudied > sessionStartTime);
+        };
+
+        var studiedToday = studyArray.filter(studiedThisSession);
+        console.log(studiedToday);
+
+        var saved = StudyArrayService.updateAllOnDB(studiedToday);
+        var questionsAnswered = sessionHistory.length;
+        var stats = MetricsService.getSessionMetrics(studiedToday);
+        return {saved: saved, questionsAnswered: questionsAnswered, stats: stats};
     };
 
     //used to change current question in main.js

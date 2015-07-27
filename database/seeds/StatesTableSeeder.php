@@ -14,10 +14,10 @@ class StatesTableSeeder extends Seeder
         //
         $statesList = [["user_id" => 2, "type_id" => 1, "subtype" => ['noDecimalPlace'], 
         'qID' => '', 'word_id' => null, 'lastStudied' => 1437757698094, 'accuracyArray' =>
-        [1,0,1], 'rtArray' => [294, 140, 500], 'priority' => 1437757798094, 'stage' => 'discover'],
+        [1,0,1], 'rtArray' => [[294], [140], [500]], 'priority' => 1437757798094, 'stage' => 'discover'],
         ["user_id" => 2, "type_id" => 2, "subtype" => ['wordRecall'], 
         'qID' => 'VocabBasic-all-matter-1-4', 'word_id' => 1, 'lastStudied' => 1437757699094, 'accuracyArray' =>
-        [1,0], 'rtArray' => [294, 500], 'priority' => 1437757799094, 'stage' => 5]];
+        [1,0], 'rtArray' => [[294], [500]], 'priority' => 1437757799094, 'stage' => 5]];
 
       	for ($i = 0 ; $i < count($statesList) ; ++$i) {
       		
