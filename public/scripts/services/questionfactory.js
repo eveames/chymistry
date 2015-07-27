@@ -25,7 +25,7 @@ angular.module('chemiatriaApp')
         var qToReturn = {};
         var type = studyArrayItem.type;
         var factory = studyArrayItem.factory;
-        console.log(studyArrayItem);
+        //console.log(studyArrayItem);
         //console.log("factory is: ", factory);
         var type_id = studyArrayItem.type_id;
         //console.log(type);
@@ -55,7 +55,7 @@ angular.module('chemiatriaApp')
               }
             };
             var flags = choosePrompt(numPrompts, stage);
-            qToReturn = VocabFactory.getQuestion(type_id, subtype, idArray, flags);
+            qToReturn = VocabFactory.getQuestion(type_id, type, subtype, idArray, flags);
             //console.log('in QuestionFactory');
             break;
           default:

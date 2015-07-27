@@ -20,16 +20,20 @@ angular.module('chemiatriaApp')
         //console.log('getQuestion: ',subtype);
 
         qToReturn.checkMethod = function(correctAnswer, givenAnswer) {
-          var answerDetailToReturn = {answer: givenAnswer};
-          answerDetailToReturn.correct = Number(givenAnswer) === correctAnswer;
-          answerDetailToReturn.detail = {};
-          if (!answerDetailToReturn.correct) {
-            if (givenAnswer.isNaN) {
-              answerDetailToReturn.detail.formatError = 'Answer should be a number';
+            var answerDetailToReturn = {answer: givenAnswer, messageSent: ''};
+            if (Number(givenAnswer) === correctAnswer) {
+                answerDetailToReturn.correct = 'correct';
             }
-            if (givenAnswer.match(/[.]/g)) {
-              answerDetailToReturn.detail.formatError = 'Answer should be an integer';
-            }     
+            //answerDetailToReturn.detail = {};
+            else if (!answerDetailToReturn.correct) {
+                if (givenAnswer.isNaN) {
+                    answerDetailToReturn.correct = 'formatError';
+                    answerDetailToReturn.messageSent = 'Answer should be a number. ';
+                }
+                else if (givenAnswer % 1 !== 0) {
+                    answerDetailToReturn.correct = 'formatError';
+                    answerDetailToReturn.messageSent = 'Answer should be an integer. ';
+                }     
           }
           return answerDetailToReturn;
         };

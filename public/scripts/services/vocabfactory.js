@@ -20,9 +20,11 @@ angular.module('chemiatriaApp')
 
     return {
       //returns an array of qID that includes fields starting at position 2 in qID (no type, subtype)
+      // use flags to control prompts
+      getQuestion : function(type_id, type, subtype, idArray, flags) {
+        //get type name from VocabListService
 
-      getQuestion : function(type_id, subtype, idArray, flags) {
-        var qToReturn = {type: 'VocabBasic', qHint: []};
+        var qToReturn = {type: type, qHint: ['Sorry, no hints for vocab yet. Enter 0 to see the answer and move on.']};
         qToReturn.factOrSkill = 'fact';
         qToReturn.instructions = 'If you don\'t know the answer, enter 0 (zero). ' +
             'The answer will be displayed, and you\'ll see it again soon. ' +
@@ -33,23 +35,40 @@ angular.module('chemiatriaApp')
         var entry = VocabListService.getEntry(type_id, idParseArray[3]);
         if (word !== entry.word) {console.log('index does not match word');}
 
-        //for vocab, correctAnswer is an array containing prompt and alternates
+        //for vocab, correctAnswer is an array containing prompt and certain alternates
         qToReturn.checkMethod = function(correctAnswer, givenAnswer) {
-          var answerDetailToReturn = {answer: givenAnswer};
+          var answerDetailToReturn = {answer: givenAnswer, messageSent: ''};
           //console.log('correct is: ', correctAnswer);
           //console.log('given is: ', givenAnswer);
 
-          //likely problem here
-          var indexOfAnswer = correctAnswer.indexOf(givenAnswer);
-          //console.log(indexOfAnswer);
-          answerDetailToReturn.correct = indexOfAnswer > -1;
-          answerDetailToReturn.detail = {};
-          if (indexOfAnswer > 0) {
-            answerDetailToReturn.detail = {indexOfAnswer: indexOfAnswer};
+          //set correct (correct/close/knownWrong/unknownWrong/noAnswer/formatError/dontKnow)
+          //check for no answer
+          if (!givenAnswer) {
+            answerDetailToReturn.correct = 'noAnswer';
           }
-          if (givenAnswer === '0') {
-            answerDetailToReturn.detail = {dontKnow: true};
+          else if (givenAnswer == 0) {
+            answerDetailToReturn.correct = 'dontKnow';
           }
+          else {
+            for (var i = 0; i < correctAnswer.length ; i++){
+              if (givenAnswer === correctAnswer[i].alt) {
+                answerDetailToReturn.correct = correctAnswer[i].correct;
+                if (correctAnswer[i].message) answerDetailToReturn.messageSent = correctAnswer[i].message + ' ';
+                break;
+              }
+              else if (givenAnswer.toLowerCase() === correctAnswer[i].alt.toLowerCase()) {
+                if (correctAnswer[i].correct === 'correct') {
+                  answerDetailToReturn.correct = 'formatError';
+                  answerDetailToReturn.messageSent = 'Almost there, please check your capitalization. ';
+                  break;
+                } 
+              }
+            }
+            if (!correctAnswer[i].correct) {
+              correctAnswer[i].correct = 'unknownWrong';
+            }
+          }
+
           //console.log(answerDetailToReturn.detail);
           return answerDetailToReturn;
         };
@@ -59,7 +78,7 @@ angular.module('chemiatriaApp')
           case 'wordRecall':
             qToReturn.qAnswerFormat = 'small-text-box';
             qToReturn.subtype = 'wordRecall';
-            var answerArray = [word];
+            var answerArray = [{alt: word, correct: 'correct'}];
             //console.log('entry.alternates is:', entry.alternates);
 
             //statement below not working

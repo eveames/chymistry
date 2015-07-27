@@ -25,7 +25,7 @@ angular.module('chemiatriaApp')
       	name: 'Basic Vocab', selected: true, sequenceByID: true, priorityCalcAlgorithm: 'fact'}];
     */
 
-    
+    var typeNamesList = []; 
 
     this.getTopicsList = function() {
         //console.log('in getTopicsList function');
@@ -48,7 +48,11 @@ angular.module('chemiatriaApp')
             console.error('Error while fetching topicsList');
         });
         return topicsList;
-    } 
+    }; 
+
+    this.getTopicName = function(type_id) {
+         
+    };
 
       	//subtypes of vocab coming soon: 'defineMultipleChoice', 'classifyExample', 
       //'classifyExampleMultipleChoice'

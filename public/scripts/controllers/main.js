@@ -75,6 +75,14 @@ angular.module('chemiatriaApp')
         $scope.currentHint = 0;
     	var responseObj = SessionManagerService.respondToResponse($scope.answer);
     	$scope.answerDetail = responseObj.answerDetail;
+        if ($scope.answerDetail.correct === 'correct') {
+            $scope.responseType = 'alert-success';
+        }
+        else if ($scope.answerDetail.correct === 'close' || $scope.answerDetail.correct === 'formatError' ||
+            $scope.answerDetail.correct === 'dontKnow') {
+            $scope.responseType = 'alert-warning';
+        }
+        else $scope.responseType = 'alert-danger';
     	SessionLog.addEvent({type: 'answer given', detail: $scope.answerDetail});
     	$scope.answer = '';
     	if (responseObj.moveOn) {

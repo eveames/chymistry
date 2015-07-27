@@ -135,20 +135,20 @@ angular.module('chemiatriaApp')
     	//console.log('correct is: ', correct);
     	var moveOn = false;
 
-    	if (correct) {
+    	if (correct === 'correct') {
     		currentQResult.gotIt = true;
-    		answerDetail.messageSent = 'Good job! Here\'s the next question:';
+    		answerDetail.messageSent += ' Good job! Here\'s the next question:';
     		//console.log(answerDetail.messageSent);
     		moveOn = true;
     	}
-    	else if (answerDetail.detail.dontKnow) {
+    	else if (correct === 'dontKnow') {
     		moveOn = true;
     		answerDetail.messageSent = currentQ.responseToWrong[1];
     	}
 
     	else {
     		var previousTries = currentQResult.answersGiven.length;
-    		answerDetail.messageSent = currentQ.responseToWrong[previousTries];
+    		answerDetail.messageSent += currentQ.responseToWrong[previousTries];
     		if (previousTries > 1) { moveOn = true;}
 
     	}
