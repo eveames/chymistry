@@ -27,8 +27,9 @@ angular.module('chemiatriaApp')
                 //console.log('object to parse: ', temp[key]);
                 //console.log(temp[i].accuracyArray);
                 temp[key].accuracyArray = JSON.parse(temp[key].accuracyArray);
-                //console.log(temp[i].rtArray);
+                
                 temp[key].rtArray = JSON.parse(temp[key].rtArray);
+                //console.log('in setup, temp rtArray: ', temp[key].rtArray);
                 //console.log(temp[i].subtype);
                 temp[key].subtype = JSON.parse(temp[key].subtype);
                 if (!historyArray[type_id]) historyArray[type_id] = [];
@@ -76,10 +77,11 @@ angular.module('chemiatriaApp')
                     }
                 }
                 if (Object.getOwnPropertyNames(match).length !== 0) {
-                    //console.log('match is: ', match);
+                    //console.log('match is: ', match.rtArray);
                     element.lastStudied = match.lastStudied;
                     element.accuracyArray = match.accuracyArray;
                     element.rtArray = match.rtArray;
+                    //console.log('initialize: rtArray is ', element.rtArray);
                     element.priority = match.priority;
                     element.states_id = match.id; 
                     element.stage = match.stage;
@@ -104,7 +106,7 @@ angular.module('chemiatriaApp')
                 }
             }
     		element.indexInStudyArray = index;
-    		//console.log('studyArrayelement ', element);
+    		//console.log('studyArrayelement to return: ', element);
     		return element;
     	};
     	//console.log('in initializeStudyArray');	
@@ -120,14 +122,15 @@ angular.module('chemiatriaApp')
     	var tries = currentQResult.answersGiven.length;
         //console.log('lastStudied updated? ', studyArray[index]);
     	studyArray[index].accuracyArray.push(tries - 1);
-        console.log('rtArray before update: ', studyArray[index].rtArray);
+        //console.log('rtArray before update: ', studyArray[index].rtArray);
     	var qTimeArray = [];
+        //console.log('currentQResult.answersGiven: ', currentQResult.answersGiven);
     	for (var i = 0; i < currentQResult.answersGiven.length; i++) {
     		qTimeArray.push(currentQResult.answersGiven[i].timeToReply);
     	}
-        console.log('qTimeArray: ', qTimeArray);
+        //console.log('qTimeArray: ', qTimeArray);
     	studyArray[index].rtArray.push(qTimeArray);
-        console.log('rtArray after update: ', studyArray[index].rtArray);
+        //console.log('rtArray after update: ', studyArray[index].rtArray);
     	switch (studyArray[index].priorityCalcAlgorithm) {
     		case 'PL': 
     			studyArray[index] = PLPriorityService.update(studyArray[index]);
@@ -141,7 +144,7 @@ angular.module('chemiatriaApp')
         //send studyArray[index] to db
         var stateItem = studyArray[index];
         
-        //console.log('checking subtype? ', studyArray[index]);
+        //console.log('in SAS after metrics ', studyArray[index].rtArray);
 
         //check if state exists
         var route = 'api/student/states/';
@@ -161,7 +164,7 @@ angular.module('chemiatriaApp')
         }, function(errResponse) {
             console.error(errResponse.data);
         });
-        
+        console.log('in SAS before return ', studyArray[index].rtArray);
     	return studyArray;
     };
 

@@ -38,8 +38,8 @@ angular.module('chemiatriaApp')
         //for vocab, correctAnswer is an array containing prompt and certain alternates
         qToReturn.checkMethod = function(correctAnswer, givenAnswer) {
           var answerDetailToReturn = {answer: givenAnswer, messageSent: '', correct: ''};
-          console.log('correct is: ', correctAnswer);
-          console.log('correct length: ', correctAnswer.length);
+          //console.log('correct is: ', correctAnswer);
+          //console.log('correct length: ', correctAnswer.length);
           //console.log('given is: ', givenAnswer);
 
           //set correct (correct/close/knownWrong/unknownWrong/noAnswer/formatError/dontKnow)
@@ -53,7 +53,7 @@ angular.module('chemiatriaApp')
           }
           else {
             for (var i = 0; i < correctAnswer.length ; i++){
-              console.log('i is ', i);
+              //console.log('i is ', i);
               if (givenAnswer === correctAnswer[i].alt) {
                 answerDetailToReturn.correct = correctAnswer[i].correct;
                 if (correctAnswer[i].message) answerDetailToReturn.messageSent = correctAnswer[i].message + ' ';
@@ -115,7 +115,7 @@ angular.module('chemiatriaApp')
         }
 
         qToReturn.responseToWrong = ['Try again: ', 
-        'Answer to "' + qToReturn.qPrompt + '" is "' + qToReturn.qAnswer[0] + '." We\'ll come back to it.'];
+        'Answer to "' + qToReturn.qPrompt + '" is "' + qToReturn.qAnswer[0].alt + '." We\'ll come back to it.'];
 
       return qToReturn;
       }

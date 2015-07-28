@@ -24,6 +24,8 @@ angular.module('chemiatriaApp')
     var topicsList = [];
     var studyArray = [];
     var sessionStartTime;
+    var studiedToday = [];
+    
 
     var setCurrentQ = function(currentQ) {
     	currentQResult = {};
@@ -39,6 +41,10 @@ angular.module('chemiatriaApp')
 		timeLastAction = timeQDisplayed;
 
     };
+
+    var studiedThisSession = function(studyArrayItem) {
+            return (studyArrayItem.lastStudied > sessionStartTime);
+        };
 
     var selectNextQuestion = function() {
     	//reduce studyArray to next value
@@ -76,31 +82,34 @@ angular.module('chemiatriaApp')
     //when does currentQ/currentQResult get reset??
 
     this.openSession = function(username, selectedTopics) {
-    	//get user history, someday
-
-		//initialize variables if needed 
-		topicsList = selectedTopics;
+    	//initialize variables if needed 
+        topicsList = selectedTopics;
         sessionStartTime = Date.now();
-		studyArray = TopicsService.toStudyArray(selectedTopics);
+        currentQ = {};
+        sessionHistory = [];
+        learningSpeed = 1; // integer or fraction
+        //var howFocused = 1; //integer or fraction
+        qSinceProgressReport = 0;
+        studiedToday = [];
+        
+        studyArray = TopicsService.toStudyArray(selectedTopics);
         //console.log('selectedTopics[1]: ', selectedTopics[1]);
-		studyArray = StudyArrayService.initializeStudyArray(studyArray);
-		//set first question
+        studyArray = StudyArrayService.initializeStudyArray(studyArray);
+        currentQ = QuestionFactory.getQuestion(selectNextQuestion());
+        //console.log("in openSession: ", studyArray);
+        setCurrentQ(currentQ);
+        //console.log('after setting question: ', studyArray[currentQ.indexInStudyArray]);
+        return currentQ;
+        
         //console.log('studyArray: ', studyArray);
         //console.log('sample item: ', studyArray[1]);
-		currentQ = QuestionFactory.getQuestion(selectNextQuestion());
-		//console.log("in openSession: ", currentQ);
-		setCurrentQ(currentQ);
-		return currentQ;
+		
 
     };
 
     this.closeSession = function() {
-        var studiedThisSession = function(studyArrayItem) {
-            return (studyArrayItem.lastStudied > sessionStartTime);
-        };
-
-        var studiedToday = studyArray.filter(studiedThisSession);
-        console.log(studiedToday);
+        studiedToday = studyArray.filter(studiedThisSession);
+        //console.log(studiedToday);
 
         var saved = StudyArrayService.updateAllOnDB(studiedToday);
         var questionsAnswered = sessionHistory.length;
@@ -124,8 +133,9 @@ angular.module('chemiatriaApp')
     };
 
     this.respondToResponse = function(answer) {
-    	var answerDetail = currentQ.checkMethod(currentQ.qAnswer, answer);
-    	//console.log('answerDetail from checkMethod is: ',answerDetail);
+    	console.log('answer given: ', answer);
+        var answerDetail = currentQ.checkMethod(currentQ.qAnswer, answer);
+    	console.log('answerDetail from checkMethod is: ',answerDetail);
     	answerDetail.timeStamp = Date.now();
         //console.log('answerDetail.timeStamp: ', answerDetail.timeStamp);
         //console.log('timeLastAction: ', timeLastAction);
@@ -157,10 +167,22 @@ angular.module('chemiatriaApp')
     	if (moveOn) {
     		sessionHistory.push(currentQResult);
     		studyArray = StudyArrayService.update(studyArray, currentQResult);
-            console.log('in SessionManagerService after update:', studyArray);
+            console.log('in SessionManagerService after update:', studyArray[currentQResult.indexInStudyArray].rtArray);
+            qSinceProgressReport++;
     	}
 
-    	qSinceProgressReport++;
-    	return {moveOn: moveOn, answerDetail: answerDetail};
+    	var questionsAnswered;
+        var showStats = false;
+        var stats;
+        if (qSinceProgressReport === 20) {
+
+            showStats = true;
+            studiedToday = studyArray.filter(studiedThisSession);
+            stats = MetricsService.getSessionMetrics(studiedToday);
+            questionsAnswered = sessionHistory.length;
+            qSinceProgressReport = 0;
+        }
+
+    	return {moveOn: moveOn, answerDetail: answerDetail, showStats: showStats, stats: stats, questionsAnswered: questionsAnswered};
     };
   }]);

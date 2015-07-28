@@ -59,7 +59,7 @@ angular.module('chemiatriaApp')
             //console.log('response.data is: ',response.data);
             var temp = response.data;
             for (var i = 0; i < temp.length; i++) {
-                console.log('temp[i] is:', temp[i]);
+                //console.log('temp[i] is:', temp[i]);
                 var type_id = temp[i].type_id;
                 temp[i].prompts = JSON.parse(temp[i].prompts);
                 temp[i].alternates = temp[i].alternates;

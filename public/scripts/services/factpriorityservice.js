@@ -8,7 +8,7 @@
  * Service in the chemiatriaApp.
  */
 angular.module('chemiatriaApp')
-  .service('FactPriorityService', function () {
+  .service('FactPriorityService', ['RandomFactory', function (RandomFactory) {
     // AngularJS will instantiate a singleton by calling "new" on this function
 
     //ms until next to study
@@ -34,7 +34,7 @@ angular.module('chemiatriaApp')
     	var correct = thisItem.accuracyArray[timesStudied - 1];
     	var stage = Number(thisItem.stage);
     	var newStage;
-    	if (correct == 0 && timesStudied == 0) {
+    	if (correct == 0 && timesStudied == 1) {
     		newStage = 4;
     	}
     	else if (correct == 0) {
@@ -51,9 +51,12 @@ angular.module('chemiatriaApp')
         //console.log('delay: ', stageArray[newStage]);
     	var newPriority = thisItem.lastStudied + stageArray[newStage];
     	thisItem.stage = newStage;
-    	thisItem.priority = newPriority;
+        //insert randomization:
+        var randomFactor = RandomFactory.getRandomDigit(40, 0) * 1000;
+        thisItem.priority = newPriority + randomFactor;
+    	
         //console.log('newPriority: ', newPriority);
         //console.log('after update: ', thisItem);
     	return thisItem;
     };
-  });
+  }]);

@@ -21,7 +21,7 @@
     Use the "bug report" or "I'm frustrated" buttons and tell me all about it!<p>
   </div>
 
-  <div ng-hide="session" class="alert" role="alert" ng-class="dataLoaded">
+  <div ng-hide="loaded" class="alert" role="alert" ng-class="dataLoaded">
     <span>Question data loaded? <span ng-bind="questionsNotLoaded"></span><br>
       Study history loaded? <span ng-bind="historyNotLoaded"></span></span>
   </div>
@@ -38,7 +38,7 @@
     <form ng-submit="startSession()" name="sessionStartForm">
       <p>Please choose the topics you want to study today. You can order them according to your priorities.
     	The site works best if you leave all the topics you've already studied checked. That way,
-    	you will review them as necessary. </p>
+    	you will review them as necessary. If you can't see newly added topics you expect, reload the page.</p>
       <div ui-sortable ng-model="topicsList">
         <p class="input-group" ng-repeat="topic in topicsList" style="padding:5px 10px; cursor: move;"> 
           <input type="checkbox" ng-model="topic.selected">
@@ -76,12 +76,15 @@
                 <input type="submit" class="btn btn-primary" value="Answer">
               </span>
           </div>
+          <!-- <div ng-switch-when="ptable">
+            @include('answer.ptable')
+          </div> -->
         </form>
       </div>
       <br><br>
       <div ng-cloak ng-show="showStats">
         <h4>Here's a summary of your progress.</h4>
-        <p>You studied @{{questionsAnswered}} questions in this session.</p>
+        <p>You answered @{{questionsAnswered}} questions so far in this session.</p>
         <table ng-model="stats" class="table table-bordered table-compact table-hover">
           <tr><th>Question</th><th>Score (%)</th><th>Average response time (s)</th><th>Status</th></tr>
           <tr class="" ng-repeat="topic in stats"> 

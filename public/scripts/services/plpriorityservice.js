@@ -8,7 +8,7 @@
  * Service in the chemiatriaApp.
  */
 angular.module('chemiatriaApp')
-  .service('PLPriorityService', ['MetricsService', function (MetricsService) {
+  .service('PLPriorityService', ['MetricsService', 'RandomFactory', function (MetricsService, RandomFactory) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     var delayWrong = 30000;
     var delayDiscover = 30000;
@@ -76,7 +76,9 @@ angular.module('chemiatriaApp')
     	}
     	
     	thisItem.stage = newStage;
-    	thisItem.priority = newPriority;
+        //randomize new priority a bit
+        var randomFactor = RandomFactory.getRandomDigit(40, 0) * 1000;
+    	thisItem.priority = newPriority + randomFactor;
         //console.log('compare priorities: ', newPriority, thisItem.priority);
         //console.log('after update: ', thisItem);
     	return thisItem;

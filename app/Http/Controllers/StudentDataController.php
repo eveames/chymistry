@@ -28,7 +28,7 @@ class StudentDataController extends Controller
     	//returns json object:  {{word: word, prompts: [], alternates: []}, {}, etc}
     	try {
             $vocabList = Word::orderBy('type_id')->with('alternates')->get();
-            Debugbar::info($vocabList);
+            //Debugbar::info($vocabList);
             return $vocabList;
         }
         catch (Exception $e) {

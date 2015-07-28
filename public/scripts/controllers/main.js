@@ -25,6 +25,7 @@ angular.module('chemiatriaApp')
     $scope.questionsAnswered = 0;
     $scope.responseType = 'alert-success';
     $scope.dataLoaded = 'alert-warning';
+    $scope.loaded = false;
     $scope.dataSaved = 'One moment please, while we confirm that your progress is saved';
 
     //is this slowing it down? maybe use one-time data binding?
@@ -50,31 +51,81 @@ angular.module('chemiatriaApp')
     $scope.answer = '';
     $scope.answerDetail = {}; //used to display message
     //call services here to get db data: vocab list and states list
+    var sessionEnded = false;
 
     $scope.startSession = function() {
-    	//console.log($scope.topicsList[0].selected, $scope.topicsList[1].selected);
-    	$scope.session = true;
-    	$scope.noQuestion = false;
-        $scope.showStats = false;
-    	$scope.topicsSelected = $scope.topicsList.filter(function(entry) {
-    		//if(entry.selected) {return entry;}
-    		return entry.selected;
-    	});
-    	//console.log($scope.topicsSelected);
-    	//start logging
-    	SessionLog.openSession($scope.username);
-    	//console.log($scope.username);
-    	$scope.currentQ = SessionManagerService.openSession($scope.username, $scope.topicsSelected);
-    	SessionLog.addEvent({type: 'question posted', detail: $scope.currentQ});
-    	//console.log('in MainCtrl: ', $scope.currentQ);
+    	console.log('sessionEnded: ', sessionEnded);
+    	if (sessionEnded) {
+            $scope.loaded = false;
+            $scope.dataLoaded = 'alert-warning';
+            $scope.historyNotLoaded = 'Not yet';
+            $scope.questionsNotLoaded = 'Not yet';
+            VocabListService.setup().then(function(d) {
+                $scope.questionsNotLoaded = d;
+                if ($scope.historyNotLoaded === 'Loaded' && !$scope.session) {
+                    $scope.dataLoaded = 'alert-success';
+                    initializeSession();
+                }
+            });
+            $scope.historyLoaded = 'Not yet';
+            StudyArrayService.setup().then(function(d) {
+                $scope.historyNotLoaded = d;
+                if ($scope.questionsNotLoaded === 'Loaded' && !$scope.session) {
+                    $scope.dataLoaded = 'alert-success';
+                    initializeSession();
+                }
+            });
+        }
+        else initializeSession();
+
+        
     };
+
+    var initializeSession = function() {
+
+        $scope.isFrustrated = false;
+        $scope.bugToReport = false;
+        $scope.showResponseToFeedback = false;
+        $scope.showHint = false;
+        $scope.currentHint = 0;
+        $scope.stats = {};
+        $scope.frustrationDescription = '';
+        $scope.bugDescription = '';
+        $scope.questionsAnswered = 0;
+        $scope.responseType = 'alert-success'; 
+        $scope.answer = '';
+        $scope.answerDetail = {}; //used to display message
+        //call services here to get db data: vocab list and states list
+        $scope.loaded = true;
+        $scope.session = true;
+        $scope.loaded = true;
+        $scope.noQuestion = false;
+        $scope.showStats = false;
+        $scope.topicsSelected = $scope.topicsList.filter(function(entry) {
+            //if(entry.selected) {return entry;}
+            return entry.selected;
+        });
+        //console.log($scope.topicsSelected);
+        //start logging
+        SessionLog.openSession($scope.username);
+        //console.log($scope.username);
+        $scope.currentQ = SessionManagerService.openSession($scope.username, $scope.topicsSelected);
+        SessionLog.addEvent({type: 'question posted', detail: $scope.currentQ});
+        //console.log('in MainCtrl: ', $scope.currentQ);
+    }
 
     //
     $scope.handleAnswer = function() {
         $scope.showHint = false;
         $scope.currentHint = 0;
+        $scope.showStats = false;
     	var responseObj = SessionManagerService.respondToResponse($scope.answer);
     	$scope.answerDetail = responseObj.answerDetail;
+        $scope.showStats = responseObj.showStats;
+        if ($scope.showStats) {
+            $scope.stats = responseObj.stats;
+            $scope.questionsAnswered = responseObj.questionsAnswered;
+        }
         if ($scope.answerDetail.correct === 'correct') {
             $scope.responseType = 'alert-success';
         }
@@ -105,7 +156,7 @@ angular.module('chemiatriaApp')
     	//confirm intent?
 
         SessionLog.closeSession();
-    	
+
     	//display stats
     	$scope.session = false;
     	$scope.showResponseToFeedback = false;
@@ -124,7 +175,8 @@ angular.module('chemiatriaApp')
     	//something smart with the session log
     	$scope.session = false;
     	$scope.topicsList = TopicsService.getTopicsList();
-
+        sessionEnded = true;
+        
     };
 
     $scope.resendProgress = function() {

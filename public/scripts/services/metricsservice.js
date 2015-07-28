@@ -28,15 +28,21 @@ angular.module('chemiatriaApp')
 
     this.getMetrics = function(studyArrayItem) {
     	var accArray = studyArrayItem.accuracyArray;
-    	var rtArray = studyArrayItem.rtArray;
+    	console.log('in get metrics');
 
+        var rtArray = [];
+        for (var i = 0; i < studyArrayItem.rtArray.length; i++) {
+            rtArray[i] = studyArrayItem.rtArray[i].slice();
+        }
+            
     	var flatRTArray = rtArray.reduce(function(a, b) {
   			return a.concat(b);
 		}); 
-
+        console.log('in get metrics after flat: ', studyArrayItem.rtArray);
 		var lastRTArray = rtArray.reduce(function(a,b) {
 			return a.concat(b.pop());
 		});
+        console.log('in get metrics after last: ', studyArrayItem.rtArray);
 
     	var totalAccuracy = accArray.reduce(plusStart(0));
     	var timesStudied = accArray.length;
@@ -48,7 +54,7 @@ angular.module('chemiatriaApp')
     	var streakRT = lastRTArray.reduce(plusStart(lastMistake+1))/lastStreak;
         //this gives the total time to right answer (adds rt for each response to one q)
     	var rtLastChunk = lastRTArray.reduce(plusStart(timesStudied - 10))/(Math.min(10, timesStudied));
-
+        console.log('in get metrics after before return: ', studyArrayItem.rtArray);
 
     	return {
     		totalAccuracy: totalAccuracy, timesStudied: timesStudied,
@@ -62,7 +68,11 @@ angular.module('chemiatriaApp')
     var getQuickMetrics = function(studyArrayItem) {
         //console.log(studyArrayItem);
         var accArray = studyArrayItem.accuracyArray;
-        var rtArray = studyArrayItem.rtArray;
+
+        var rtArray = [];
+        for (var i = 0; i < studyArrayItem.rtArray.length; i++) {
+            rtArray[i] = studyArrayItem.rtArray[i].slice();
+        }
         var timesStudied = accArray.length;
         var stage = studyArrayItem.stage;
         //calculate average accuracy last 10 (out of 10)
