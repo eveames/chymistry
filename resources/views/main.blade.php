@@ -69,16 +69,16 @@
           <div class="panel-body">@{{currentQ.qHint[currentHint]}}</div>
         </div>
         <div>@{{currentQ.qText}}</div>
-        <form role="form" ng-submit="handleAnswer()">
+        <form ng-switch="currentQ.qAnswerFormat" role="form" ng-submit="handleAnswer()">
           <div class="form-group">
-              <input type="text" ng-model="answer" placeholder="">
+              <input type="text" ng-model="field.answer" placeholder="">
               <span class="">
                 <input type="submit" class="btn btn-primary" value="Answer">
               </span>
           </div>
-          <!-- <div ng-switch-when="ptable">
+          <div>
             @include('answer.ptable')
-          </div> -->
+          </div> 
         </form>
       </div>
       <br><br>

@@ -48,7 +48,7 @@ angular.module('chemiatriaApp')
     
     $scope.topicsSelected = [];
     $scope.currentQ = {};
-    $scope.answer = '';
+    $scope.field = {answer: ''};
     $scope.answerDetail = {}; //used to display message
     //call services here to get db data: vocab list and states list
     var sessionEnded = false;
@@ -119,7 +119,7 @@ angular.module('chemiatriaApp')
         $scope.showHint = false;
         $scope.currentHint = 0;
         $scope.showStats = false;
-    	var responseObj = SessionManagerService.respondToResponse($scope.answer);
+    	var responseObj = SessionManagerService.respondToResponse($scope.field.answer);
     	$scope.answerDetail = responseObj.answerDetail;
         $scope.showStats = responseObj.showStats;
         if ($scope.showStats) {
