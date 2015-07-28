@@ -17,7 +17,8 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'ui.sortable'
+    'ui.sortable',
+    'ng-autofocus'
   ])
   /*.config(function ($routeProvider) {
     $routeProvider

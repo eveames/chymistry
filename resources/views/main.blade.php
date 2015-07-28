@@ -16,7 +16,9 @@
       the available questions and start up where you left off.</p>
   </div>
   <div ng-show="session">
-    <p>How to use the site: Don't look up answers if you don't know them, this will confuse the algorithm. 
+    <p>How to use the site: It's ok if you don't know an answer: just guess or (if the instructions suggest it)
+    enter 0 (zero) to indicate that you don't know. <strong>Don't look up answers you aren't sure of</strong>, because this will confuse 
+    the algorithm and make the site less helpful for you. 
     If you have any feedback, if it's too hard or too easy, don't be shy! 
     Use the "bug report" or "I'm frustrated" buttons and tell me all about it!<p>
   </div>
@@ -38,7 +40,8 @@
     <form ng-submit="startSession()" name="sessionStartForm">
       <p>Please choose the topics you want to study today. You can order them according to your priorities.
     	The site works best if you leave all the topics you've already studied checked. That way,
-    	you will review them as necessary. If you can't see newly added topics you expect, reload the page.</p>
+    	you will review them as necessary. If you can't see newly added topics you expect, reload the page. 
+      (If you don't see a list of topics, the page is still loading. Wait for it!)</p>
       <div ui-sortable ng-model="topicsList">
         <p class="input-group" ng-repeat="topic in topicsList" style="padding:5px 10px; cursor: move;"> 
           <input type="checkbox" ng-model="topic.selected">
@@ -71,7 +74,7 @@
         <div>@{{currentQ.qText}}</div>
         <form ng-switch="currentQ.qAnswerFormat" role="form" ng-submit="handleAnswer()">
           <div class="form-group">
-              <input type="text" ng-model="field.answer" placeholder="">
+              <input type="text" ng-model="field.answer" placeholder="" autofocus>
               <span class="">
                 <input type="submit" class="btn btn-primary" value="Answer">
               </span>

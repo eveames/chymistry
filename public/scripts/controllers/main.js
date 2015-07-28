@@ -93,7 +93,7 @@ angular.module('chemiatriaApp')
         $scope.bugDescription = '';
         $scope.questionsAnswered = 0;
         $scope.responseType = 'alert-success'; 
-        $scope.answer = '';
+        $scope.field = {answer: ''};
         $scope.answerDetail = {}; //used to display message
         //call services here to get db data: vocab list and states list
         $scope.loaded = true;
@@ -135,7 +135,7 @@ angular.module('chemiatriaApp')
         }
         else $scope.responseType = 'alert-danger';
     	SessionLog.addEvent({type: 'answer given', detail: $scope.answerDetail});
-    	$scope.answer = '';
+    	$scope.field = {answer: ''};
     	if (responseObj.moveOn) {
     		$scope.currentQ = SessionManagerService.getQuestion();
     		SessionLog.addEvent({type: 'question posted', detail: $scope.currentQ});
@@ -230,3 +230,4 @@ angular.module('chemiatriaApp')
 
     };
   }]);
+

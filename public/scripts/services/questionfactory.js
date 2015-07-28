@@ -9,7 +9,8 @@
  */
 angular.module('chemiatriaApp')
   .factory('QuestionFactory', ['SigFigPLFactory', 'VocabFactory', 'QIDService',
-    'RandomFactory', function (SigFigPLFactory, VocabFactory, QIDService, RandomFactory) {
+    'RandomFactory', 'IntroElementsFactory', 
+    function (SigFigPLFactory, VocabFactory, QIDService, RandomFactory, IntroElementsFactory) {
     // array holds topics available, connection to appropriate factories
     //var qFactoriesAvailable = [{type: 'SigFigPL', factory: 'SigFigPLFactory'},
      // {type: Vocab, factory: 'VocabFactory'}];
@@ -25,8 +26,8 @@ angular.module('chemiatriaApp')
         var qToReturn = {};
         var type = studyArrayItem.type;
         var factory = studyArrayItem.factory;
-        //console.log(studyArrayItem);
-        //console.log("factory is: ", factory);
+        console.log(studyArrayItem);
+        console.log("factory is: ", factory);
         var type_id = studyArrayItem.type_id;
         //console.log(type);
         var subtype, qID, idArray, stage;
@@ -57,6 +58,13 @@ angular.module('chemiatriaApp')
             var flags = choosePrompt(numPrompts, stage);
             qToReturn = VocabFactory.getQuestion(type_id, type, subtype, idArray, flags);
             //console.log('in QuestionFactory');
+            break;
+          case 'IntroElementsFactory':
+            qID = studyArrayItem.qID;
+            var idParseArray = QIDService.parseID(qID);
+            subtype = idParseArray[1];
+            idArray = [qID];
+            qToReturn = IntroElementsFactory.getQuestion(type_id, type, subtype, idArray);
             break;
           default:
             qToReturn.qText = 'Question type error';

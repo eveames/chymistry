@@ -96,7 +96,7 @@ angular.module('chemiatriaApp')
         //console.log('selectedTopics[1]: ', selectedTopics[1]);
         studyArray = StudyArrayService.initializeStudyArray(studyArray);
         currentQ = QuestionFactory.getQuestion(selectNextQuestion());
-        //console.log("in openSession: ", studyArray);
+        console.log("in openSession: ", currentQ);
         setCurrentQ(currentQ);
         //console.log('after setting question: ', studyArray[currentQ.indexInStudyArray]);
         return currentQ;
@@ -156,6 +156,8 @@ angular.module('chemiatriaApp')
     		answerDetail.messageSent = currentQ.responseToWrong[1];
     	}
 
+
+        //may need to work on this 
     	else {
     		var previousTries = currentQResult.answersGiven.length;
     		answerDetail.messageSent += currentQ.responseToWrong[previousTries];

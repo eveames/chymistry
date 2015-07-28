@@ -8,7 +8,7 @@
  * Service in the chemiatriaApp.
  */
 angular.module('chemiatriaApp')
-  .service('TopicsService', ['VocabListService', '$http', function (VocabListService, $http) {
+  .service('TopicsService', ['VocabListService', '$http', 'ElementsListService', function (VocabListService, $http, ElementsListService) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     
     //level corresponds roughly to chapter location in a textbook. 
@@ -68,19 +68,43 @@ angular.module('chemiatriaApp')
             var type_id = selectedTopics[i].id;
             var factory = selectedTopics[i].factory;
     		var alg = selectedTopics[i].priorityCalcAlgorithm;
-    		if (selectedTopics[i].sequenceByID) {
+            var byID = selectedTopics[i].sequenceByID;
+            var bySubtype = selectedTopics[i].sequenceBySubtype;
+            var listService = selectedTopics[i].listService;
+    		if (byID) {
     			//console.log('about to call VocabListService');
                 //console.log(selectedTopics[i]);
-    			var vocabList = VocabListService.getIDList(type_id);
-    			for (var k = 0; k < vocabList.length; k++) {
-    				var qID = type + '-all-' + vocabList[k].qID;
-    				var subtypes = selectedTopics[i].subtypes;
-                    var word_id = vocabList[k].word_id;
-    				studyArray.push({type: type, subtype: subtypes, qID: qID, word_id: word_id,
-                        priorityCalcAlgorithm: alg, type_id: type_id, factory: factory});
-    			}
+                switch (listService) {
+                    case 'VocabListService':
+                        var vocabList = VocabListService.getIDList(type_id);
+                        for (var k = 0; k < vocabList.length; k++) {
+                            var qID = type + '-all-' + vocabList[k].qID;
+                            var subtypes = selectedTopics[i].subtypes;
+                            var word_id = vocabList[k].word_id;
+                            studyArray.push({type: type, subtype: subtypes, qID: qID, word_id: word_id,
+                            priorityCalcAlgorithm: alg, type_id: type_id, factory: factory});
+                        }
+                        break;
+                    case 'ElementsListService':
+                        var elementsList = ElementsListService.getIDList(type_id);
+                        if (bySubtype) {
+                            for (var j = 0; j < selectedTopics[i].subtypes.length; j++) {
+                                var subtype = selectedTopics[i].subtypes[j];
+                                for (var k = 0; k < elementsList.length; k++) {
+                                    var qID = type + '-' + subtype + '-' + elementsList[k].qID;
+                                    studyArray.push({type: type, subtype: [subtype], qID: qID, 
+                                    priorityCalcAlgorithm: alg, type_id: type_id, factory: factory});
+                                }
+                            }
+                        }
+                        break;
+                    default: 
+                        console.log('listService not recognized');
+                }
+    			
     		}
-    		else {
+
+    		else if (bySubtype) {
     			for (var j = 0; j < selectedTopics[i].subtypes.length; j++) {
     			var subtype = selectedTopics[i].subtypes[j]; 
     			//console.log(subtype);

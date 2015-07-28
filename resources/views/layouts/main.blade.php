@@ -84,6 +84,7 @@
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/jquery-ui/jquery-ui.js"></script>
     <script src="bower_components/angular-ui-sortable/sortable.js"></script>
+    <script src="bower_components/ng-autofocus/dist/ng-autofocus.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -100,11 +101,13 @@
         <script src="scripts/services/vocabfactory.js"></script>
         <script src="scripts/services/qidservice.js"></script>
         <script src="scripts/services/vocablistservice.js"></script>
+        <script src="scripts/services/elementslistservice.js"></script>
         <script src="scripts/services/studyarrayservice.js"></script>
         <script src="scripts/services/plpriorityservice.js"></script>
         <script src="scripts/services/factpriorityservice.js"></script>
         <script src="scripts/services/metricsservice.js"></script>
         <script src="scripts/services/introelementsfactory.js"></script>
+        <script src="scripts/directives/autofocus.js"></script>
         
         <!-- endbuild -->
 	<!--<script type="text/javascript" src="app.js"></script>-->

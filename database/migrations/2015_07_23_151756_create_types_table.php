@@ -19,10 +19,12 @@ class CreateTypesTable extends Migration
             $table->foreign('course_id')->references('course_id')->on('courses');
             $table->string('type', 20);
             $table->string('factory', 20);
+            $table->string('listService', 30);
             $table->decimal('level', 5, 2);
             $table->boolean('selected');
             $table->json('subtypes');
             $table->boolean('sequenceByID');
+            $table->boolean('sequenceBySubtype');
             $table->string('priorityCalcAlgorithm', 20);
             $table->timestamps();
         });

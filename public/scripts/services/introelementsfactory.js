@@ -2,100 +2,22 @@
 
 /**
  * @ngdoc service
- * @name chemiatriaApp.VocabFactory
+ * @name chemiatriaApp.IntroElementsFactory
  * @description
- * # VocabFactory
+ * # IntroElementsFactory
  * Factory in the chemiatriaApp.
  */
 angular.module('chemiatriaApp')
-  .factory('IntroElementsFactory', ['QIDService', function (QIDService) {
+  .factory('IntroElementsFactory', ['QIDService', 'ElementsListService', 'RandomFactory', function (QIDService, ElementsListService, RandomFactory) {
     // Service logic
     // ...
 
-    //subtypes: nameSymbol, whereInTable, charge, LewisAtom, LewisIon
-    var elementsArray = [{name: 'hydrogen', symbol: 'H', family: 'non-metal', location: '1', charge: 1, valenceE: 1},
-      {name: 'helium', symbol: 'He', family: 'noble gas', location: '2', charge: 0, valenceE: 2},
-      {name: 'lithium', symbol: 'Li', family: 'alkali metal', location: '3', charge: 1, valenceE: 1},
-      {name: 'beryllium', symbol: 'Be', family: 'alkaline earth metal', location: '4', charge: 2, valenceE: 2},
-      {name: 'boron', symbol: 'B', family: 'non-metal', location: '5', charge: 3, valenceE: 3},
-      {name: 'carbon', symbol: 'C', family: 'non-metal', location: '6', charge: 0, valenceE: 4},
-      {name: 'nitrogen', symbol: 'N', family: 'non-metal', location: '7', charge: -3, valenceE: 5},
-      {name: 'oxygen', symbol: 'O', family: 'chalcogen', location: '8', charge: -2, valenceE: 6},
-      {name: 'fluorine', symbol: 'F', family: 'halogen', location: '9', charge: -1, valenceE: 7},
-      {name: 'bromine', symbol: 'Br', family: 'halogen', location: 'Hal', charge: -1, valenceE: 7},
-      {name: 'iodine', symbol: 'I', family: 'halogen', location: 'Hal', charge: -1, valenceE: 7},
-      {name: 'sodium', symbol: 'Na', family: 'alkali metal', location: '11', charge: 1, valenceE: 1},
-      {name: 'magnesium', symbol: 'Mg', family: 'alkaline earth metal', location: '12', charge: 2, valenceE: 2},
-      {name: 'aluminum', symbol: 'Al', family: 'post-transition metal', location: '13', charge: 3, valenceE: 3},
-      {name: 'silicon', symbol: 'Si', family: 'non-metal', location: '14', charge: 4, valenceE: 4},
-      {name: 'phosphorus', symbol: 'P', family: 'non-metal', location: '15', charge: -3, valenceE: 5},
-      {name: 'sulfur', symbol: 'S', family: 'chalcogen', location: '16', charge: -2, valenceE: 6},
-      {name: 'chlorine', symbol: 'Cl', family: 'halogen', location: '17', charge: -1, valenceE: 7},
-      {name: 'argon', symbol: 'Ar', family: 'noble gas', location: 'NG', charge: 0, valenceE: 8},
-      {name: 'potassium', symbol: 'K', family: 'alkali metal', location: '19', charge: 1, valenceE: 1},
-      {name: 'calcium', symbol: 'Ca', family: 'alkaline earth metal', location: '20', charge: 2, valenceE: 2},
-      {name: 'titanium', symbol: 'Ti', family: 'transition metal', location: 'ETM', charge: 4},
-      {name: 'iron', symbol: 'Fe', family: 'transition metal', location: 'MTM', charge: [3, 2]},
-      {name: 'copper', symbol: 'Cu', family: 'coinage metal', location: 'CM', charge: [2, 1]},
-      {name: 'mercury', symbol: 'Hg', family: 'transition metal', location: 'LTM', charge: [2, 1]},
-      {name: 'silver', symbol: 'Ag', family: 'coinage metal', location: 'CM', charge: [2, 1]},
-      {name: 'gold', symbol: 'Au', family: 'coinage metal', location: 'CM', charge: [3, 1]},
-      {name: 'tin', symbol: 'Sn', family: 'post-transition metal', location: 'PTM', charge: [2, 4], valenceE: 4},
-      {name: 'lead', symbol: 'Pb', family: 'post-transition metal', location: 'PTM', charge: [2, 4], valenceE: 4},
-      ];
-
-    var charges = [[{alt: 1, correct: 'correct', message: '', op: 'equals'}, {alt: -1, correct: 'close', message: 'Possible, in special circumstances', op: 'equals'}, 
-    {alt: 1, correct: 'knownWrong', message: 'H only has one electron to lose, so it can\'t have a charge above +1', op: 'greater'},
-    {alt: -1, correct: 'knownWrong', message: 'It would be almost impossible to add more than 1 electron to H', op: 'less'}],
-    [{alt: 0, correct: 'correct', message: 'Noble gases pretty much never have charge. ', op: 'equals'}, {alt: 0, correct: 'knownWrong', message: 'Noble gases pretty much never have charge', op: 'notEqual'}],
-    [{alt: 1, correct: 'correct', message: 'Alkali metals always have +1 charge. ', op: 'equals'}, {alt: 1, correct: 'knownWrong', message: 'Alkali metals always have +1 charge. ' op: 'notEqual'}],
-    [{alt: 2, correct: 'correct', message: 'Alkaline earth metals always have +2 charge. ', op: 'equals'}, {alt: 2, correct: 'knownWrong', message: 'Alkaline earth metals always have +2 charge. ', op: 'notEqual'}],
-    [{alt: 3, correct: 'correct', message: 'Boron often has a +3 charge. ', op: 'equals'}, {alt: 0, correct: 'close', message: 'Like carbon, boron forms many compounds in which it shares electrons. '}],
-    [{alt: 0, correct: 'correct', message: 'Carbon usually shares electrons, rather than forming ions', op: 'equals'}, {alt: 0, correct: 'knownWrong', message: 'Carbon usually shares electrons, and rarely forms ions. ', op: 'notEqual'}],
-    [{alt: -3, correct: 'correct', message: 'When nitrogen forms an ion, it\'s usually -3 charge. ', op: 'equals'}, {alt: -3, correct: 'close', message: 'In more complicated situations, N can have many different charges. ', op: 'notEqual'}],
-    [{alt: -2, correct: 'correct', message: 'O almost always has a -2 charge. ', op: 'equals'}, {alt: -2, correct: 'knownWrong', message: 'O almost always has a -2 charge. ' op: 'notEqual'}],
-    [{alt: -1, correct: 'correct', message: 'F always has a -1 charge. ', op: 'equals'}, {alt: -1, correct: 'knownWrong', message: 'F almost always has a -1 charge. ' op: 'notEqual'}],
-    [{alt: -1, correct: 'correct', message: 'Halogens almost always have a -1 charge. ', op: 'equals'}, {alt: -1, correct: 'knownWrong', message: 'Halogens almost always have a -1 charge. ' op: 'notEqual'}],
-    [{alt: -1, correct: 'correct', message: 'Halogens almost always have a -1 charge. ', op: 'equals'}, {alt: -1, correct: 'knownWrong', message: 'Halogens almost always have a -1 charge. ' op: 'notEqual'}],
-    [{alt: 1, correct: 'correct', message: 'Alkali metals always have +1 charge. ', op: 'equals'}, {alt: 1, correct: 'knownWrong', message: 'Alkali metals always have +1 charge. ' op: 'notEqual'}],
-    [{alt: 2, correct: 'correct', message: 'Alkaline earth metals always have +2 charge. ', op: 'equals'}, {alt: 2, correct: 'knownWrong', message: 'Alkaline earth metals always have +2 charge. ', op: 'notEqual'}],
-    [{alt: 3, correct: 'correct', message: 'Aluminum always has +3 charge. ', op: 'equals'}, {alt: 3, correct: 'knownWrong', message: 'Aluminum always has +3 charge. ', op: 'notEqual'}],
-    [{alt: 4, correct: 'correct', message: 'Si often has a 4+ charge when it occurs in rocks. ', op: 'equals'}, {alt: 0, correct: 'close', message: 'Si doesn\'t share electrons as much as C. ', op: 'equals'}],
-    [{alt: -3, correct: 'correct', message: 'When P forms an ion, it\'s usually -3 charge. ', op: 'equals'}, {alt: -3, correct: 'close', message: 'In more complicated situations, P can have many different charges. ', op: 'notEqual'}],
-    [{alt: -2, correct: 'correct', message: 'S usually has a -2 charge. ', op: 'equals'}, {alt: -2, correct: 'knownWrong', message: 'In more complicated situations, s can have many different charges. ' op: 'notEqual'}],
-    [{alt: -1, correct: 'correct', message: 'Cl almost always has a -1 charge. ', op: 'equals'}, {alt: -1, correct: 'knownWrong', message: 'Cl almost always has a -1 charge. ' op: 'notEqual'}],
-    [{alt: 0, correct: 'correct', message: 'Noble gases pretty much never have charge. ', op: 'equals'}, {alt: 0, correct: 'knownWrong', message: 'Noble gases pretty much never have charge', op: 'notEqual'}],
-    [{alt: 1, correct: 'correct', message: 'Alkali metals always have +1 charge. ', op: 'equals'}, {alt: 1, correct: 'knownWrong', message: 'Alkali metals always have +1 charge. ' op: 'notEqual'}],
-    [{alt: 2, correct: 'correct', message: 'Alkaline earth metals always have +2 charge. ', op: 'equals'}, {alt: 2, correct: 'knownWrong', message: 'Alkaline earth metals always have +2 charge. ', op: 'notEqual'}],
-    [{alt: 4, correct: 'correct', message: 'Ti usually has a 4+ charge. ', op: 'equals'}, {alt: 0, correct: 'close', message: 'Transition elements often have multiple charges, but Ti is usually +4. ', op: 'greater'},
-    {alt: 0, correct: 'knownWrong', message: 'Transition elements often have multiple charges, but always positive. ', op: 'less'}],
-    [{alt: 3, correct: 'correct', message: 'Fe usually has a 3+ or 2+ charge. ', op: 'equals'}, {alt: 2, correct: 'correct', message: 'Fe usually has a 3+ or 2+ charge. ', op: 'equals'}, 
-    {alt: 0, correct: 'close', message: 'Fe can have a range of charges, but is +2 or +3 normally. ', op: 'greater'},
-    {alt: 0, correct: 'knownWrong', message: 'Transition elements often have multiple charges, but always positive. ', op: 'less'}],
-    [{alt: 2, correct: 'correct', message: 'Cu usually has a 1+ or 2+ charge. ', op: 'equals'}, {alt: 1, correct: 'correct', message: 'Cu usually has a 1+ or 2+ charge. ', op: 'equals'}, 
-    {alt: 0, correct: 'close', message: 'Cu rarely has a charge above 2+. ', op: 'greater'},
-    {alt: 0, correct: 'knownWrong', message: 'Transition elements often have multiple charges, but always positive. ', op: 'less'}],
-    [{alt: 2, correct: 'correct', message: 'Hg usually has a 1+ or 2+ charge. ', op: 'equals'}, {alt: 1, correct: 'correct', message: 'Hg usually has a 1+ or 2+ charge. ', op: 'equals'}, 
-    {alt: 0, correct: 'close', message: 'Hg rarely has a charge above 2+. ', op: 'greater'},
-    {alt: 0, correct: 'knownWrong', message: 'Transition elements often have multiple charges, but always positive. ', op: 'less'}],
-    [{alt: 1, correct: 'correct', message: 'Ag usually has a 1+ charge. ', op: 'equals'}, {alt: 2, correct: 'close', message: 'Ag occasionally has a 2+ charge. ', op: 'equals'}, 
-    {alt: 0, correct: 'close', message: 'Ag rarely has a charge above 2+. ', op: 'greater'},
-    {alt: 0, correct: 'knownWrong', message: 'Transition elements often have multiple charges, but always positive. ', op: 'less'}],
-    [{alt: 1, correct: 'correct', message: 'Au usually has a 1+ or +3 charge. ', op: 'equals'}, {alt: 3, correct: 'close', message: 'Au usually has a 1+ or 3+ charge. ', op: 'equals'}, 
-    {alt: 0, correct: 'close', message: 'Ag rarely has a charge above 2+. ', op: 'greater'},
-    {alt: 0, correct: 'knownWrong', message: 'Transition elements often have multiple charges, but always positive. ', op: 'less'}],
-    [{alt: 4, correct: 'correct', message: 'Sn and Pb usually has a 2+ or 4+ charge. ', op: 'equals'}, {alt: 2, correct: 'close', message: 'Sn and Pb usually has a 2+ or 4+ charge. ', op: 'equals'}, 
-    {alt: 0, correct: 'knownWrong', message: 'Metals may have multiple charges, but always positive. ', op: 'less'}],
-    [{alt: 4, correct: 'correct', message: 'Sn and Pb usually has a 2+ or 4+ charge. ', op: 'equals'}, {alt: 2, correct: 'close', message: 'Sn and Pb usually has a 2+ or 4+ charge. ', op: 'equals'}, 
-    {alt: 0, correct: 'knownWrong', message: 'Metals may have multiple charges, but always positive. ', op: 'less'}]];
-
-    var families = ['halogen', 'chalcogen', 'alkali metal', 'alkaline earth metal',
-      'noble gas', 'post-transition metal', 'coinage metal', 'transition metal', 'non-metal'];
+    //subtypes: nameSymbol, whereInTable, charge, family 
 
     return {
       //returns an array of qID that includes fields starting at position 2 in qID (no type, subtype)
       // use flags to control prompts
-      getQuestion : function(type_id, type, subtype, idArray, flags) {
+      getQuestion : function(type_id, type, subtype, idArray) {
         //get type name from VocabListService
 
         var qToReturn = {type: type, type_id: type_id, subtype: subtype, qHint: ['Sorry, no hints yet. ']};
@@ -105,7 +27,9 @@ angular.module('chemiatriaApp')
         var answerArray, prompt;
         var idParseArray = QIDService.parseID(idArray[0]);
         var index = idParseArray[3];
-        var element = elementsArray[index];
+        var elementObj = ElementsListService.getEntry(index);
+        var element = elementObj.element;
+        var charges = elementObj.charges;
         
 
         switch (subtype) {
@@ -116,13 +40,13 @@ angular.module('chemiatriaApp')
             var which = Math.floor(Math.random() * 2);
 
             if (which) {
-              answerArray = [{alt: elementsArray[index].name, correct: 'correct'}];
-              prompt = elementsArray[index].symbol;
+              answerArray = [{alt: element.name, correct: 'correct'}];
+              prompt = element.symbol;
               qToReturn.qText = 'Enter the corresponding element name:\n' + prompt;
             }
             else {
-              answerArray = [{alt: elementsArray[index].symbol, correct: 'correct'}];
-              prompt = elementsArray[index].name;
+              answerArray = [{alt: element.symbol, correct: 'correct'}];
+              prompt = element.name;
               qToReturn.qText = 'Enter the corresponding element symbol:\n' + prompt;
             }
               
@@ -196,8 +120,8 @@ angular.module('chemiatriaApp')
               qToReturn.qPrompt = element.symbol;
             }
 
-            qToReturn.qText = 'Select the location of ' + qPrompt + ' in the Periodic Table';
-            qToReturn.instructions = 'Either click inside the correct box, or enter the correct box\'s label. Then hit return/enter. ' +
+            qToReturn.qText = 'Select the location of ' + qToReturn.qPrompt + ' in the Periodic Table';
+            qToReturn.instructions = 'Either click inside the correct box, or enter the correct box\'s label (not case-sensitive). Then hit return/enter. ' +
               'If you don\'t know the answer, you can enter 0. The correct answer will be displayed and you\'ll see it again soon. ';
             
             qToReturn.responseToWrong = ['Try again: ', 
@@ -249,7 +173,7 @@ angular.module('chemiatriaApp')
 
             //ask student to give a reasonable charge
             if (which) {
-              qToReturn.qAnswer = charges[index];
+              qToReturn.qAnswer = charges;
 
               if (which2) {
                 qToReturn.qPrompt = element.name;
@@ -268,6 +192,11 @@ angular.module('chemiatriaApp')
               //console.log('correct is: ', correctAnswer);
               //console.log('correct length: ', correctAnswer.length);
               //console.log('given is: ', givenAnswer);
+
+              // catch x-, x+ syntax
+              var regex = /(\d+)([+-])/;
+              givenAnswer = givenAnswer.replace(regex, '$2$1');
+              console.log('given answer after regex', givenAnswer);
 
               //set correct (correct/close/knownWrong/unknownWrong/noAnswer/formatError/dontKnow)
               //check for no answer
@@ -308,13 +237,14 @@ angular.module('chemiatriaApp')
                   }
                   if (answerDetailToReturn.correct) break;
                 }
+                console.log('checkMethod after for', answerDetailToReturn.correct);
 
                 if (!answerDetailToReturn.correct) {
                   if (givenAnswer.isNaN) {
                       answerDetailToReturn.correct = 'formatError';
                       answerDetailToReturn.messageSent = 'Answer should be a number. ';
                   }
-                  else if (givenAnswer % 1 !== 0) {
+                  else if (Number(givenAnswer) % 1 !== 0) {
                       answerDetailToReturn.correct = 'formatError';
                       answerDetailToReturn.messageSent = 'Answer should be an integer. ';
                   }     
@@ -326,34 +256,107 @@ angular.module('chemiatriaApp')
               }
               return answerDetailToReturn;
             };
+          }
 
 
             // ask student if a given charge is reasonable
             else {
-              var chargesArray = [-3, -2, -1, +1, +2, +3, +4, +5];
+              var chargesArray = ['-3', '-2', '-1', '+1', '+2', '+3', '+4', '+5'];
               qToReturn.qAnswerFormat = 'small-text-box';
-              qToReturn.qPrompt = chargesArray[Math.floor(Math.random(8))];
+              qToReturn.qPrompt = chargesArray[RandomFactory.getRandomDigit(8, 0)];
               if (which2) {
                 qToReturn.qText = 'Is ' + String(qToReturn.qPrompt) + ' a reasonable charge for ' + element.name + '?';
               }
               else {
                 qToReturn.qText = 'Is ' + String(qToReturn.qPrompt) + ' a reasonable charge for ' + element.symbol + '?';
               }
-              for (var i = 0; i < charges[index].length; i++) {
-                if (Number(charges[index][i].alt) === Number(qToReturn.qPrompt) && charges[index][i].correct === 'correct') {
-                  
-                }
+              qToReturn.instructions = 'Enter y or n. By reasonable charge, I mean one of the two most common charges '+
+                'when the given element forms single-atom ions under normal circumstances. If the element does not form ' +
+                'single-atom ions normally, then answer n. ';
+              //set answer
+              console.log(qToReturn.qText);
+              console.log(charges);
+              var answerArray = [{}, {}];
+              for (var i = 0; i < charges.length ; i++){
+                  //console.log('i is ', i);
+                  //bug here
+                  switch(charges[i].op) {
+                    case 'equals':
+                      if (Number(qToReturn.qPrompt) === Number(charges[i].alt)) {
+                        if(charges[i].correct === 'correct') {
+                          console.log(typeof answerArray[0]);
+                          if (typeof answerArray[0].alt === 'undefined') answerArray[0] = {alt: 'y', correct: 'correct', message: charges[i].message};
+                        }
+                        else {
+                          if (typeof answerArray[1].alt === 'undefined') answerArray[1] = {alt: 'y', correct: charges[i].correct, message: charges[i].message};
+                        }
+                      }
+                    break;
+                    case 'greater': 
+                      if (Number(qToReturn.qPrompt) > Number(charges[i].alt)) {
+                          console.log(typeof answerArray[1]);
+                          if (typeof answerArray[1].alt === 'undefined') answerArray[1] = {alt: 'y', correct: charges[i].correct, message: charges[i].message};
+                      }
+                    break;
+                    case 'less': 
+                      if (Number(qToReturn.qPrompt) < Number(charges[i].alt)) {
+                          console.log(typeof answerArray[1]);
+                          if (typeof answerArray[1].alt === 'undefined') answerArray[1] = {alt: 'y', correct: charges[i].correct, message: charges[i].message};
+                      }
+                    break;
+                    case 'notEqual': 
+                      if (Number(qToReturn.qPrompt) !== Number(charges[i].alt)) {
+                          console.log(typeof answerArray[1]);
+                          if (typeof answerArray[1].alt === 'undefined') answerArray[1] = {alt: 'y', correct: charges[i].correct, message: charges[i].message};
+                      }
+                    break;
+                  }
+                  console.log('i, answerArray: ', i, answerArray);
+                  if (typeof answerArray[0].alt !== 'undefined' && typeof answerArray[1].alt !== 'undefined') break;
               }
+              // not found, therefore correct is 'n'
+              if (typeof answerArray[0].alt === 'undefined') {
+                  answerArray[0] = {alt: 'n', correct: 'correct', message: ''};
+              }
+              //check [0] and do the opposite
+              if (typeof answerArray[1].alt === 'undefined') {
+                  if (answerArray[0].alt === 'y') answerArray[1] = {alt: 'n', correct: 'knownWrong', message: ''};
+                  if (answerArray[0].alt === 'n') answerArray[1] = {alt: 'y', correct: 'knownWrong', message: ''};
+              } 
+              qToReturn.qAnswer = answerArray;
+              var messageTemp = '';
+              if (!answerArray[1].message && answerArray[0].message) messageTemp = answerArray[0].message;
+              qToReturn.responseToWrong = [messageTemp + ' We\'ll come back to it. '];
+
+              qToReturn.checkMethod = function(correctAnswer, givenAnswer) {
+                var answerDetailToReturn = {answer: givenAnswer, messageSent: '', correct: ''};
+                var answerTemp;
+                var yArray = ['y', 'yes', 't', 'true'];
+                var nArray = ['n', 'no', 'f', 'false'];
+                console.log(yArray.indexOf(givenAnswer.toLowerCase()), nArray.indexOf(givenAnswer.toLowerCase()));
+                if (yArray.indexOf(givenAnswer.toLowerCase()) > -1) answerTemp = 'y';
+                else if (nArray.indexOf(givenAnswer.toLowerCase()) > -1) answerTemp = 'n';
+                console.log('answerTemp: ', answerTemp);
+                console.log('correctAnswer:', correctAnswer);
+                if (answerTemp === correctAnswer[0].alt) {
+                  answerDetailToReturn.correct = 'correct';
+                  answerDetailToReturn.messageSent = correctAnswer[0].message;
+                }
+                else if (answerTemp === correctAnswer[1].alt) {
+                  answerDetailToReturn.correct = 'knownWrong';
+                  answerDetailToReturn.messageSent = correctAnswer[1].message;
+                }
+                return answerDetailToReturn;
+              };
 
             }
 
             break;
-          case 'LewisAtom':
+          //case 'Family':
+            //qToReturn.qAnswerFormat = 'multiple-choice';
 
-            break;
-          case 'LewisIon':
 
-            break;
+           // break;
           default: 
             qToReturn.subtype = 'notFound';
             qToReturn.qAnswer = [0];

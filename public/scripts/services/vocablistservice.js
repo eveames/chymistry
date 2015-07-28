@@ -78,7 +78,7 @@ angular.module('chemiatriaApp')
         });
         //console.log('map is: ', map);
         return promise;
-    } 
+    };
 
     this.getIDList = function(type_id) {
         

@@ -24,7 +24,7 @@ angular.module('chemiatriaApp')
             for (var key in temp) {
                 //console.log('in for');
                 var type_id = temp[key].type_id;
-                //console.log('object to parse: ', temp[key]);
+                console.log('object to parse: ', temp[key]);
                 //console.log(temp[i].accuracyArray);
                 temp[key].accuracyArray = JSON.parse(temp[key].accuracyArray);
                 
@@ -58,9 +58,9 @@ angular.module('chemiatriaApp')
             var type_id = element.type_id;
             var match = {};
             if (historyArray[type_id]) {
-                if (element.word_id) {
+                if (element.qID) {
                     for (var i = 0; i < historyArray[type_id].length; i++) {
-                        if (element.word_id === historyArray[type_id][i].word_id) {
+                        if (element.qID === historyArray[type_id][i].qID) {
                             match = historyArray[type_id][i];
                             break;
                         }
@@ -115,7 +115,8 @@ angular.module('chemiatriaApp')
 
     this.update = function(studyArray, currentQResult) {
         var index = currentQResult.indexInStudyArray;
-        //console.log('study array item before update: ', studyArray[index]);
+        console.log('index: ', index);
+        console.log('study array item before update: ', studyArray[index]);
         //console.log('currentQResult.answersGiven: ', currentQResult.answersGiven);
         //console.log('update lastStudied?', Date.now(), studyArray[index].lastStudied);
     	studyArray[index].lastStudied = Date.now();
