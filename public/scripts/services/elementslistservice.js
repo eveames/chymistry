@@ -16,18 +16,18 @@ angular.module('chemiatriaApp')
       {name: 'helium', symbol: 'He', family: 'noble gas', location: '2', charge: 0, valenceE: 2},
       {name: 'lithium', symbol: 'Li', family: 'alkali metal', location: '3', charge: 1, valenceE: 1},
       {name: 'beryllium', symbol: 'Be', family: 'alkaline earth metal', location: '4', charge: 2, valenceE: 2},
-      {name: 'boron', symbol: 'B', family: 'non-metal', location: '5', charge: 3, valenceE: 3},
-      {name: 'carbon', symbol: 'C', family: 'non-metal', location: '6', charge: 0, valenceE: 4},
-      {name: 'nitrogen', symbol: 'N', family: 'non-metal', location: '7', charge: -3, valenceE: 5},
+      {name: 'boron', symbol: 'B', family: 'Boron group', location: '5', charge: 3, valenceE: 3},
+      {name: 'carbon', symbol: 'C', family: 'Carbon group', location: '6', charge: 0, valenceE: 4},
+      {name: 'nitrogen', symbol: 'N', family: 'Nitrogen group (pnictogen)', location: '7', charge: -3, valenceE: 5},
       {name: 'oxygen', symbol: 'O', family: 'chalcogen', location: '8', charge: -2, valenceE: 6},
       {name: 'fluorine', symbol: 'F', family: 'halogen', location: '9', charge: -1, valenceE: 7},
       {name: 'bromine', symbol: 'Br', family: 'halogen', location: 'Hal', charge: -1, valenceE: 7},
       {name: 'iodine', symbol: 'I', family: 'halogen', location: 'Hal', charge: -1, valenceE: 7},
       {name: 'sodium', symbol: 'Na', family: 'alkali metal', location: '11', charge: 1, valenceE: 1},
       {name: 'magnesium', symbol: 'Mg', family: 'alkaline earth metal', location: '12', charge: 2, valenceE: 2},
-      {name: 'aluminum', symbol: 'Al', family: 'post-transition metal', location: '13', charge: 3, valenceE: 3},
-      {name: 'silicon', symbol: 'Si', family: 'non-metal', location: '14', charge: 4, valenceE: 4},
-      {name: 'phosphorus', symbol: 'P', family: 'non-metal', location: '15', charge: -3, valenceE: 5},
+      {name: 'aluminum', symbol: 'Al', family: 'Boron group', location: '13', charge: 3, valenceE: 3},
+      {name: 'silicon', symbol: 'Si', family: 'Carbon group', location: '14', charge: 4, valenceE: 4},
+      {name: 'phosphorus', symbol: 'P', family: 'Nitrogen group (pnictogen)', location: '15', charge: -3, valenceE: 5},
       {name: 'sulfur', symbol: 'S', family: 'chalcogen', location: '16', charge: -2, valenceE: 6},
       {name: 'chlorine', symbol: 'Cl', family: 'halogen', location: '17', charge: -1, valenceE: 7},
       {name: 'argon', symbol: 'Ar', family: 'noble gas', location: 'NG', charge: 0, valenceE: 8},
@@ -36,7 +36,7 @@ angular.module('chemiatriaApp')
       {name: 'titanium', symbol: 'Ti', family: 'transition metal', location: 'ETM', charge: 4},
       {name: 'iron', symbol: 'Fe', family: 'transition metal', location: 'MTM', charge: [3, 2]},
       {name: 'copper', symbol: 'Cu', family: 'coinage metal', location: 'CM', charge: [2, 1]},
-      {name: 'mercury', symbol: 'Hg', family: 'transition metal', location: 'PTM', charge: [2, 1]},
+      {name: 'mercury', symbol: 'Hg', family: '(post-)transition metal', location: 'PTM', charge: [2, 1]},
       {name: 'silver', symbol: 'Ag', family: 'coinage metal', location: 'CM', charge: [2, 1]},
       {name: 'gold', symbol: 'Au', family: 'coinage metal', location: 'CM', charge: [3, 1]},
       {name: 'tin', symbol: 'Sn', family: 'post-transition metal', location: 'PTM', charge: [2, 4], valenceE: 4},
@@ -117,7 +117,7 @@ angular.module('chemiatriaApp')
     {alt: 0, correct: 'knownWrong', message: 'Metals may have multiple charges, but always positive. ', op: 'less'}]];
 
     var families = ['halogen', 'chalcogen', 'alkali metal', 'alkaline earth metal',
-      'noble gas', 'post-transition metal', 'coinage metal', 'transition metal', 'non-metal'];
+      'noble gas', 'post-transition metal', 'coinage metal', 'transition metal', 'non-metal', 'Carbon group', 'Nitrogen group (pnictogen)', 'Boron group'];
     //initialized by getIDList function
     //referred to by getEntry function
 
@@ -134,6 +134,10 @@ angular.module('chemiatriaApp')
         map = elementsArray.map(idMaker);
         //console.log(map);
         return map;
+    };
+
+    this.getElementsArray = function() {
+        return elementsArray;
     };
 
     //also, use type here

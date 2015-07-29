@@ -340,12 +340,16 @@ angular.module('chemiatriaApp')
                 console.log('correctAnswer:', correctAnswer);
                 if (answerTemp === correctAnswer[0].alt) {
                   answerDetailToReturn.correct = 'correct';
-                  answerDetailToReturn.messageSent = correctAnswer[0].message;
+                  answerDetailToReturn.messageSent += correctAnswer[0].message;
                 }
                 else if (answerTemp === correctAnswer[1].alt) {
                   answerDetailToReturn.correct = 'knownWrong';
-                  answerDetailToReturn.messageSent = correctAnswer[1].message;
+                  answerDetailToReturn.messageSent += correctAnswer[1].message;
                 }
+                else {
+                  answerDetailToReturn.correct = 'formatError';
+                  answerDetailToReturn.messageSent = 'Answer y or n. ';
+                }  
                 return answerDetailToReturn;
               };
 

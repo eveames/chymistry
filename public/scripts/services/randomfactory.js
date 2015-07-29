@@ -35,5 +35,13 @@ angular.module('chemiatriaApp')
         }
         return randomString;
       }
+      getRandomExclude: function randNum(max,excludeNum) {
+        var randNumber = Math.floor(Math.random() * max);
+        if(randNumber === excludeNum) {
+          return randNum(max,excludeNum);
+        }else{
+          return randNumber;
+        }
+      }
     };
   });

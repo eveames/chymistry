@@ -24,7 +24,7 @@ angular.module('chemiatriaApp')
       getQuestion : function(type_id, type, subtype, idArray, flags) {
         //get type name from VocabListService
 
-        var qToReturn = {type: type, qHint: ['Sorry, no hints for vocab yet. Enter 0 to see the answer and move on.']};
+        var qToReturn = {type: type, hasImage: false, qHint: ['Sorry, no hints for vocab yet. Enter 0 to see the answer and move on.']};
         qToReturn.factOrSkill = 'fact';
         qToReturn.instructions = 'If you don\'t know the answer, enter 0 (zero). ' +
             'The answer will be displayed, and you\'ll see it again soon. ' +

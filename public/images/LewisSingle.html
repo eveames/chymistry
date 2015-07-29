@@ -1,4 +1,4 @@
-<svg ng-show="currentQ.imageData.double" width="110" height="110">
+<svg ng-show="currentQ.imageData.doubleL" width="110" height="110">
 
 	<rect width="110" height="110" style="stroke-width:10;stroke:rgb(0,0,0);fill:none"/> 
 
@@ -19,14 +19,14 @@
 	<circle ng-show="currentQ.imageData.circ[11]" cx="45" cy="27" r="4" stroke="none" fill="black" />
 
 
-	<circle cx="85" cy="25" r="17" stroke-width="1" stroke="black" fill="none" />
-	<text fill="black" font-size="20" font-family="Verdana" x="70" y="32">{{currentQ.imageData.charge}}</text>
+	<circle ng-show="currentQ.imageData.charge" cx="85" cy="25" r="17" stroke-width="1" stroke="black" fill="none" />
+	<text ng-show="currentQ.imageData.charge" fill="black" font-size="20" font-family="Verdana" x="70" y="32">{{currentQ.imageData.charge}}</text>
 
 	<text fill="black" font-size="45" font-family="Verdana" x="22" y="70">{{currentQ.imageData.symbol}}</text>
 	Sorry, your browser does not support inline SVG.
 </svg>
 
-<svg ng-hide="currentQ.imageData.double" width="110" height="110">
+<svg ng-hide="currentQ.imageData.doubleL" width="110" height="110">
 
 	<rect width="110" height="110" style="stroke-width:10;stroke:rgb(0,0,0);fill:none"/> 
 
