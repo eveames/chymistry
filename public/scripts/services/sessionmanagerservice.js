@@ -160,8 +160,9 @@ angular.module('chemiatriaApp')
         //may need to work on this 
     	else {
     		var previousTries = currentQResult.answersGiven.length;
+            var index = Math.min(previousTries, currentQ.responseToWrong.length -1)
     		answerDetail.messageSent += currentQ.responseToWrong[previousTries];
-    		if (previousTries > 1) { moveOn = true;}
+    		if (previousTries > currentQ.responseToWrong.length - 1) { moveOn = true;}
 
     	}
     	currentQResult.answersGiven.push(answerDetail);

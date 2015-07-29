@@ -1,8 +1,10 @@
 @extends('layouts.master')
 
 @section('content')
-<h1>About Chemiatria</h1>
-<div class="container"><section>
+
+<div class="container">
+	<h1>About Chemiatria</h1>
+	<section>
 	<h3>Overview</h3>
 	<p>Welcome! This is a program in progress intended to help you learn chemistry thoroughly, painlessly and forever. I hope you find it useful. If you are a student, please report your impressions, suggestions and corrections as you use it using the appropriate buttons. Chemiatria will always be completely free for individual students to use. I may sometime institute a small fee for teachers to get student data.</p>
 	<p>If you are a teacher, feel free to contact me! I'd love to hear how this is or isn't working for you and your students. You are also welcome to get the source code and play with it (not for commercial purposes).</p>

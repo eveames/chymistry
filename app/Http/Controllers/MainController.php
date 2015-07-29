@@ -26,4 +26,8 @@ class MainController extends Controller
     	//check for role? currently a placeholder
     	return view('main');
     }
+
+    public function demo() {
+        return view('demo');
+    }
 }

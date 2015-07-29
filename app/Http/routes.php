@@ -15,6 +15,9 @@ Route::get('/', 'MainController@index');
 Route::get('about', 'MainController@about');
 Route::get('home', ['middleware' => 'auth', 'uses' => 'MainController@home']);
 
+//for testing
+Route::get('/demo', 'MainController@demo');
+
 
 Route::get('reg', 'Reg\RegistrationController@register');
 Route::post('reg', 'Reg\RegistrationController@postRegister');

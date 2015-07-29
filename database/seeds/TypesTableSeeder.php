@@ -27,7 +27,7 @@ class TypesTableSeeder extends Seeder
       "sequenceByID" => true, "sequenceBySubtype" => false, "priorityCalcAlgorithm" => 'fact', 'course' => 1],
       ["type" => 'IntroElements', "factory" => 'IntroElementsFactory', "listService" => "ElementsListService", "level" => 2.2, 
       "name" => 'Intro to Common Elements', "selected" => true,
-      "subtypes" => ['charge'], 
+      "subtypes" => ['nameSymbol', 'whereInTable','charge'], 
       "sequenceByID" => true, "sequenceBySubtype" => true, "priorityCalcAlgorithm" => 'fact', 'course' => 1],
 
       ];

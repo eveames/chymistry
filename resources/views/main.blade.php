@@ -65,6 +65,10 @@
         <div class="panel panel-default" ng-show="currentQ.instructions">
           <div class="panel-body">@{{currentQ.instructions}}</div>
         </div><br>
+        <div ng-show="currentQ.hasImage">
+          <div>@{{currentQ.image}}
+          </div>
+        </div>
         <div class="alert" role="alert" ng-show="answerDetail.messageSent" ng-class="responseType">
           @{{answerDetail.messageSent}}
         </div><br>
@@ -79,7 +83,7 @@
                 <input type="submit" class="btn btn-primary" value="Answer">
               </span>
           </div>
-          <div>
+          <div ng-switch-when="'ptable'">
             @include('answer.ptable')
           </div> 
         </form>
