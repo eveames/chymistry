@@ -1,0 +1,56 @@
+<svg ng-show="currentQ.imageData.doubleL" width="110" height="110">
+
+	<rect width="110" height="110" style="stroke-width:10;stroke:rgb(0,0,0);fill:none"/> 
+
+	<circle ng-show="currentQ.imageData.circ[0]" cx="16" cy="47" r="4" stroke="none" fill="black" />
+	<circle ng-show="currentQ.imageData.circ[1]" cx="16" cy="53" r="4" stroke="none" fill="black" />
+	<circle ng-show="currentQ.imageData.circ[2]" x="16" cy="63" r="4" stroke="none" fill="black" />
+
+	<circle ng-show="currentQ.imageData.circ[3]" cx="45" cy="82" r="4" stroke="none" fill="black" />
+	<circle ng-show="currentQ.imageData.circ[4]" cx="50" cy="82" r="4" stroke="none" fill="black" />
+	<circle ng-show="currentQ.imageData.circ[5]" cx="60" cy="82" r="4" stroke="none" fill="black" />
+
+	<circle ng-show="currentQ.imageData.circ[6]" cx="94" cy="63" r="4" stroke="none" fill="black" />
+	<circle ng-show="currentQ.imageData.circ[7]" cx="94" cy="53" r="4" stroke="none" fill="black" />
+ 	<circle ng-show="currentQ.imageData.circ[8]" cx="94" cy="47" r="4" stroke="none" fill="black" />
+
+	<circle ng-show="currentQ.imageData.circ[9]" cx="60" cy="27" r="4" stroke="none" fill="black" />
+	<circle ng-show="currentQ.imageData.circ[10]" cx="50" cy="27" r="4" stroke="none" fill="black" />
+	<circle ng-show="currentQ.imageData.circ[11]" cx="45" cy="27" r="4" stroke="none" fill="black" />
+
+
+	<circle ng-show="currentQ.imageData.charge" cx="85" cy="25" r="17" stroke-width="1" stroke="black" fill="none" />
+	<text ng-show="currentQ.imageData.charge" fill="black" font-size="20" font-family="Verdana" x="70" y="32">{{currentQ.imageData.charge}}</text>
+
+	<text fill="black" font-size="45" font-family="Verdana" x="22" y="70">{{currentQ.imageData.symbol}}</text>
+	Sorry, your browser does not support inline SVG.
+</svg>
+
+<svg ng-hide="currentQ.imageData.doubleL" width="110" height="110">
+
+	<rect width="110" height="110" style="stroke-width:10;stroke:rgb(0,0,0);fill:none"/> 
+
+	<circle ng-show="currentQ.imageData.circ[0]" cx="28" cy="47" r="4" stroke="none" fill="black" />
+	<circle ng-show="currentQ.imageData.circ[1]" cx="28" cy="53" r="4" stroke="none" fill="black" />
+	<circle ng-show="currentQ.imageData.circ[2]" cx="28" cy="63" r="4" stroke="none" fill="black" />
+
+	<circle ng-show="currentQ.imageData.circ[3]" cx="43" cy="80" r="4" stroke="none" fill="black" />
+	<circle ng-show="currentQ.imageData.circ[4]" cx="50" cy="80" r="4" stroke="none" fill="black" />
+	<circle ng-show="currentQ.imageData.circ[5]" cx="57" cy="80" r="4" stroke="none" fill="black" />
+
+	<circle ng-show="currentQ.imageData.circ[6]" cx="75" cy="63" r="4" stroke="none" fill="black" />
+	<circle ng-show="currentQ.imageData.circ[7]" cx="75" cy="53" r="4" stroke="none" fill="black" />
+ 	<circle ng-show="currentQ.imageData.circ[8]" cx="75" cy="47" r="4" stroke="none" fill="black" />
+
+	<circle ng-show="currentQ.imageData.circ[9]" cx="57" cy="27" r="4" stroke="none" fill="black" />
+	<circle ng-show="currentQ.imageData.circ[10]" cx="50" cy="27" r="4" stroke="none" fill="black" />
+	<circle ng-show="currentQ.imageData.circ[11]" cx="43" cy="27" r="4" stroke="none" fill="black" />
+
+
+	<circle ng-show="currentQ.imageData.charge" cx="85" cy="25" r="17" stroke-width="1" stroke="black" fill="none" />
+	<text ng-show="currentQ.imageData.charge" fill="black" font-size="20" font-family="Verdana" x="70" y="32">{{currentQ.imageData.charge}}</text>
+
+	<text fill="black" font-size="45" font-family="Verdana" x="35" y="70">{{currentQ.imageData.symbol}}</text>
+	Sorry, your browser does not support inline SVG.
+</svg>
+

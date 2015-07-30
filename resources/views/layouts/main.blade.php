@@ -107,6 +107,7 @@
         <script src="scripts/services/factpriorityservice.js"></script>
         <script src="scripts/services/metricsservice.js"></script>
         <script src="scripts/services/introelementsfactory.js"></script>
+        <script src="scripts/services/chemFormatFilter.js"></script>
         <script src="scripts/directives/autofocus.js"></script>
         
         <!-- endbuild -->

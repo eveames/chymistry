@@ -2,123 +2,41 @@
 
 /**
  * @ngdoc service
- * @name chemiatriaApp.LewisAtomFactory
+ * @name chemiatriaApp.SigFigPLFactory
  * @description
- * # LewisAtomFactory
+ * # SigFigPLFactory
  * Factory in the chemiatriaApp.
  */
 angular.module('chemiatriaApp')
-  .factory('LewisAtomFactory', ['RandomFactory', 'ElementsListService', function (RandomFactory, ElementsListService, subtype, idArray, flags) {
+  .factory('SigFigPLFactory', ['RandomFactory', function (RandomFactory) {
     // initialize general properties
-    var selectElements = function (element) {
-        return (element.family !== 'post-transition metal' && element.family !== 'coinage metal'
-            && element.family !== 'transition metal');
-    };
-
-    var getDotsArray = function(dots) {
-        var dotsArray = [];
-        dotsArray[0] = [[0,0,0,0,0,0,0,0,0,0,0,0]];
-        dotsArray[1] = [[0,1,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,1,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,1,0]];
-        dotsArray[2] = [[0,1,0,0,1,0,0,0,0,0,0,0],[0,1,0,0,0,0,0,1,0,0,0,0],[0,1,0,0,0,0,0,0,0,0,1,0],
-            [0,0,0,0,1,0,0,1,0,0,0,0], [0,0,0,0,1,0,0,0,0,0,1,0], [0,0,0,0,0,0,0,1,0,0,1,0]];
-        dotsArray[3] = [[0,1,0,0,1,0,0,1,0,0,0,0],[0,1,0,0,1,0,0,0,0,0,1,0],[0,1,0,0,0,0,0,1,0,0,1,0],[0,0,0,0,1,0,0,1,0,0,1,0]];
-        dotsArray[4] = [[0,1,0,0,1,0,0,1,0,0,1,0]];
-        dotsArray[5] = [[0,1,0,0,1,0,0,1,0,1,0,1],[0,1,0,0,1,0,1,0,1,0,1,0],[0,1,0,1,0,1,0,1,0,0,1,0],[1,0,1,0,1,0,0,1,0,0,1,0]];
-        dotsArray[6] = [[0,1,0,0,1,0,1,0,1,1,0,1],[0,1,0,1,0,1,0,1,0,1,0,1],[0,1,0,1,0,1,1,0,1,0,1,0],
-            [1,0,1,0,1,0,0,1,0,1,0,1], [1,0,1,0,1,0,1,0,1,0,1,0], [1,0,1,1,0,1,0,1,0,0,1,0]];
-        dotsArray[7] = [[0,1,0,1,0,1,1,0,1,1,0,1],[1,0,1,0,1,0,1,0,1,1,0,1],[1,0,1,1,0,1,0,1,0,1,0,1],[1,0,1,1,0,1,1,0,1,0,1,0]];
-        dotsArray[8] = [[1,1,1,1,1,1,1,1,1,1,1,1]];
-
-        var max = dotsArray[dots].length;
-        var index = RandomFactory.getRandomDigit(max, 0);
-        return dotsArray[dots][index];
-    }
-
     return {
       getQuestion : function(subtype, idArray, flags) {
-        var qToReturn = {type: 'LewisAtom', qHint: [], hasImage: true};
+        var qToReturn = {type: 'SigFigPL', qHint: [], hasImage: false};
         qToReturn.factOrSkill = 'skill';
         qToReturn.qAnswerFormat = 'small-text-box';
-        qToReturn.image = 'images/LewisSingle.html';
-
-        var elementsArray = ElementsListService.getElementsArray.filter(selectElements);
-
-        //select an element
-        var index = RandomFactory.getRandomDigit(elementsArray.length -1, 0);
-
-        var imageData = {symbol: elementsArray[index].symbol, charge: ''};
-        if (elementsArray[index].symbol.length > 1) imageData.doubleL = true;
-        else imageData.doubleL = false;
-
-        //determines whether the structure shown is correct or incorrect
-        var yn = Math.floor(Math.random() * 2);
-        if (yn) {
-            qToReturn.qAnswer = [{alt: 'y', correct: 'correct', message: ''}], {alt: 'n', correct: 'knownWrong', message: ''}]};
-        }
-        else {
-            qToReturn.qAnswer = [{alt: 'n', correct: 'correct', message: ''}], {alt: 'y', correct: 'knownWrong', message: ''}]};
-        }
+        var number, middleDigits, numZeros, zeros, firstDigits, afterDigits;
+        //console.log(qToReturn.factOrSkill);
+        //console.log('getQuestion: ',subtype);
 
         qToReturn.checkMethod = function(correctAnswer, givenAnswer) {
             var answerDetailToReturn = {answer: givenAnswer, messageSent: ''};
-            var answerTemp;
-            var yArray = ['y', 'yes', 't', 'true'];
-            var nArray = ['n', 'no', 'f', 'false'];
-            console.log(yArray.indexOf(givenAnswer.toLowerCase()), nArray.indexOf(givenAnswer.toLowerCase()));
-            if (yArray.indexOf(givenAnswer.toLowerCase()) > -1) answerTemp = 'y';
-            else if (nArray.indexOf(givenAnswer.toLowerCase()) > -1) answerTemp = 'n';
-
-            if (answerTemp === correctAnswer[0].alt) {
+            if (Number(givenAnswer) === correctAnswer) {
                 answerDetailToReturn.correct = 'correct';
-                answerDetailToReturn.messageSent += correctAnswer[0].message;
             }
-            else if (answerTemp === correctAnswer[1].alt) {
-                answerDetailToReturn.correct = 'knownWrong';
-                answerDetailToReturn.messageSent += correctAnswer[1].message;
-            }
-
-            else {
-                answerDetailToReturn.correct = 'formatError';
-                answerDetailToReturn.messageSent = 'Answer y or n. ';
-            }     
+            //answerDetailToReturn.detail = {};
+            else if (!answerDetailToReturn.correct) {
+                if (givenAnswer.isNaN) {
+                    answerDetailToReturn.correct = 'formatError';
+                    answerDetailToReturn.messageSent = 'Answer should be a number. ';
+                }
+                else if (givenAnswer % 1 !== 0) {
+                    answerDetailToReturn.correct = 'formatError';
+                    answerDetailToReturn.messageSent = 'Answer should be an integer. ';
+                }     
+          }
           return answerDetailToReturn;
         };
-
-        var which;
-        if (elementsArray[index].charge != 0) which = Math.floor(Math.random() * 2);
-        else which = 0;
-
-        var dots;
-        // atom Lewis structure
-        if (which) {
-            if (yn) dots = elementsArray[index].valence;
-            else {
-                dots = RandomFactory.getRandomExclude(8, elementsArray[index].valence);
-            }
-        }
-
-        //ion Lewis structure
-        else {
-            var trueDots = elementsArray[index].valence - elementsArray[index].charge;
-            if (yn) dots = trueDots;
-            else {
-                dots = RandomFactory.getRandomExclude(8, trueDots);
-            }
-            var tempCharge = String(elementsArray[index].charge);
-            tempCharge.replace("-", "&minus;");
-            imageData.charge = tempCharge;
-        }
-
-        imageData.circ = getDotsArray(dots);
-
-        qToReturn.instructions = 'Enter y or n. ';
-
-        
-        if (which2) {
-                qToReturn.qText = 'Is ' + String(qToReturn.qPrompt) + ' a reasonable charge for ' + element.name + '?';
-              }
-
-        
 
         //array holding responses, would depend on context. 
         //first element assumes it was careless error
