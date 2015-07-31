@@ -8,7 +8,8 @@
  * Service in the chemiatriaApp.
  */
 angular.module('chemiatriaApp')
-  .service('TopicsService', ['VocabListService', '$http', 'ElementsListService', '$resource', function (VocabListService, $http, ElementsListService, $resource) {
+  .service('TopicsService', ['VocabListService', '$http', 'ElementsListService', '$resource', 'IonListService', 
+    function (VocabListService, $http, ElementsListService, $resource, IonListService) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     
     //level corresponds roughly to chapter location in a textbook. 
@@ -48,7 +49,7 @@ angular.module('chemiatriaApp')
         
         for (var i = 0; i < temp.length; i++) {
             topicsList.push(temp[i]);
-            //console.log(topicsList[i].selected);
+            console.log(topicsList[i].course);
             topicsList[i].selected = Boolean(topicsList[i].selected);
             topicsList[i].subtypes = JSON.parse(topicsList[i].subtypes);
             //console.log('inside asynchRequest for: ',topicsList[i].subtypes);
@@ -79,6 +80,7 @@ angular.module('chemiatriaApp')
 
     //makes array for SessionManagerService to store sequencing data
     //holds skills by subtype and facts by qID
+    //holds specific logic for listing each type of question
     this.toStudyArray = function(selectedTopics) {
     	var studyArray = [];
     	for (var i = 0; i < selectedTopics.length; i++) {
@@ -89,6 +91,7 @@ angular.module('chemiatriaApp')
             var byID = selectedTopics[i].sequenceByID;
             var bySubtype = selectedTopics[i].sequenceBySubtype;
             var listService = selectedTopics[i].listService;
+            var course = selectedTopics[i].course_id;
             var k, j, qID, subtypes, subtype;
     		if (byID) {
     			//console.log('about to call VocabListService');
@@ -116,6 +119,47 @@ angular.module('chemiatriaApp')
                                 }
                             }
                         }
+                        break;
+                    case 'IonListService': //this for Nomenclature factory
+                        // use course to determine which entries to get
+                        console.log('in TopicsService, IonListService case, course is', course);
+                        var level;
+                        if (course === 1) {level = 2;}
+                        else if (course === 2) {level = 1;}
+                        console.log('level is', level);
+                        var formulaList0 = IonListService.getIDList(level, 0, false);
+                        console.log(formulaList0);
+                        for (k = 0; k < formulaList0.length; k++) {
+                            
+                            qID = type + '-ion-' + formulaList0[k];
+                            studyArray.push({type: type, subtype: ['ion'], qID: qID, 
+                            priorityCalcAlgorithm: alg, type_id: type_id, factory: factory});
+                        }
+                        /*var acidList0 = IonListService.getIDList(level, 0, true);
+                        for (k = 0; k < acidList0.length; k++) {
+                            qID = type + '-acid-' + acidList0[k];
+                            studyArray.push({type: type, subtype: ['acid'], qID: qID, 
+                            priorityCalcAlgorithm: alg, type_id: type_id, factory: factory});
+                        }*/
+                        var formulaList1 = IonListService.getIDList(level, 1, false);
+                        for (k = 0; k < formulaList1.length; k++) {
+                            qID = type + '-ion-' + formulaList1[k];
+                            studyArray.push({type: type, subtype: ['ion'], qID: qID, 
+                            priorityCalcAlgorithm: alg, type_id: type_id, factory: factory});
+                        }
+                        /*var acidList2 = IonListService.getIDList(level, 2, true);
+                        for (k = 0; k < acidList2.length; k++) {
+                            qID = type + '-acid-' + acidList2[k];
+                            studyArray.push({type: type, subtype: ['acid'], qID: qID, 
+                            priorityCalcAlgorithm: alg, type_id: type_id, factory: factory});
+                        }*/
+                        var formulaList4 = IonListService.getIDList(level, 4, false);
+                        for (k = 0; k < formulaList4.length; k++) {
+                            qID = type + '-molecule-' + formulaList4[k];
+                            studyArray.push({type: type, subtype: ['molecule'], qID: qID, 
+                            priorityCalcAlgorithm: alg, type_id: type_id, factory: factory});
+                        }
+
                         break;
                     default: 
                         console.log('listService not recognized');

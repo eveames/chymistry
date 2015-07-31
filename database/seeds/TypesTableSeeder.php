@@ -33,6 +33,14 @@ class TypesTableSeeder extends Seeder
       "name" => 'Lewis structures for single atoms and ions', "selected" => true,
       "subtypes" => ['atom', 'ion'], 
       "sequenceByID" => false, "sequenceBySubtype" => false, "priorityCalcAlgorithm" => 'PL', 'course' => 1],
+      ["type" => 'Nomenclature', "factory" => 'NomenclatureFactory', "listService" => "IonListService", "level" => 2.4, 
+      "name" => 'Common ion and molecule nomenclature (long list)', "selected" => true,
+      "subtypes" => ['ion', 'molecule', 'acid'], 
+      "sequenceByID" => true, "sequenceBySubtype" => true, "priorityCalcAlgorithm" => 'fact', 'course' => 1],
+      ["type" => 'Nomenclature', "factory" => 'NomenclatureFactory', "listService" => "IonListService", "level" => 2.4, 
+      "name" => 'Common ion and molecule nomenclature (short list)', "selected" => true,
+      "subtypes" => ['ion', 'molecule', 'acid'], 
+      "sequenceByID" => true, "sequenceBySubtype" => true, "priorityCalcAlgorithm" => 'fact', 'course' => 2]
 
       ];
 

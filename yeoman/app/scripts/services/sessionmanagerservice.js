@@ -75,6 +75,7 @@ angular.module('chemiatriaApp')
     			else {readiestUnready = studyArray[i];}
     		}	 
     	}
+    	console.log(readiest);
     	if (readiest) {return readiest;}
     	else {return readiestUnready;}  	
     };
