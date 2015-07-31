@@ -12,9 +12,11 @@ angular.module('chemiatriaApp')
     // AngularJS will instantiate a singleton by calling "new" on this function
 
     this.getSaltFormula = function(cation, anion) {
+    	console.log(cation, anion);
     	var regex1 = /[\w]+/g;
     	var anArray = anion.match(regex1);
     	var catArray = cation.match(regex1);
+    	console.log(catArray, anArray);
     	var anionCharge = anArray[1];
     	var cationCharge = catArray[1];
     	var anNum = cationCharge;
@@ -27,7 +29,7 @@ angular.module('chemiatriaApp')
     		anNum /= 3;
     		catNum /= 3;
     	}
-  		//console.log(typeof anNum);
+  		console.log(typeof anNum, anNum);
     	if (Number(anNum) === 1) {anNum = '';}
     	if (Number(catNum) === 1) {catNum = '';}
 

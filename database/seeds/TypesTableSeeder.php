@@ -40,7 +40,15 @@ class TypesTableSeeder extends Seeder
       ["type" => 'Nomenclature', "factory" => 'NomenclatureFactory', "listService" => "IonListService", "level" => 2.4, 
       "name" => 'Common ion and molecule nomenclature (short list)', "selected" => true,
       "subtypes" => ['ion', 'molecule', 'acid'], 
-      "sequenceByID" => true, "sequenceBySubtype" => true, "priorityCalcAlgorithm" => 'fact', 'course' => 2]
+      "sequenceByID" => true, "sequenceBySubtype" => true, "priorityCalcAlgorithm" => 'fact', 'course' => 2],
+      ["type" => 'IonicFormulas', "factory" => 'IonicFormulaFactory', "listService" => "IonListService", "level" => 2.5, 
+      "name" => 'Formulas and names of ionic compounds and acids (short list)', "selected" => true,
+      "subtypes" => ['acid', 'single salt', 'poly salt'], 
+      "sequenceByID" => false, "sequenceBySubtype" => true, "priorityCalcAlgorithm" => 'PL', 'course' => 2],
+      ["type" => 'IonicFormulas', "factory" => 'IonicFormulaFactory', "listService" => "IonListService", "level" => 2.5, 
+      "name" => 'Formulas and names of ionic compounds and acids (long list)', "selected" => true,
+      "subtypes" => ['acid', 'single salt', 'poly salt'], 
+      "sequenceByID" => false, "sequenceBySubtype" => true, "priorityCalcAlgorithm" => 'PL', 'course' => 1]
 
       ];
 
@@ -54,7 +62,7 @@ class TypesTableSeeder extends Seeder
             'selected' => $typesList[$i]['selected'],
             'subtypes' => json_encode($typesList[$i]['subtypes']),
             'sequenceByID' => $typesList[$i]['sequenceByID'],
-            'sequenceBySubtype' => $typesList[$i]['sequenceByID'],
+            'sequenceBySubtype' => $typesList[$i]['sequenceBySubtype'],
             'priorityCalcAlgorithm' => $typesList[$i]['priorityCalcAlgorithm'],
             'course_id' => $typesList[$i]['course']
         ]);

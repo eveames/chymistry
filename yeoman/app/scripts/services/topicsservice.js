@@ -49,7 +49,7 @@ angular.module('chemiatriaApp')
         
         for (var i = 0; i < temp.length; i++) {
             topicsList.push(temp[i]);
-            console.log(topicsList[i].course);
+            console.log(topicsList[i].course_id);
             topicsList[i].selected = Boolean(topicsList[i].selected);
             topicsList[i].subtypes = JSON.parse(topicsList[i].subtypes);
             //console.log('inside asynchRequest for: ',topicsList[i].subtypes);
@@ -92,10 +92,13 @@ angular.module('chemiatriaApp')
             var bySubtype = selectedTopics[i].sequenceBySubtype;
             var listService = selectedTopics[i].listService;
             var course = selectedTopics[i].course_id;
+            var level;
+            if (course === 1) {level = 2;}
+            else if (course === 2) {level = 1;}
             var k, j, qID, subtypes, subtype;
     		if (byID) {
     			//console.log('about to call VocabListService');
-                //console.log(selectedTopics[i]);
+                console.log(selectedTopics[i]);
                 switch (listService) {
                     case 'VocabListService':
                         var vocabList = VocabListService.getIDList(type_id);
@@ -104,7 +107,7 @@ angular.module('chemiatriaApp')
                             subtypes = selectedTopics[i].subtypes;
                             var word_id = vocabList[k].word_id;
                             studyArray.push({type: type, subtype: subtypes, qID: qID, word_id: word_id,
-                            priorityCalcAlgorithm: alg, type_id: type_id, factory: factory});
+                            priorityCalcAlgorithm: alg, type_id: type_id, factory: factory, level: level});
                         }
                         break;
                     case 'ElementsListService':
@@ -115,7 +118,7 @@ angular.module('chemiatriaApp')
                                 for (k = 0; k < elementsList.length; k++) {
                                     qID = type + '-' + subtype + '-' + elementsList[k].qID;
                                     studyArray.push({type: type, subtype: [subtype], qID: qID, 
-                                    priorityCalcAlgorithm: alg, type_id: type_id, factory: factory});
+                                    priorityCalcAlgorithm: alg, type_id: type_id, factory: factory, level: level});
                                 }
                             }
                         }
@@ -123,9 +126,6 @@ angular.module('chemiatriaApp')
                     case 'IonListService': //this for Nomenclature factory
                         // use course to determine which entries to get
                         console.log('in TopicsService, IonListService case, course is', course);
-                        var level;
-                        if (course === 1) {level = 2;}
-                        else if (course === 2) {level = 1;}
                         console.log('level is', level);
                         var formulaList0 = IonListService.getIDList(level, 0, false);
                         console.log(formulaList0);
@@ -133,7 +133,7 @@ angular.module('chemiatriaApp')
                             
                             qID = type + '-ion-' + formulaList0[k];
                             studyArray.push({type: type, subtype: ['ion'], qID: qID, 
-                            priorityCalcAlgorithm: alg, type_id: type_id, factory: factory});
+                            priorityCalcAlgorithm: alg, type_id: type_id, factory: factory, level: level});
                         }
                         /*var acidList0 = IonListService.getIDList(level, 0, true);
                         for (k = 0; k < acidList0.length; k++) {
@@ -145,7 +145,7 @@ angular.module('chemiatriaApp')
                         for (k = 0; k < formulaList1.length; k++) {
                             qID = type + '-ion-' + formulaList1[k];
                             studyArray.push({type: type, subtype: ['ion'], qID: qID, 
-                            priorityCalcAlgorithm: alg, type_id: type_id, factory: factory});
+                            priorityCalcAlgorithm: alg, type_id: type_id, factory: factory, level: level});
                         }
                         /*var acidList2 = IonListService.getIDList(level, 2, true);
                         for (k = 0; k < acidList2.length; k++) {
@@ -157,7 +157,7 @@ angular.module('chemiatriaApp')
                         for (k = 0; k < formulaList4.length; k++) {
                             qID = type + '-molecule-' + formulaList4[k];
                             studyArray.push({type: type, subtype: ['molecule'], qID: qID, 
-                            priorityCalcAlgorithm: alg, type_id: type_id, factory: factory});
+                            priorityCalcAlgorithm: alg, type_id: type_id, factory: factory, level: level});
                         }
 
                         break;
@@ -170,16 +170,16 @@ angular.module('chemiatriaApp')
     		else if (bySubtype) {
     			for (j = 0; j < selectedTopics[i].subtypes.length; j++) {
     			subtype = selectedTopics[i].subtypes[j]; 
-    			//console.log(subtype);
+    			console.log(subtype);
     			studyArray.push({type: type, subtype: [subtype], qID: '', 
-                    priorityCalcAlgorithm: alg, type_id: type_id, factory: factory});
+                    priorityCalcAlgorithm: alg, type_id: type_id, factory: factory, level: level});
     			}
     		}
             else {
                 //subtype = selectedTopics[i].subtypes; 
                 //console.log(subtype);
                 studyArray.push({type: type, subtype: [], qID: '', 
-                    priorityCalcAlgorithm: alg, type_id: type_id, factory: factory});
+                    priorityCalcAlgorithm: alg, type_id: type_id, factory: factory, level: level});
             }
     	}
     	//console.log(studyArray);

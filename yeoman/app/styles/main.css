@@ -30,10 +30,27 @@
   
 }
 .table-cell-bordered > tbody > tr {
-  height: 2em;
+  height: 1em;
 }
  .table-cell-bordered > tbody > tr >td.no-border {
   border: none;
+}
+
+.table-dimensional-analysis {
+    border-style: hidden;
+    border-collapse: collapse;
+    width: auto;
+}
+
+.table-dimensional-analysis td {
+    padding: 3px;
+    border: 1px solid black;
+    text-align: center;
+    border-spacing: 0px;
+}
+.table-dimensional-analysis td[rowspan="2"] {
+    border-left: hidden;
+    padding: 3px;
 }
 
 

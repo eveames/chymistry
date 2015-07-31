@@ -54,7 +54,7 @@
 
     <div class="col-md-7">
       <div ng-cloak>
-        <span ng-cloak ng-show="currentQ.showBackgroundText">{{currentQ.qBackgroundText}}</span>
+        <span ng-cloak ng-show="currentQ.showBackgroundText" ng-bind-html="currentQ.qBackgroundText"></span>
       </div>
 
       <div ng-cloak ng-hide="noQuestion">
@@ -102,6 +102,17 @@
           </div>
           <div ng-switch-when="formula-box"  class="panel panel-default"><div>Your answer:</div>
             <div ng-bind-html="field.answer | formula"></div>
+          </div>
+          <div ng-switch-when="dimensional-analysis">
+            <button class="btn" ng-click="field.columns.push({num:'', denom: ''})">Add columns</button>
+            <table class="table-dimensional-analysis" ui-sortable><tbody>
+              <tr><td ng-repeat="column in field.columns" >
+                <input type="text" ng-model="field.columns[$index].num" placeholder="">
+              </td></tr>
+              <tr><td ng-repeat="column in field.columns">
+                <input type="text" ng-model="field.columns[$index].denom" placeholder="">
+              </td></tr>
+            </tbody></table>
           </div>
         </form>
       </div>

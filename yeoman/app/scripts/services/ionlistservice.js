@@ -130,13 +130,46 @@ angular.module('chemiatriaApp')
 
     var completeList = [polyanionsList, polycationsList, anionsList, cationsList, moleculesList];
 
+    var levelFilter = function(entry) {
+        	return (entry.level <= level);
+        };
+
+    this.polyanions = function (level) {
+    	return completeList[0].filter(function(entry) {
+        	return (entry.level <= level);
+        });
+    };
+
+    this.polycations = function (level) {
+    	return completeList[1].filter(function(entry) {
+        	return (entry.level <= level);
+        });
+    };
+
+    this.acids = function (level) {
+    	var polyacids = completeList[0].filter(function(entry) {
+        	return (entry.level <= level && entry.acid);
+        });
+    	var monoacids = completeList[2].filter(function(entry) {
+        	return (entry.level <= level && entry.acid);
+        });
+    	var acids = polyacids.concat(monoacids);
+    	return acids; 
+    };
+
+    this.cations = function() {
+    	return cationsList;
+    };
+
+    this.anions = function() {
+    	return anionsList;
+    };
 
     this.getIDList = function(level, category, acid) {
         
         console.log('in IonListService.getIDList', level, category, acid);
         //console.log(vocabListArray);
         var map = [];
-
         var levelList = completeList[category].filter(function(entry) {
         	return (entry.level <= level);
         });
