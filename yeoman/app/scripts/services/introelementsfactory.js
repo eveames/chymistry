@@ -66,29 +66,29 @@ angular.module('chemiatriaApp')
             'Spelling counts. ';
             //console.log(qToReturn);
             qToReturn.checkMethod = function(correctAnswer, givenAnswer) {
-              var answerDetailToReturn = {answer: givenAnswer, messageSent: '', correct: ''};
+              var answerDetailToReturn = {answer: givenAnswer.answer, messageSent: '', correct: ''};
               //console.log('correct is: ', correctAnswer);
               //console.log('correct length: ', correctAnswer.length);
               //console.log('given is: ', givenAnswer);
 
               //set correct (correct/close/knownWrong/unknownWrong/noAnswer/formatError/dontKnow)
               //check for no answer
-              if (!givenAnswer) {
+              if (!givenAnswer.answer) {
                 answerDetailToReturn.correct = 'noAnswer';
                 answerDetailToReturn.messageSent = 'If you don\'t know the answer, enter zero. ';
               }
-              else if (Number(givenAnswer) === 0) {
+              else if (Number(givenAnswer.answer) === 0) {
                 answerDetailToReturn.correct = 'dontKnow';
               }
               else {
                 for (var i = 0; i < correctAnswer.length ; i++){
                   //console.log('i is ', i);
-                  if (givenAnswer === correctAnswer[i].alt) {
+                  if (givenAnswer.answer === correctAnswer[i].alt) {
                     answerDetailToReturn.correct = correctAnswer[i].correct;
                     if (correctAnswer[i].message) {answerDetailToReturn.messageSent = correctAnswer[i].message + ' ';}
                     break;
                   }
-                  else if (givenAnswer.toLowerCase() === correctAnswer[i].alt.toLowerCase()) {
+                  else if (givenAnswer.answer.toLowerCase() === correctAnswer[i].alt.toLowerCase()) {
                     if (correctAnswer[i].correct === 'correct') {
                       answerDetailToReturn.correct = 'formatError';
                       answerDetailToReturn.messageSent = 'Almost there, please check your capitalization. ';
@@ -129,18 +129,18 @@ angular.module('chemiatriaApp')
             'Location of "' + qToReturn.qPrompt + '" is "' + qToReturn.qAnswer[0].alt + '." We\'ll come back to it.'];
 
             qToReturn.checkMethod = function(correctAnswer, givenAnswer) {
-              var answerDetailToReturn = {answer: givenAnswer, messageSent: '', correct: ''};
+              var answerDetailToReturn = {answer: givenAnswer.answer, messageSent: '', correct: ''};
               //console.log('correct is: ', correctAnswer);
               //console.log('correct length: ', correctAnswer.length);
               //console.log('given is: ', givenAnswer);
 
               //set correct (correct/close/knownWrong/unknownWrong/noAnswer/formatError/dontKnow)
               //check for no answer
-              if (!givenAnswer) {
+              if (!givenAnswer.answer) {
                 answerDetailToReturn.correct = 'noAnswer';
                 answerDetailToReturn.messageSent = 'If you don\'t know the answer, enter zero. ';
               }
-              else if (Number(givenAnswer) === 0) {
+              else if (Number(givenAnswer.answer) === 0) {
                 answerDetailToReturn.correct = 'dontKnow';
               }
               else {
@@ -189,14 +189,14 @@ angular.module('chemiatriaApp')
               'A reasonable charge for "' + qToReturn.qPrompt + '" is "' + qToReturn.qAnswer[0].alt + '." We\'ll come back to it.'];
 
               qToReturn.checkMethod = function(correctAnswer, givenAnswer) {
-              var answerDetailToReturn = {answer: givenAnswer, messageSent: '', correct: ''};
+              var answerDetailToReturn = {answer: givenAnswer.answer, messageSent: '', correct: ''};
               //console.log('correct is: ', correctAnswer);
               //console.log('correct length: ', correctAnswer.length);
               //console.log('given is: ', givenAnswer);
 
               // catch x-, x+ syntax
               var regex = /(\d+)([+-])/;
-              givenAnswer = givenAnswer.replace(regex, '$2$1');
+              givenAnswer = givenAnswer.answer.replace(regex, '$2$1');
               console.log('given answer after regex', givenAnswer);
 
               //set correct (correct/close/knownWrong/unknownWrong/noAnswer/formatError/dontKnow)
@@ -212,25 +212,25 @@ angular.module('chemiatriaApp')
                   
                   switch(correctAnswer[i].op) {
                     case 'equals':
-                      if (Number(givenAnswer) === Number(correctAnswer[i].alt)) {
+                      if (Number(givenAnswer.answer) === Number(correctAnswer[i].alt)) {
                         answerDetailToReturn.correct = correctAnswer[i].correct;
                         if (correctAnswer[i].message) {answerDetailToReturn.messageSent = correctAnswer[i].message + ' ';}
                       }
                     break;
                     case 'greater': 
-                      if (Number(givenAnswer) > Number(correctAnswer[i].alt)) {
+                      if (Number(givenAnswer.answer) > Number(correctAnswer[i].alt)) {
                           answerDetailToReturn.correct = correctAnswer[i].correct;
                           if (correctAnswer[i].message) {answerDetailToReturn.messageSent = correctAnswer[i].message + ' ';}
                       }
                     break;
                     case 'less': 
-                      if (Number(givenAnswer) < Number(correctAnswer[i].alt)) {
+                      if (Number(givenAnswer.answer) < Number(correctAnswer[i].alt)) {
                           answerDetailToReturn.correct = correctAnswer[i].correct;
                           if (correctAnswer[i].message) {answerDetailToReturn.messageSent = correctAnswer[i].message + ' ';}
                       }
                     break;
                     case 'notEqual': 
-                      if (Number(givenAnswer) !== Number(correctAnswer[i].alt)) {
+                      if (Number(givenAnswer.answer) !== Number(correctAnswer[i].alt)) {
                           answerDetailToReturn.correct = correctAnswer[i].correct;
                           if (correctAnswer[i].message) {answerDetailToReturn.messageSent = correctAnswer[i].message + ' ';}
                       }
@@ -241,11 +241,11 @@ angular.module('chemiatriaApp')
                 console.log('checkMethod after for', answerDetailToReturn.correct);
 
                 if (!answerDetailToReturn.correct) {
-                  if (givenAnswer.isNaN) {
+                  if (givenAnswer.answer.isNaN) {
                       answerDetailToReturn.correct = 'formatError';
                       answerDetailToReturn.messageSent = 'Answer should be a number. ';
                   }
-                  else if (Number(givenAnswer) % 1 !== 0) {
+                  else if (Number(givenAnswer.answer) % 1 !== 0) {
                       answerDetailToReturn.correct = 'formatError';
                       answerDetailToReturn.messageSent = 'Answer should be an integer. ';
                   }     
@@ -340,13 +340,13 @@ angular.module('chemiatriaApp')
               qToReturn.responseToWrong = [messageTemp + ' We\'ll come back to it. '];
 
               qToReturn.checkMethod = function(correctAnswer, givenAnswer) {
-                var answerDetailToReturn = {answer: givenAnswer, messageSent: '', correct: ''};
+                var answerDetailToReturn = {answer: givenAnswer.answer, messageSent: '', correct: ''};
                 var answerTemp;
                 var yArray = ['y', 'yes', 't', 'true'];
                 var nArray = ['n', 'no', 'f', 'false'];
-                console.log(yArray.indexOf(givenAnswer.toLowerCase()), nArray.indexOf(givenAnswer.toLowerCase()));
-                if (yArray.indexOf(givenAnswer.toLowerCase()) > -1) {answerTemp = 'y';}
-                else if (nArray.indexOf(givenAnswer.toLowerCase()) > -1) {answerTemp = 'n';}
+                console.log(yArray.indexOf(givenAnswer.answer.toLowerCase()), nArray.indexOf(givenAnswer.answer.toLowerCase()));
+                if (yArray.indexOf(givenAnswer.answer.toLowerCase()) > -1) {answerTemp = 'y';}
+                else if (nArray.indexOf(givenAnswer.answer.toLowerCase()) > -1) {answerTemp = 'n';}
                 console.log('answerTemp: ', answerTemp);
                 console.log('correctAnswer:', correctAnswer);
                 if (answerTemp === correctAnswer[0].alt) {
@@ -408,28 +408,28 @@ angular.module('chemiatriaApp')
               'Check the periodic table! We\'ll come back to it.'];
 
             qToReturn.checkMethod = function(correctAnswer, givenAnswer) {
-              var answerDetailToReturn = {answer: givenAnswer, messageSent: '', correct: ''};
+              var answerDetailToReturn = {answer: givenAnswer.answer, messageSent: '', correct: ''};
               //console.log('correct is: ', correctAnswer);
               //console.log('correct length: ', correctAnswer.length);
               //console.log('given is: ', givenAnswer);
 
               //set correct (correct/close/knownWrong/unknownWrong/noAnswer/formatError/dontKnow)
               //check for no answer
-              if (!givenAnswer) {
+              if (!givenAnswer.answer) {
                 answerDetailToReturn.correct = 'noAnswer';
                 answerDetailToReturn.messageSent = 'Enter an integer.';
               }
               else {
                 for (var i = 0; i < correctAnswer.length ; i++){
                   //console.log('i is ', i);
-                  if (givenAnswer === correctAnswer[i].alt) {
+                  if (givenAnswer.answer === correctAnswer[i].alt) {
                     answerDetailToReturn.correct = correctAnswer[i].correct;
                     if (correctAnswer[i].message) {answerDetailToReturn.messageSent = correctAnswer[i].message + ' ';}
                     break;
                   }
                 }
                 if (!answerDetailToReturn.correct) {
-                  if (typeof givenAnswer === 'number' && givenAnswer >= 0 && givenAnswer <= 9) {
+                  if (typeof givenAnswer.answer === 'number' && givenAnswer.answer >= 0 && givenAnswer.answer <= 9) {
                     answerDetailToReturn.correct = 'knownWrong';
                   }
                   else {

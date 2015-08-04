@@ -48,6 +48,10 @@ class TypesTableSeeder extends Seeder
       ["type" => 'IonicFormulas', "factory" => 'IonicFormulaFactory', "listService" => "IonListService", "level" => 2.5, 
       "name" => 'Formulas and names of ionic compounds and acids (long list)', "selected" => true,
       "subtypes" => ['acid', 'single salt', 'poly salt'], 
+      "sequenceByID" => false, "sequenceBySubtype" => true, "priorityCalcAlgorithm" => 'PL', 'course' => 1],
+      ["type" => 'DimensionalAnalysis', "factory" => 'DimensionalAnalysisFactory', "listService" => "", "level" => 0.5, 
+      "name" => 'Dimensional Analysis', "selected" => true,
+      "subtypes" => ['metricPrefixes'], 
       "sequenceByID" => false, "sequenceBySubtype" => true, "priorityCalcAlgorithm" => 'PL', 'course' => 1]
 
       ];

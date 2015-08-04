@@ -36,7 +36,7 @@ angular.module('chemiatriaApp')
         var qToReturn = {type: 'LewisAtom', qHint: [], hasImage: true};
         qToReturn.factOrSkill = 'skill';
         qToReturn.qAnswerFormat = 'small-text-box';
-        qToReturn.image = 'images/LewisSingle.html';
+        //qToReturn.image = 'images/LewisSingle.html';
 
         var elementsArray = ElementsListService.getMainGroup();
 
@@ -58,13 +58,13 @@ angular.module('chemiatriaApp')
         }
 
         qToReturn.checkMethod = function(correctAnswer, givenAnswer) {
-            var answerDetailToReturn = {answer: givenAnswer, messageSent: ''};
+            var answerDetailToReturn = {answer: givenAnswer.answer, messageSent: ''};
             var answerTemp;
             var yArray = ['y', 'yes', 't', 'true'];
             var nArray = ['n', 'no', 'f', 'false'];
-            console.log(yArray.indexOf(givenAnswer.toLowerCase()), nArray.indexOf(givenAnswer.toLowerCase()));
-            if (yArray.indexOf(givenAnswer.toLowerCase()) > -1) {answerTemp = 'y';}
-            else if (nArray.indexOf(givenAnswer.toLowerCase()) > -1) {answerTemp = 'n';}
+            console.log(yArray.indexOf(givenAnswer.answer.toLowerCase()), nArray.indexOf(givenAnswer.answer.toLowerCase()));
+            if (yArray.indexOf(givenAnswer.answer.toLowerCase()) > -1) {answerTemp = 'y';}
+            else if (nArray.indexOf(givenAnswer.answer.toLowerCase()) > -1) {answerTemp = 'n';}
 
             if (answerTemp === correctAnswer[0].alt) {
                 answerDetailToReturn.correct = 'correct';

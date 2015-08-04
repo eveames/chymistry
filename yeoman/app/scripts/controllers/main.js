@@ -57,7 +57,9 @@ angular.module('chemiatriaApp')
     
     $scope.topicsSelected = [];
     $scope.currentQ = {};
-    $scope.field = {answer: ''};
+    console.log('about to define field');
+    $scope.field = {answer: '', columns: [{num: '', denom: ''}, {num: '', denom: ''}]};
+    console.log($scope.field);
     $scope.answerDetail = {}; //used to display message
     //call services here to get db data: vocab list and states list
     var sessionEnded = false;
@@ -106,7 +108,7 @@ angular.module('chemiatriaApp')
         $scope.bugDescription = '';
         $scope.questionsAnswered = 0;
         $scope.responseType = 'alert-success'; 
-        $scope.field = {answer: ''};
+        $scope.field = {answer: '', columns: [{num: '', denom: ''}, {num: '', denom: ''}]};
         $scope.answerDetail = {}; //used to display message
         //call services here to get db data: vocab list and states list
         $scope.loaded = true;
@@ -124,7 +126,7 @@ angular.module('chemiatriaApp')
         //console.log($scope.username);
         $scope.currentQ = SessionManagerService.openSession($scope.username, $scope.topicsSelected);
         SessionLog.addEvent({type: 'question posted', detail: $scope.currentQ});
-        console.log('in MainCtrl: ', $scope.currentQ);
+        console.log('in MainCtrl: ', $scope.field);
     };
 
     //
@@ -132,7 +134,7 @@ angular.module('chemiatriaApp')
         $scope.showHint = false;
         $scope.currentHint = 0;
         $scope.showStats = false;
-    	var responseObj = SessionManagerService.respondToResponse($scope.field.answer);
+    	var responseObj = SessionManagerService.respondToResponse({answer: $scope.field.answer, columns: $scope.field.columns});
     	$scope.answerDetail = responseObj.answerDetail;
         $scope.showStats = responseObj.showStats;
         if ($scope.showStats) {
@@ -148,11 +150,20 @@ angular.module('chemiatriaApp')
         }
         else {$scope.responseType = 'alert-danger';}
     	SessionLog.addEvent({type: 'answer given', detail: $scope.answerDetail});
-    	$scope.field = {answer: ''};
+    	$scope.field = {answer: '', columns: [{num: '', denom: ''}, {num: '', denom: ''}]};
     	if (responseObj.moveOn) {
     		$scope.currentQ = SessionManagerService.getQuestion();
     		SessionLog.addEvent({type: 'question posted', detail: $scope.currentQ});
+    		console.log($scope.currentQ);
     	}
+    };
+    $scope.addDimAnalColumn = function() {
+    	console.log('in addDimAnalColumn');
+    	$scope.field.columns.push({num: '', denom: ''});
+    };
+    $scope.removeDimAnalColumn = function() {
+    	console.log('in addDimAnalColumn');
+    	$scope.field.columns.pop();
     };
     $scope.imFrustrated = function() {
     	$scope.isFrustrated = true;

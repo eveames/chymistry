@@ -104,13 +104,16 @@
             <div ng-bind-html="field.answer | formula"></div>
           </div>
           <div ng-switch-when="dimensional-analysis">
-            <button class="btn" ng-click="field.columns.push({num:'', denom: ''})">Add columns</button>
-            <table class="table-dimensional-analysis" ui-sortable><tbody>
+            <button type="button" class="btn" ng-click="$parent.addDimAnalColumn()">Add column</button>
+            <button type="button" class="btn" ng-click="$parent.removeDimAnalColumn()">Remove last column</button>
+            <table class="table-dimensional-analysis" ui-sortable ng-model="field.columns"><tbody>
               <tr><td ng-repeat="column in field.columns" >
-                <input type="text" ng-model="field.columns[$index].num" placeholder="">
-              </td></tr>
+                <input type="text" ng-model="field.columns[$index].num" placeholder="{{ $first && 'value to' || 'conversion' }}">
+              </td>
+                <td rowspan="2" placeholder="answer here"> = 
+                  <input type="text" ng-model="field.answer" placeholder="answer here"></td></tr>
               <tr><td ng-repeat="column in field.columns">
-                <input type="text" ng-model="field.columns[$index].denom" placeholder="">
+                <input type="text" ng-model="field.columns[$index].denom" placeholder="{{ $first && 'convert' || 'factor ' + $index}}">
               </td></tr>
             </tbody></table>
           </div>

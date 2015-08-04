@@ -9,8 +9,8 @@
  */
 angular.module('chemiatriaApp')
   .factory('QuestionFactory', ['SigFigPLFactory', 'VocabFactory', 'QIDService',
-    'RandomFactory', 'IntroElementsFactory', 'LewisAtomFactory', 'NomenclatureFactory', 'IonicFormulaFactory',
-    function (SigFigPLFactory, VocabFactory, QIDService, RandomFactory, IntroElementsFactory, LewisAtomFactory, NomenclatureFactory, IonicFormulaFactory) {
+    'RandomFactory', 'IntroElementsFactory', 'LewisAtomFactory', 'NomenclatureFactory', 'IonicFormulaFactory', 'DimensionalAnalysisFactory',
+    function (SigFigPLFactory, VocabFactory, QIDService, RandomFactory, IntroElementsFactory, LewisAtomFactory, NomenclatureFactory, IonicFormulaFactory, DimensionalAnalysisFactory) {
     // array holds topics available, connection to appropriate factories
     //var qFactoriesAvailable = [{type: 'SigFigPL', factory: 'SigFigPLFactory'},
      // {type: Vocab, factory: 'VocabFactory'}];
@@ -81,6 +81,11 @@ angular.module('chemiatriaApp')
             subtype = studyArrayItem.subtype[0];
             qToReturn = IonicFormulaFactory.getQuestion(type, subtype, level);
 
+            break;
+          case 'DimensionalAnalysisFactory':
+            flags = [];
+            subtype = studyArrayItem.subtype[0];
+            qToReturn = DimensionalAnalysisFactory.getQuestion(type, subtype, flags);
             break;
           default:
             qToReturn.qText = 'Question type error';

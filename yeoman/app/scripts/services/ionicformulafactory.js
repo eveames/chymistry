@@ -125,22 +125,22 @@ angular.module('chemiatriaApp')
 
         // correctAnswer is an array containing prompt and certain alternates
         qToReturn.checkMethod = function(correctAnswer, givenAnswer) {
-          var answerDetailToReturn = {answer: givenAnswer, messageSent: '', correct: ''};
+          var answerDetailToReturn = {answer: givenAnswer.answer, messageSent: '', correct: ''};
           //console.log('correct is: ', correctAnswer);
           //console.log('correct length: ', correctAnswer.length);
           //console.log('given is: ', givenAnswer);
 
           //set correct (correct/close/knownWrong/unknownWrong/noAnswer/formatError/dontKnow)
           //check for no answer
-          if (!givenAnswer) {
+          if (!givenAnswer.answer) {
             answerDetailToReturn.correct = 'noAnswer';
             answerDetailToReturn.messageSent = 'If you don\'t know the answer, enter zero. ';
           }
-          else if (Number(givenAnswer) === 0) {
+          else if (Number(givenAnswer.answer) === 0) {
             answerDetailToReturn.correct = 'dontKnow';
           }
 
-          if (!givenAnswer.match(/^[\w()]+$/g) && correctAnswer[0].alt.match(/^[\w()]+$/g)) {
+          if (!givenAnswer.answer.match(/^[\w()]+$/g) && correctAnswer[0].alt.match(/^[\w()]+$/g)) {
             answerDetailToReturn.correct = 'formatError';
             answerDetailToReturn.messageSent = 'Use only letters, numbers and (). ';
           }      
@@ -148,14 +148,14 @@ angular.module('chemiatriaApp')
           else {
             for (var i = 0; i < correctAnswer.length ; i++){
               //console.log('i is ', i);
-              if (givenAnswer === correctAnswer[i].alt) {
+              if (givenAnswer.answer === correctAnswer[i].alt) {
                 answerDetailToReturn.correct = correctAnswer[i].correct;
                 if (correctAnswer[i].message) {answerDetailToReturn.messageSent = correctAnswer[i].message + ' ';}
                 break;
               }
 
               if (correctAnswer[i].correct === 'correct') {
-                var formatCheck = givenAnswer.toLowerCase().replace(/[()]/g, '');
+                var formatCheck = givenAnswer.answer.toLowerCase().replace(/[()]/g, '');
                 var answerNoFormat = correctAnswer[i].alt.toLowerCase().replace(/[()]/g, '');
 
                 if (formatCheck === answerNoFormat) {

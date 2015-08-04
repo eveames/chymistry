@@ -18,7 +18,7 @@ class CreateTypesTable extends Migration
             $table->unsignedInteger('course_id');
             $table->foreign('course_id')->references('course_id')->on('courses');
             $table->string('type', 20);
-            $table->string('factory', 20);
+            $table->string('factory', 50);
             $table->string('listService', 30);
             $table->decimal('level', 5, 2);
             $table->boolean('selected');
