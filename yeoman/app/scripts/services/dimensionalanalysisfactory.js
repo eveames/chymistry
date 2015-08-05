@@ -26,14 +26,15 @@ angular.module('chemiatriaApp')
           'such as ' +powerFilter('kgm^2/s^2') + ' enter it as "kg m^2 s^-2". Put spaces between each unit, and use negative exponents ' +
           'if a unit is in the denominator. If you are having trouble, use the "railroad tracks" below the answer box ' +
           'to show your work and get better feedback. Put the limiting value in the first column, with units (numerator units ' +
-          'on top and denominator units on the bottom), then the conversion factors. Check that the units on top and on the bottom ' +
+          'on top and denominator units on the bottom, so you probably don\'t need negative exponents), then the conversion factors. ' +
+          'Check that the units on top and on the bottom ' +
           'cancel out, then do the calculation by multiplying across the top and dividing by everything along the bottom, and put ' +
-          'your answer in the box. ';
+          'your answer in the box. Please pardon the awkwardly-phrased questions. ';
 
         //array holding responses, would depend on context. 
         //first element assumes it was careless error
         //second element provides hint
-        
+          var number, answer, sigFigs, alt1;
         switch(subtype) {
           case 'metricPrefixes':
 
@@ -54,7 +55,7 @@ angular.module('chemiatriaApp')
             var startPrefix = metricPrefixes[startIndex];
             var endIndex = RandomFactory.getRandomNear(metricPrefixes.length, startIndex, 5);
             var endPrefix = metricPrefixes[endIndex];
-            var number, middleDigits, numZeros, zeros;
+            var middleDigits, numZeros, zeros;
             qToReturn.qPrompt = startPrefix[0] + unit[0];
 
             //get initial number (add zeros on reasonable end)
@@ -90,22 +91,22 @@ angular.module('chemiatriaApp')
               number *= Math.pow(10, 3 - Math.floor(Math.random() * 7));
             }
             
-            var sigFigs = ScientificNotationService.parseNumber(number).sigFigs;
+            sigFigs = ScientificNotationService.parseNumber(number).sigFigs;
             console.log(Math.pow(10,endPrefix[1] - startPrefix[1]));
-            var answer = Number(number) / Math.pow(10,endPrefix[1] - startPrefix[1]);
+            answer = Number(number) / Math.pow(10,endPrefix[1] - startPrefix[1]);
             answer = answer.toPrecision(sigFigs);
             answer += ' ' + endPrefix[0]  + unit[0];
             console.log(number, typeof number);
-            var alt1 = Number(number) * Math.pow(10, endPrefix[1] - startPrefix[1]);
-            alt1 = alt1.toPrecision(sigFigs);
-            alt1 += ' ' +  endPrefix[0] + unit[0];
-            var alt2 = {alt: number + ' ' + qToReturn.qPrompt, correct: 'knownWrong', message: 'You didn\'t convert it! '};
+            var alt2 = Number(number) * Math.pow(10, endPrefix[1] - startPrefix[1]);
+            alt2 = alt2.toPrecision(sigFigs);
+            alt2 += ' ' +  endPrefix[0] + unit[0];
+            alt1 = {alt: number + ' ' + qToReturn.qPrompt, correct: 'knownWrong', message: 'You didn\'t convert it! '};
 
-            var answerArray = [{alt: answer, correct: 'correct', message: ''}, 
-              {alt: alt1, correct: 'knownWrong', message: 'oops, you went the wrong way! '}, alt2];
+            var answerArray = [{alt: answer, correct: 'correct', message: ''}, alt1,
+              {alt: alt2, correct: 'knownWrong', message: 'oops, you went the wrong way! '}];
             qToReturn.qText = 'Convert ' + bigNumberFilter(number) + ' ' + startPrefix[0] + unit[0] + ' to ' + endPrefix[2] + unit[1];
             
-            qToReturn.qID = type + '-' + 'subtype' + '-' + qToReturn.qPrompt + endPrefix[2];
+            qToReturn.qID = type + '-' + subtype + '-' + qToReturn.qPrompt + endPrefix[2];
             qToReturn.qHint = [''];
             qToReturn.qBackgroundText = '';
             qToReturn.qAnswer = answerArray;
@@ -122,21 +123,35 @@ angular.module('chemiatriaApp')
             var start = Math.floor(Math.random() * numConvTotal);
             var end = RandomFactory.getRandomExclude(numConvTotal, start);
             var which = Math.floor(Math.random() * 2);
-            var startUnit, endUnit, k;
+            var startUnit, endUnit, k, endUnitL;
 
-            var number = String(RandomFactory.getRandomDigit(10, 1));
+            number = String(RandomFactory.getRandomDigit(10, 1));
               middleDigits = RandomFactory.getRandomString(RandomFactory.getRandomDigit(3, 0), 3);
               number += String(middleDigits);
-              number *= Math.pow(10, 3 - Math.floor(Math.random() * 7));
-            var answer = number;
+              number *= Math.pow(10, 2 - Math.floor(Math.random() * 5));
+            answer = number;
+
+            var conversionFactors = '';
+            for (k = 0; k < convSeries.length; k++) {
+              if (!convSeries[k].conversionNum) {
+                convSeries[k].conversionNum = Math.floor(Math.random()*100);
+              }
+              if (!convSeries[k].conversionDenom) {
+                convSeries[k].conversionDenom = Math.floor(Math.random()*100);
+              }
+              conversionFactors += ' There are ' + convSeries[k].conversionNum + ' ' + powerFilter(convSeries[k].numUnitL) + 
+                ' per ' + convSeries[k].conversionDenom + ' ' + powerFilter(convSeries[k].denomUnitL) + '. ';
+            }
             // use nums
             if (which) {
               startUnit = convSeries[start].numUnit;
               endUnit = convSeries[end].numUnit;
+              endUnitL = convSeries[end].numUnitL;
               if (start > end) {
-                for (k = end ; k < start; k++ )
-                answer *= convSeries[k].conversionNum;
-                answer /= convSeries[k].conversionDenom;
+                for (k = end ; k < start; k++ ) {
+                  answer *= convSeries[k].conversionNum;
+                  answer /= convSeries[k].conversionDenom;
+                }
               }
               else {
                 for (k = start; k < end; k++) {
@@ -150,6 +165,7 @@ angular.module('chemiatriaApp')
             else {
               startUnit = convSeries[start].denomUnit;
               endUnit = convSeries[end].denomUnit;
+              endUnitL = convSeries[end].denomUnitL;
 
               if (start > end) {
                 for (k = end + 1; k < start + 1; k++) {
@@ -165,7 +181,15 @@ angular.module('chemiatriaApp')
                 }
               }
             }
+            sigFigs = ScientificNotationService.parseNumber(number).sigFigs;
+            answer = answer.toPrecision(sigFigs);
+            alt1 = {alt: number + ' ' + startUnit, correct: 'knownWrong', message: 'You didn\'t convert it! '};
             
+            qToReturn.qPrompt = startUnit + endUnit;
+            qToReturn.qText = 'Convert ' + number + ' ' + powerFilter(startUnit) + ' to ' + endUnitL + '. ' + conversionFactors;
+            qToReturn.qID = type + '-' + subtype + '-' + qToReturn.qPrompt;
+            qToReturn.qAnswer = [{alt: answer + ' ' + endUnit, correct: 'correct', message: ''}, alt1];
+
 
             break;
           case 'Type1':
@@ -186,10 +210,13 @@ angular.module('chemiatriaApp')
             console.log('correctAnswer[0]: ', correctAnswer[0]);
             console.log('correctAnswer[1]: ', correctAnswer[1]);
             var correctArray = ScientificNotationService.parseNumber(correctAnswer[0].alt);
-            var altArray = ScientificNotationService.parseNumber(correctAnswer[1].alt);
+
+            var altArray = [];
+            if (correctAnswer.length > 2) { altArray = ScientificNotationService.parseNumber(correctAnswer[2].alt);}
+  
             console.log('givenAnswer: ', givenAnswer);
             var givenArray = ScientificNotationService.parseNumber(givenAnswer.answer);
-            var promptArray = ScientificNotationService.parseNumber(correctAnswer[2].alt);
+            var promptArray = ScientificNotationService.parseNumber(correctAnswer[1].alt);
             console.log(correctArray);
             console.log(givenArray);
 
@@ -208,7 +235,7 @@ angular.module('chemiatriaApp')
                   answerDetailToReturn.messageSent = 'Check your units! ';
                 }
             }
-            else if (givenArray.number === altArray.number){
+            else if (altArray.length > 0 && givenArray.number === altArray.number){
                 answerDetailToReturn.correct = correctAnswer[1].correct;
                 answerDetailToReturn.messageSent = correctAnswer[1].message;
             }
