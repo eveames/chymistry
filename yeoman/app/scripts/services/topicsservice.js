@@ -36,14 +36,13 @@ angular.module('chemiatriaApp')
 
     this.getTopicsList = function() {
         console.log('in getTopicsList function');
-        //uncomment below to use server
+        
         var topicsList = [];
         
+        //comment/uncomment correct line below to use server/json
         //$http.get('/api/student/typesList').then(function(response) {
         $resource('/typesList.json').query().$promise.then(function(response) {
-            //something funny is happening with the timing here! 
-            //function returns before finished, but still works
-            //
+            
         var temp = response;
         console.log('temp', temp);
         
@@ -59,13 +58,6 @@ angular.module('chemiatriaApp')
             console.error('Error while fetching topicsList');
         });
 
-        /*var temp = $resource('topicsList.json');
-        for (var i = 0; i < temp.length; i++) {
-            topicsList.push(temp[i]);
-            console.log(topicsList[i].selected);
-            topicsList[i].selected = Boolean(topicsList[i].selected);
-            topicsList[i].subtypes = JSON.parse(topicsList[i].subtypes);
-        }*/
         return topicsList;
     }; 
 
@@ -98,10 +90,11 @@ angular.module('chemiatriaApp')
             var k, j, qID, subtypes, subtype;
     		if (byID) {
     			//console.log('about to call VocabListService');
-                console.log(selectedTopics[i]);
+                console.log('selectedTopics[i]: ', selectedTopics[i]);
                 switch (listService) {
                     case 'VocabListService':
                         var vocabList = VocabListService.getIDList(type_id);
+                        console.log('vocabList in TopicsService: ', vocabList);
                         for (k = 0; k < vocabList.length; k++) {
                             qID = type + '-all-' + vocabList[k].qID;
                             subtypes = selectedTopics[i].subtypes;
@@ -127,14 +120,7 @@ angular.module('chemiatriaApp')
                         // use course to determine which entries to get
                         console.log('in TopicsService, IonListService case, course is', course);
                         console.log('level is', level);
-                        var formulaList0 = IonListService.getIDList(level, 0, false);
-                        console.log(formulaList0);
-                        for (k = 0; k < formulaList0.length; k++) {
-                            
-                            qID = type + '-ion-' + formulaList0[k];
-                            studyArray.push({type: type, subtype: ['ion'], qID: qID, 
-                            priorityCalcAlgorithm: alg, type_id: type_id, factory: factory, level: level});
-                        }
+                        
                         /*var acidList0 = IonListService.getIDList(level, 0, true);
                         for (k = 0; k < acidList0.length; k++) {
                             qID = type + '-acid-' + acidList0[k];
@@ -159,6 +145,14 @@ angular.module('chemiatriaApp')
                             studyArray.push({type: type, subtype: ['molecule'], qID: qID, 
                             priorityCalcAlgorithm: alg, type_id: type_id, factory: factory, level: level});
                         }
+                        var formulaList0 = IonListService.getIDList(level, 0, false);
+                        console.log(formulaList0);
+                        for (k = 0; k < formulaList0.length; k++) {
+                            
+                            qID = type + '-ion-' + formulaList0[k];
+                            studyArray.push({type: type, subtype: ['ion'], qID: qID, 
+                            priorityCalcAlgorithm: alg, type_id: type_id, factory: factory, level: level});
+                        }
 
                         break;
                     default: 
@@ -177,12 +171,12 @@ angular.module('chemiatriaApp')
     		}
             else {
                 //subtype = selectedTopics[i].subtypes; 
-                //console.log(subtype);
+                console.log(subtype);
                 studyArray.push({type: type, subtype: [], qID: '', 
                     priorityCalcAlgorithm: alg, type_id: type_id, factory: factory, level: level});
             }
     	}
-    	//console.log(studyArray);
+    	console.log('studyArray end of toStudyArray: ', studyArray);
     	return studyArray;
     };
 

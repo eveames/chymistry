@@ -8,12 +8,12 @@
  * Service in the chemiatriaApp.
  */
 angular.module('chemiatriaApp')
-  .service('StudyArrayService', ['PLPriorityService', 'FactPriorityService', '$http',  
-  	function (PLPriorityService, FactPriorityService, $http) {
+  .service('StudyArrayService', ['PLPriorityService', 'FactPriorityService', '$http', 'ENVIRONMENT', 
+  	function (PLPriorityService, FactPriorityService, $http, ENVIRONMENT) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     var historyArray = {};
     var sessionStartTime;
-/*
+
     this.setup = function() {
         // needs to be updated and tested
         var promise = $http.get('/api/student/states').then(function(response) {
@@ -44,7 +44,7 @@ angular.module('chemiatriaApp')
         });
         
         return promise;
-    }*/
+    }
     
     this.initializeStudyArray = function(studyArray) {
     	//console.log(historyArray);
@@ -143,35 +143,36 @@ angular.module('chemiatriaApp')
     			console.log('priorityCalcAlgorithm not recognized');
     	}
 
-    	/*
-        //send studyArray[index] to db
-        var stateItem = studyArray[index];
+    	if (ENVIRONMENT === 'production') {
+            //send studyArray[index] to db
+            var stateItem = studyArray[index];
         
-        //console.log('in SAS after metrics ', studyArray[index].rtArray);
+            //console.log('in SAS after metrics ', studyArray[index].rtArray);
 
-        //check if state exists
-        var route = 'api/student/states/';
-        //console.log('states_id? :', stateItem.states_id);
-        if (stateItem.states_id) {
-            route += stateItem.states_id;
-        }
-        else route += 'new';
-
-        $http.post(route, stateItem).then(function(d) {
-            if (d.data) {
-                //console.log(d.data);
-                studyArray[d.data[1]].states_id = Number(d.data[0]);
-                //console.log('updated w/ states_id: ', studyArray[index], 'index should be ', d.data[1]);
-                
+            //check if state exists
+            var route = 'api/student/states/';
+            //console.log('states_id? :', stateItem.states_id);
+            if (stateItem.states_id) {
+                route += stateItem.states_id;
             }
-        }, function(errResponse) {
+            else {route += 'new';}
+
+            $http.post(route, stateItem).then(function(d) {
+                if (d.data) {
+                    //console.log(d.data);
+                    studyArray[d.data[1]].states_id = Number(d.data[0]);
+                    //console.log('updated w/ states_id: ', studyArray[index], 'index should be ', d.data[1]);
+                
+                }
+            }, function(errResponse) {
             console.error(errResponse.data);
-        });
-*/
+            });
+        }
+        
         console.log('in SAS before return ', studyArray[index].rtArray);
     	return studyArray;
     };
-/*
+
     this.updateAllOnDB = function(studiedToday) {
         //adjust this method so it only sends questions that were studied in this session
 
@@ -185,6 +186,6 @@ angular.module('chemiatriaApp')
         }, function(errResponse) {
             console.error(errResponse.data);
         });
-    }*/
+    }
 
   }]);

@@ -8,8 +8,8 @@
  * Factory in the chemiatriaApp.
  */
 angular.module('chemiatriaApp')
-  .factory('DimensionalAnalysisFactory', ['powerFilter', 'RandomFactory', 'ScientificNotationService', 'bigNumberFilter',
-   function (powerFilter, RandomFactory, ScientificNotationService, bigNumberFilter) {
+  .factory('DimensionalAnalysisFactory', ['powerFilter', 'RandomFactory', 'ScientificNotationService', 'bigNumberFilter', 'ConversionListService',
+   function (powerFilter, RandomFactory, ScientificNotationService, bigNumberFilter, ConversionListService) {
     // Service logic
     // ...
     var zeroString = '000000000000000000000';
@@ -111,12 +111,74 @@ angular.module('chemiatriaApp')
             qToReturn.qAnswer = answerArray;
             //console.log(qToReturn);
             break;
-          
+          case 'Type1F':
+            //this case is convert x unitA to y unitB using unitA: unitB
+            //familiar: price/unit, non-metric unit conversions, dosages, nutritional requirements, mph?
+            //selects somewhere 
+            var type1FList = ConversionListService.getType1F();
+            var index = Math.floor(Math.random() * type1FList.length);
+            var convSeries = type1FList[index];
+            var numConvTotal = convSeries.length;
+            var start = Math.floor(Math.random() * numConvTotal);
+            var end = RandomFactory.getRandomExclude(numConvTotal, start);
+            var which = Math.floor(Math.random() * 2);
+            var startUnit, endUnit, k;
+
+            var number = String(RandomFactory.getRandomDigit(10, 1));
+              middleDigits = RandomFactory.getRandomString(RandomFactory.getRandomDigit(3, 0), 3);
+              number += String(middleDigits);
+              number *= Math.pow(10, 3 - Math.floor(Math.random() * 7));
+            var answer = number;
+            // use nums
+            if (which) {
+              startUnit = convSeries[start].numUnit;
+              endUnit = convSeries[end].numUnit;
+              if (start > end) {
+                for (k = end ; k < start; k++ )
+                answer *= convSeries[k].conversionNum;
+                answer /= convSeries[k].conversionDenom;
+              }
+              else {
+                for (k = start; k < end; k++) {
+                  answer *= convSeries[k].conversionDenom;
+                  answer /= convSeries[k].conversionNum;
+                }
+              }
+
+            }
+            //use denoms
+            else {
+              startUnit = convSeries[start].denomUnit;
+              endUnit = convSeries[end].denomUnit;
+
+              if (start > end) {
+                for (k = end + 1; k < start + 1; k++) {
+                  answer *= convSeries[k].conversionNum;
+                  answer /= convSeries[k].conversionDenom;
+                }
+              }
+
+              else {
+                for (k = start + 1; k < end + 1; k++) {
+                  answer *= convSeries[k].conversionDenom;
+                  answer /= convSeries[k].conversionNum;
+                }
+              }
+            }
+            
+
+            break;
+          case 'Type1':
+            //this case is convert x unitA to y unitB using unitA: unitB
+            //unfamiliar: density-type calculations, total heat from heat / mol or g, rxn rate?
+            //asks for the amount of x, amount of y, or ratio given the other 2
+
+            break;
           default: 
             qToReturn.subtype = 'not found';
         }
 
-        qToReturn.responseToWrong = ['Try again!', 
+        qToReturn.responseToWrong = ['Try again! ', 'Try again! ',
         'Answer is ' + qToReturn.qAnswer[0].alt + '. Try a new one!'];
         // check the arrangement of the values in the table
         qToReturn.checkMethod = function(correctAnswer, givenAnswer) {
@@ -128,6 +190,8 @@ angular.module('chemiatriaApp')
             console.log('givenAnswer: ', givenAnswer);
             var givenArray = ScientificNotationService.parseNumber(givenAnswer.answer);
             var promptArray = ScientificNotationService.parseNumber(correctAnswer[2].alt);
+            console.log(correctArray);
+            console.log(givenArray);
 
             if (givenArray.number === correctArray.number) {
                 if (givenArray.unitString === correctArray.unitString) {
@@ -174,15 +238,15 @@ angular.module('chemiatriaApp')
 
               for (var i = 0; i < cols.length; i++) {
                 temp = ScientificNotationService.parseNumber(cols[i].num);
-                console.log(temp);
+                console.log(temp.numUnits, temp.denomUnits);
                 numNumber *= temp.number;
-                numUnits.concat(temp.numUnits);
-                denomUnits.concat(temp.denomUnits);
+                numUnits = numUnits.concat(temp.numUnits);
+                denomUnits = denomUnits.concat(temp.denomUnits);
                 console.log(numUnits, denomUnits);
                 temp = ScientificNotationService.parseNumber(cols[i].denom);
                 denomNumber *= temp.number;
-                numUnits.concat(temp.denomUnits);
-                denomUnits.concat(temp.numUnits);
+                numUnits = numUnits.concat(temp.denomUnits);
+                denomUnits = denomUnits.concat(temp.numUnits);
                 console.log(numUnits, denomUnits);
               }
               if (numUnits.length === 0 && denomUnits.length === 0) {
@@ -191,6 +255,7 @@ angular.module('chemiatriaApp')
                 units = false;
               }
               var calcAnswer = (numNumber / denomNumber).toPrecision(correctArray.sigFigs);
+              calcAnswer = Number(calcAnswer);
               console.log(typeof calcAnswer);
               for (i = 0; i < numUnits.length; i++) {
                 for (var k = 0; k < denomUnits.length; k++) {
@@ -201,20 +266,22 @@ angular.module('chemiatriaApp')
                 }
               }
               var unitStringFromRRT = numUnits.join(' ') + ' / ' + denomUnits.join(' ');
-              console.log(typeof calcAnswer);
+              console.log(calcAnswer);
               if (unitStringFromRRT !== correctArray.unitString && units) {
                 answerDetailToReturn.messageSent += 'Your units don\'t cancel correctly to get the desired unit. ';
               }
-              else if (toConvert.number.toPrecision(Math.max(correctArray.sigFigs - 1,0)) !== promptArray.number.toPrecision(Math.max(correctArray.sigFigs - 1,0))) {
+              else if (toConvert.number.toPrecision(Math.max(correctArray.sigFigs - 1,1)) !== promptArray.number.toPrecision(Math.max(correctArray.sigFigs - 1,1))) {
                 answerDetailToReturn.messageSent += 'You should start with the value to convert in the first column numerator. ';
               }
               
-              else if (calcAnswer !== correctArray.number.toPrecision(correctArray.sigFigs)) {
+              else if (calcAnswer !== correctArray.number) {
                 answerDetailToReturn.messageSent += 'You seem to have a wrong number in a conversion factor. ';
+                console.log(calcAnswer);
+                console.log(correctArray.number);
               }
 
-              else if (calcAnswer.toPrecision(Math.max(correctArray.sigFigs - 1,0)) !== givenArray.number.toPrecision(Math.max(correctArray.sigFigs - 1,0))) {
-                answerDetailToReturn.messageSent += 'You seem to have made a calculator error because the answer you gave doesn\'t match your Railroad Tracks';
+              else if (calcAnswer.toPrecision(Math.max(correctArray.sigFigs - 1,1)) !== givenArray.number.toPrecision(Math.max(correctArray.sigFigs - 1,1))) {
+                answerDetailToReturn.messageSent += 'You seem to have made a calculator error because the answer you gave doesn\'t match your Railroad Tracks. ';
               }
               
             }

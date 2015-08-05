@@ -125,8 +125,8 @@ angular.module('chemiatriaApp')
     {name: 'tin', formula: 'Sn', charge: [2,4], romNum: true},
     {name: 'lead', formula: 'Pb', charge: [2,4], romNum: true}];
 
-    var moleculesList = [{name: 'water', formula: 'H2O'}, {name: 'ammonia', formula: 'NH3'}, 
-    {name: 'methane', formula: 'CH4'}, {name: 'ozone', formula: 'O3'}];
+    var moleculesList = [{name: 'water', formula: 'H2O', level: 1}, {name: 'ammonia', formula: 'NH3', level: 1}, 
+    {name: 'methane', formula: 'CH4', level: 1}, {name: 'ozone', formula: 'O3', level: 1}];
 
     var completeList = [polyanionsList, polycationsList, anionsList, cationsList, moleculesList];
 
@@ -209,6 +209,7 @@ angular.module('chemiatriaApp')
 
     //also, use type here
     this.getEntry = function(category, index) {
+    	console.log(completeList[category][index]);
     	return completeList[category][index];
     };
   });

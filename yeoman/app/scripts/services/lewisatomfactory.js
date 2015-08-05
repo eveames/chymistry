@@ -57,6 +57,8 @@ angular.module('chemiatriaApp')
             qToReturn.qAnswer = [{alt: 'n', correct: 'correct', message: ''}, {alt: 'y', correct: 'knownWrong', message: ''}];
         }
 
+        qToReturn.responseToWrong = ['Oops! Here\'s a new one! '];
+
         qToReturn.checkMethod = function(correctAnswer, givenAnswer) {
             var answerDetailToReturn = {answer: givenAnswer.answer, messageSent: ''};
             var answerTemp;

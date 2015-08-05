@@ -8,7 +8,7 @@
  * Service in the chemiatriaApp.
  */
 angular.module('chemiatriaApp')
-  .service('VocabListService', ['$http', '$resource', function ($http, $resource) {
+  .service('VocabListService', ['$http', '$resource', 'ENVIRONMENT', function ($http, $resource, ENVIRONMENT) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     
     //should talk to db, get vocablist for each vocab-unit (possibly do this inside method?)
@@ -51,35 +51,26 @@ angular.module('chemiatriaApp')
     //initialized by getIDList function
     //referred to by getEntry function
     var vocabListArray = {};
-/*
-    var temp = $resource('vocabList.json');
-    console.log('temp is', temp);
-            for (var i = 0; i < temp.length; i++) {
-                //console.log('temp[i] is:', temp[i]);
-                var type_id = temp[i].type_id;
-                temp[i].prompts = JSON.parse(temp[i].prompts);
-                temp[i].alternates = temp[i].alternates;
-                if (!vocabListArray[type_id]) {vocabListArray[type_id] = [];}
-                vocabListArray[type_id].push(temp[i]);
-            }
-
-*/
+    //console.log('just set vocabListArray empty: ', vocabListArray);
 
     this.setup = function() {
-        var vocabList = [];
+        //var vocabList = [];
+        //var vocabListArray = {};
     
+        //comment/uncomment line below to change to/from server
         //var promise = $http.get('/api/student/vocabList/').then(function(response) {
         var promise = $resource('/vocabList.json').query().$promise.then(function(response) {
             //console.log('response.data is: ',response.data);
             var temp = response;
+            console.log('vocabListArray before setup', vocabListArray);
             for (var i = 0; i < temp.length; i++) {
-                //console.log('temp[i] is:', temp[i]);
+                console.log('temp[i] is:', temp[i]);
                 var type_id = temp[i].type_id;
                 temp[i].prompts = JSON.parse(temp[i].prompts);
                 temp[i].alternates = temp[i].alternates;
                 if (!vocabListArray[type_id]) {vocabListArray[type_id] = [];}
                 vocabListArray[type_id].push(temp[i]);
-                //console.log(vocabListArray[type_id]);
+                console.log(vocabListArray[type_id]);
                 //vocabListArray[type_id].prompts = JSON.parse(vocabListArray[type_id].prompts);
                 //vocabListArray[type_id].alternates = JSON.parse(vocabListArray[type_id].alternates);
                 //console.log(topicsList[i].subtypes);

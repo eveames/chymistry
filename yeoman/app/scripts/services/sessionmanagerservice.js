@@ -10,8 +10,8 @@
 angular.module('chemiatriaApp')
 	//insert complete list of available question generator factories
 	//may want to redesign as provider?
-  .service('SessionManagerService', ['QuestionFactory', 'TopicsService', 'StudyArrayService', 'MetricsService',
-  	function (QuestionFactory, TopicsService, StudyArrayService, MetricsService) {
+  .service('SessionManagerService', ['QuestionFactory', 'TopicsService', 'StudyArrayService', 'MetricsService', 'ENVIRONMENT',
+  	function (QuestionFactory, TopicsService, StudyArrayService, MetricsService, ENVIRONMENT) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     var currentQ = {};
     var currentQResult = {};
@@ -95,14 +95,16 @@ angular.module('chemiatriaApp')
         
         studyArray = TopicsService.toStudyArray(selectedTopics);
         //console.log('selectedTopics[1]: ', selectedTopics[1]);
+        console.log('studyArray just after toStudyArray ', studyArray);
         studyArray = StudyArrayService.initializeStudyArray(studyArray);
+        console.log('studyArray just after initializeStudyArray ', studyArray);
         currentQ = QuestionFactory.getQuestion(selectNextQuestion());
         console.log('in openSession: ', currentQ);
         setCurrentQ(currentQ);
         //console.log('after setting question: ', studyArray[currentQ.indexInStudyArray]);
         return currentQ;
         
-        //console.log('studyArray: ', studyArray);
+        
         //console.log('sample item: ', studyArray[1]);
 		
 
@@ -111,10 +113,12 @@ angular.module('chemiatriaApp')
     this.closeSession = function() {
         studiedToday = studyArray.filter(studiedThisSession);
         //console.log(studiedToday);
+        var saved;
 
-        //uncomment to use server
-        //var saved = StudyArrayService.updateAllOnDB(studiedToday);
-        var saved = 'saved';
+        if (ENVIRONMENT === 'production') {
+        	saved = StudyArrayService.updateAllOnDB(studiedToday);
+        }
+        else {saved = 'saved';}
         var questionsAnswered = sessionHistory.length;
         var stats = MetricsService.getSessionMetrics(studiedToday);
         return {saved: saved, questionsAnswered: questionsAnswered, stats: stats};
@@ -165,7 +169,7 @@ angular.module('chemiatriaApp')
     		var previousTries = currentQResult.answersGiven.length;
             var index = Math.min(previousTries, currentQ.responseToWrong.length -1);
     		answerDetail.messageSent += currentQ.responseToWrong[index];
-    		if (previousTries > currentQ.responseToWrong.length - 1) { moveOn = true;}
+    		if (previousTries === currentQ.responseToWrong.length - 1) { moveOn = true;}
 
     	}
     	currentQResult.answersGiven.push(answerDetail);
@@ -173,7 +177,7 @@ angular.module('chemiatriaApp')
     	if (moveOn) {
     		sessionHistory.push(currentQResult);
     		studyArray = StudyArrayService.update(studyArray, currentQResult);
-            console.log('in SessionManagerService after update:', studyArray[currentQResult.indexInStudyArray].rtArray);
+            console.log('in SessionManagerService after update:', studyArray);
             qSinceProgressReport++;
     	}
 

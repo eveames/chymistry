@@ -70,6 +70,7 @@ angular.module('chemiatriaApp')
     	sigFigs = sigFigs.length;
 		console.log(number);
   		number = number * Math.pow(10, exp);
+  		number = Number(number.toPrecision(sigFigs));
   		var unitsString = '';
   		for (i = 0; i < numUnits.length; i++) {
   			unitsString += ' ' + numUnits[i];

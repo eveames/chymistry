@@ -32,8 +32,9 @@ angular.module('chemiatriaApp')
         var which = Math.floor(Math.random() * 2);
 
         //console.log('in vocabFactory:', idParseArray);
+        console.log(idParseArray);
         var entry = IonListService.getEntry(idParseArray[4], idParseArray[3]);
-        //if (word !== entry.word) {console.log('index does not match word');}
+        if (!entry.name) {console.log(idParseArray);}
         var i, answerObj;
         // give name, ask for formula
         if (which) {

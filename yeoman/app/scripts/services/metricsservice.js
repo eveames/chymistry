@@ -108,10 +108,16 @@ angular.module('chemiatriaApp')
         
         if (studyArrayItem.priorityCalcAlgorithm === 'fact') {
             var idArray = QIDService.parseID(studyArrayItem.qID);
-            label = idArray[2];
+            if (idArray[1] !== 'all') {
+                label = idArray[1] + ': ' + idArray[2];
+            }
+            else {label = idArray[2];}
         }
         else {
-            label = studyArrayItem.type + ': ' + studyArrayItem.subtype[0];
+            label = studyArrayItem.type;
+            if (typeof studyArrayItem.subtype[0] === 'string') {
+                label += ': ' + studyArrayItem.subtype[0];
+            } 
         }
 
         return {score: accuracyLastChunk, time: rtLastChunk, comment: comment, label: label};

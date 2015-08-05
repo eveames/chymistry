@@ -147,7 +147,7 @@ angular.module('chemiatriaApp')
                 for (var i = 0; i < correctAnswer.length ; i++){
                   //console.log('i is ', i);
                   
-                  if (givenAnswer.toLowerCase() === correctAnswer[i].alt.toLowerCase()) {
+                  if (givenAnswer.answer.toLowerCase() === correctAnswer[i].alt.toLowerCase()) {
                     if (correctAnswer[i].correct === 'correct') {
                       answerDetailToReturn.correct = 'correct';
                       answerDetailToReturn.messageSent = '';
@@ -212,25 +212,25 @@ angular.module('chemiatriaApp')
                   
                   switch(correctAnswer[i].op) {
                     case 'equals':
-                      if (Number(givenAnswer.answer) === Number(correctAnswer[i].alt)) {
+                      if (Number(givenAnswer) === Number(correctAnswer[i].alt)) {
                         answerDetailToReturn.correct = correctAnswer[i].correct;
                         if (correctAnswer[i].message) {answerDetailToReturn.messageSent = correctAnswer[i].message + ' ';}
                       }
                     break;
                     case 'greater': 
-                      if (Number(givenAnswer.answer) > Number(correctAnswer[i].alt)) {
+                      if (Number(givenAnswer) > Number(correctAnswer[i].alt)) {
                           answerDetailToReturn.correct = correctAnswer[i].correct;
                           if (correctAnswer[i].message) {answerDetailToReturn.messageSent = correctAnswer[i].message + ' ';}
                       }
                     break;
                     case 'less': 
-                      if (Number(givenAnswer.answer) < Number(correctAnswer[i].alt)) {
+                      if (Number(givenAnswer) < Number(correctAnswer[i].alt)) {
                           answerDetailToReturn.correct = correctAnswer[i].correct;
                           if (correctAnswer[i].message) {answerDetailToReturn.messageSent = correctAnswer[i].message + ' ';}
                       }
                     break;
                     case 'notEqual': 
-                      if (Number(givenAnswer.answer) !== Number(correctAnswer[i].alt)) {
+                      if (Number(givenAnswer) !== Number(correctAnswer[i].alt)) {
                           answerDetailToReturn.correct = correctAnswer[i].correct;
                           if (correctAnswer[i].message) {answerDetailToReturn.messageSent = correctAnswer[i].message + ' ';}
                       }
@@ -241,11 +241,11 @@ angular.module('chemiatriaApp')
                 console.log('checkMethod after for', answerDetailToReturn.correct);
 
                 if (!answerDetailToReturn.correct) {
-                  if (givenAnswer.answer.isNaN) {
+                  if (givenAnswer.isNaN) {
                       answerDetailToReturn.correct = 'formatError';
                       answerDetailToReturn.messageSent = 'Answer should be a number. ';
                   }
-                  else if (Number(givenAnswer.answer) % 1 !== 0) {
+                  else if (Number(givenAnswer) % 1 !== 0) {
                       answerDetailToReturn.correct = 'formatError';
                       answerDetailToReturn.messageSent = 'Answer should be an integer. ';
                   }     
@@ -375,10 +375,12 @@ angular.module('chemiatriaApp')
             which = Math.floor(Math.random() * 2);
 
             answerArray = [{alt: element.findex, correct: 'correct'}];
-            if (index === 24) {
+            if (element.findex === 57) {
+              console.log('setting Hg answerArray');
               answerArray[0].alt = 5;
               answerArray[0].message = 'Mercury is considered either a transition or post-transition metal. ';
               answerArray.push({alt: 7, correct: 'correct', message: 'Mercury is considered either a transition or post-transition metal. '});
+              console.log(answerArray);
             }
             if (element.findex === 0 || element.findex === 1 || element.findex === 4) {
               answerArray.push({alt: 8, correct: 'close', message: 'It is a non-metal, but be more specific!'});
@@ -415,21 +417,21 @@ angular.module('chemiatriaApp')
 
               //set correct (correct/close/knownWrong/unknownWrong/noAnswer/formatError/dontKnow)
               //check for no answer
-              if (!givenAnswer.answer) {
+              if (givenAnswer.answer === '') {
                 answerDetailToReturn.correct = 'noAnswer';
                 answerDetailToReturn.messageSent = 'Enter an integer.';
               }
               else {
                 for (var i = 0; i < correctAnswer.length ; i++){
                   //console.log('i is ', i);
-                  if (givenAnswer.answer === correctAnswer[i].alt) {
+                  if (Number(givenAnswer.answer) === correctAnswer[i].alt) {
                     answerDetailToReturn.correct = correctAnswer[i].correct;
                     if (correctAnswer[i].message) {answerDetailToReturn.messageSent = correctAnswer[i].message + ' ';}
                     break;
                   }
                 }
                 if (!answerDetailToReturn.correct) {
-                  if (typeof givenAnswer.answer === 'number' && givenAnswer.answer >= 0 && givenAnswer.answer <= 9) {
+                  if (Number(givenAnswer.answer) >= 0 && Number(givenAnswer.answer) <= 9) {
                     answerDetailToReturn.correct = 'knownWrong';
                   }
                   else {

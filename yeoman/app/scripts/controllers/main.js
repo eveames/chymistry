@@ -8,8 +8,8 @@
  * Controller of the chemiatriaApp
  */
 angular.module('chemiatriaApp')
-  .controller('MainCtrl', ['$scope', 'SessionLog', 'SessionManagerService', 'TopicsService', 'VocabListService', 'StudyArrayService', function ($scope, 
-  	SessionLog, SessionManagerService, TopicsService, VocabListService, StudyArrayService) {
+  .controller('MainCtrl', ['$scope', 'SessionLog', 'SessionManagerService', 'TopicsService', 'VocabListService', 'StudyArrayService', 'ENVIRONMENT', function ($scope, 
+  	SessionLog, SessionManagerService, TopicsService, VocabListService, StudyArrayService, ENVIRONMENT) {
   	$scope.noQuestion = true;
   	$scope.session = false;
     $scope.isFrustrated = false;
@@ -37,21 +37,16 @@ angular.module('chemiatriaApp')
             $scope.dataLoaded = 'alert-success';
         }
     });
-    /*
-    $scope.historyLoaded = 'Not yet';
-    StudyArrayService.setup().then(function(d) {
-        $scope.historyNotLoaded = d;
-        if ($scope.questionsNotLoaded === 'Loaded') {
-            $scope.dataLoaded = 'alert-success';
-        }
-    });
-*/
-
-	//change to use server
-	//$scope.dataLoaded = 'alert-success';
-	$scope.historyNotLoaded = 'Loaded';
-	//$scope.questionsNotLoaded = 'Loaded';
-
+    if (ENVIRONMENT === 'production') {
+    	$scope.historyLoaded = 'Not yet';
+    	StudyArrayService.setup().then(function(d) {
+        	$scope.historyNotLoaded = d;
+        	if ($scope.questionsNotLoaded === 'Loaded') {
+            	$scope.dataLoaded = 'alert-success';
+        	}
+    	});
+    }
+    else {$scope.historyNotLoaded = 'Loaded';}
 
     $scope.topicsList = TopicsService.getTopicsList();
     
@@ -80,16 +75,16 @@ angular.module('chemiatriaApp')
             });
             
             $scope.historyLoaded = 'Loaded';
-            //uncomment to use server
-            //$scope.historyLoaded = 'Not yet';
-            /*StudyArrayService.setup().then(function(d) {
-                $scope.historyNotLoaded = d;
-                if ($scope.questionsNotLoaded === 'Loaded' && !$scope.session) {
-                    $scope.dataLoaded = 'alert-success';
-                    initializeSession();
-                }
-            });
-*/
+            if (ENVIRONMENT === 'production') {
+            	$scope.historyLoaded = 'Not yet';
+            	StudyArrayService.setup().then(function(d) {
+                	$scope.historyNotLoaded = d;
+                	if ($scope.questionsNotLoaded === 'Loaded' && !$scope.session) {
+                    	$scope.dataLoaded = 'alert-success';
+                    	initializeSession();
+                	}
+            	});
+            }
         }
         else {initializeSession();}
 

@@ -10,7 +10,7 @@
 
  //status: doesn't seem to be doing anything; must test this and it's connection	
 angular.module('chemiatriaApp')
-  .service('SessionLog', ['$http', function ($http) {
+  .service('SessionLog', ['$http', 'ENVIRONMENT', function ($http, ENVIRONMENT) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     //eventObj has fields time, type (question posted, answer given, button push, frustrated, bug report, hint given?)
     // 		whichButton (I'm frustrated, Report a bug, Cancel bug report, Done viewing response, later maybe hint, others?)
@@ -23,8 +23,9 @@ angular.module('chemiatriaApp')
         var action = {};
         action.type = 'session started';
         action.time = log.startTime;
-        //uncomment to use server
-        //postToDB(action);
+        if (ENVIRONMENT === 'production') {
+            postToDB(action);
+        }
     	return log;
     };
     this.addEvent = function(eventObj) {
@@ -59,8 +60,9 @@ angular.module('chemiatriaApp')
             action.description = eventObj.description;
         }
         action.time = eventObj.time;
-        //uncomment to use server
-        //postToDB(action);
+        if (ENVIRONMENT === 'production') {
+            postToDB(action);
+        }
         log.history.push(action);
     	return log.history.length;
     };
@@ -69,12 +71,13 @@ angular.module('chemiatriaApp')
         var action = {};
         action.type = 'session ended';
         action.time = log.endTime;
-        //uncomment to use server
-        //postToDB(action);
+        if (ENVIRONMENT === 'production') {
+            postToDB(action);
+        }
     	return log;
     };
 
-/* uncomment to use server
+ 
     var postToDB = function(action) {
         // make http post call w/ data
         $http.post('api/student/actions', action).then(function(d) {
@@ -87,5 +90,5 @@ angular.module('chemiatriaApp')
             console.error(errResponse.data);
         });
     };
-    */
+    
   }]);
