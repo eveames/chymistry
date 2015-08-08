@@ -34,7 +34,7 @@ angular.module('chemiatriaApp')
         //array holding responses, would depend on context. 
         //first element assumes it was careless error
         //second element provides hint
-          var number, answer, sigFigs, alt1;
+          var number, answer, sigFigs, alt1, index, which, which2;
         switch(subtype) {
           case 'metricPrefixes':
 
@@ -117,12 +117,12 @@ angular.module('chemiatriaApp')
             //familiar: price/unit, non-metric unit conversions, dosages, nutritional requirements, mph?
             //selects somewhere 
             var type1FList = ConversionListService.getType1F();
-            var index = Math.floor(Math.random() * type1FList.length);
+            index = Math.floor(Math.random() * type1FList.length);
             var convSeries = type1FList[index];
             var numConvTotal = convSeries.length;
             var start = Math.floor(Math.random() * numConvTotal);
             var end = RandomFactory.getRandomExclude(numConvTotal, start);
-            var which = Math.floor(Math.random() * 2);
+            which = Math.floor(Math.random() * 2);
             var startUnit, endUnit, k, endUnitL;
 
             number = String(RandomFactory.getRandomDigit(10, 1));
@@ -189,14 +189,95 @@ angular.module('chemiatriaApp')
             qToReturn.qText = 'Convert ' + number + ' ' + powerFilter(startUnit) + ' to ' + endUnitL + '. ' + conversionFactors;
             qToReturn.qID = type + '-' + subtype + '-' + qToReturn.qPrompt;
             qToReturn.qAnswer = [{alt: answer + ' ' + endUnit, correct: 'correct', message: ''}, alt1];
-
-
             break;
-          case 'Type1':
+          case 'Type1': 
             //this case is convert x unitA to y unitB using unitA: unitB
             //unfamiliar: density-type calculations, total heat from heat / mol or g, rxn rate?
             //asks for the amount of x, amount of y, or ratio given the other 2
+            var type1List = ConversionListService.getType1();
+            index = Math.floor(Math.random() * type1List.length);
+            var conv = type1List[index][0];
 
+            var itemIndex = Math.floor(Math.random() * conv.array.length);
+            console.log(conv, itemIndex);
+            which = Math.floor(Math.random() * 3);
+            which2 = Math.floor(Math.random() * 2);
+            var ratioUnit, phrase;
+
+            number = String(RandomFactory.getRandomDigit(10, 1));
+              middleDigits = RandomFactory.getRandomString(RandomFactory.getRandomDigit(3, 0), 3);
+              number += String(middleDigits);
+              number *= Math.pow(10, 1 - Math.floor(Math.random() * 3));
+              sigFigs = ScientificNotationService.parseNumber(number).sigFigs;
+
+            //find ratio
+            if (which === 0) {
+              answer = conv.array[itemIndex][1];
+              ratioUnit = conv.numUnit + '/' + conv.denomUnit;
+              var numVal = number;
+              var denomVal = number / answer;
+              qToReturn.qText = 'Find the ' + conv.name + ' of ' + conv.array[itemIndex][0] + ' in ' + ratioUnit + ' if ';
+              //use numPhrase
+              if (which2) {
+                phrase = conv.numPhrase;
+              }
+              //use denomPhrase
+              else {
+                phrase = conv.denomPhrase;
+              }
+              phrase = phrase.replace(' x ', ' ' + numVal + ' ');
+              phrase = phrase.replace(' y ', ' ' + denomVal + ' ');
+              phrase = phrase.replace(' item ', ' ' + conv.array[itemIndex][0] + ' ');
+              phrase = phrase.trim();
+              qToReturn.qText += phrase + '. ';
+              
+              answer = answer.toPrecision(sigFigs);
+
+              answerArray = [{alt: answer + ' ' + ratioUnit, correct: 'correct', message: ''}];
+
+            }
+            // find numerator
+            else if (which === 1) {
+              answer = conv.array[itemIndex][1] * number;
+              phrase = conv.numPhrase;
+
+              phrase = phrase.replace(' x ', 'How many ');
+              phrase = phrase.replace(' y ', ' ' + number + ' ');
+              phrase = phrase.replace(' item ', ' ' + conv.array[itemIndex][0] + ' ');
+              qToReturn.qText = phrase + ' if ';
+              phrase = conv.ratioPhrase;
+              phrase = phrase.replace(' val ', ' ' + conv.array[itemIndex][1] + ' ');
+              phrase = phrase.replace(' item ', ' ' + conv.array[itemIndex][0] + ' ');
+              phrase = phrase.trim();
+              qToReturn.qText += phrase + '? ';
+              answer = answer.toPrecision(sigFigs);
+
+              answerArray = [{alt: answer + ' ' + conv.numUnit, correct: 'correct', message: ''},
+                {alt: number + ' ' + conv.denomUnit, correct: 'knownWrong', message: 'You didn\'t convert it!'}];
+
+            }
+            //find denominator
+            else {
+              answer = number / conv.array[itemIndex][1];
+              phrase = conv.denomPhrase;
+              phrase = phrase.replace(' y ', 'How many ');
+              phrase = phrase.replace(' x ', ' ' + number + ' ');
+              phrase = phrase.replace(' item ', ' ' + conv.array[itemIndex][0] + ' ');
+              qToReturn.qText = phrase + ' if ';
+              phrase = conv.ratioPhrase;
+              phrase = phrase.replace(' val ', ' ' + conv.array[itemIndex][1] + ' ');
+              phrase = phrase.replace(' item ', ' ' + conv.array[itemIndex][0] + ' ');
+              phrase = phrase.trim();
+              qToReturn.qText += phrase + '? ';
+              answer = answer.toPrecision(sigFigs);
+
+              answerArray = [{alt: answer + ' ' + conv.denomUnit, correct: 'correct', message: ''},
+                {alt: number + ' ' + conv.numUnit, correct: 'knownWrong', message: 'You didn\'t convert it!'}];
+            }
+            qToReturn.qPrompt = answerArray[0].alt;
+            qToReturn.qID = type + '-' + subtype + '-' + qToReturn.qPrompt;
+            qToReturn.qAnswer = answerArray;
+            
             break;
           default: 
             qToReturn.subtype = 'not found';
@@ -297,7 +378,7 @@ angular.module('chemiatriaApp')
               if (unitStringFromRRT !== correctArray.unitString && units) {
                 answerDetailToReturn.messageSent += 'Your units don\'t cancel correctly to get the desired unit. ';
               }
-              else if (toConvert.number.toPrecision(Math.max(correctArray.sigFigs - 1,1)) !== promptArray.number.toPrecision(Math.max(correctArray.sigFigs - 1,1))) {
+              else if (correctAnswer.length > 1 && toConvert.number.toPrecision(Math.max(correctArray.sigFigs - 1,1)) !== promptArray.number.toPrecision(Math.max(correctArray.sigFigs - 1,1))) {
                 answerDetailToReturn.messageSent += 'You should start with the value to convert in the first column numerator. ';
               }
               

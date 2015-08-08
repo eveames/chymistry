@@ -51,7 +51,7 @@ class TypesTableSeeder extends Seeder
       "sequenceByID" => false, "sequenceBySubtype" => true, "priorityCalcAlgorithm" => 'PL', 'course' => 1],
       ["type" => 'DimensionalAnalysis', "factory" => 'DimensionalAnalysisFactory', "listService" => "", "level" => 0.5, 
       "name" => 'Dimensional Analysis', "selected" => true,
-      "subtypes" => ['metricPrefixes', 'Type1F'], 
+      "subtypes" => ['Type1', 'metricPrefixes', 'Type1F'], 
       "sequenceByID" => false, "sequenceBySubtype" => true, "priorityCalcAlgorithm" => 'PL', 'course' => 1]
 
       ];
