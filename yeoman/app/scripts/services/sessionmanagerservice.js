@@ -25,6 +25,7 @@ angular.module('chemiatriaApp')
     var studyArray = [];
     var sessionStartTime;
     var studiedToday = [];
+    var finished = false;
     
 
     var setCurrentQ = function(currentQ) {
@@ -75,9 +76,12 @@ angular.module('chemiatriaApp')
     			else {readiestUnready = studyArray[i];}
     		}	 
     	}
-    	console.log(readiest);
+    	//console.log(readiest);
     	if (readiest) {return readiest;}
-    	else {return readiestUnready;}  	
+    	else {
+            if (readiestUnready.priority > currentTime + 1800000) {finished = true;}
+            return readiestUnready;
+        }  	
     };
 
     //when does currentQ/currentQResult get reset??
@@ -191,6 +195,15 @@ angular.module('chemiatriaApp')
             stats = MetricsService.getSessionMetrics(studiedToday);
             questionsAnswered = sessionHistory.length;
             qSinceProgressReport = 0;
+        }
+        if (finished) {
+            showStats = true;
+            studiedToday = studyArray.filter(studiedThisSession);
+            stats = MetricsService.getSessionMetrics(studiedToday);
+            questionsAnswered = sessionHistory.length;
+            qSinceProgressReport = 0;
+            answerDetail.messageSent += 'Congratulations! You have finished studying the topics you selected for today. ' +
+                'Keep practicing today if you want, or come back another day to review and continue. ';
         }
 
     	return {moveOn: moveOn, answerDetail: answerDetail, showStats: showStats, stats: stats, questionsAnswered: questionsAnswered};

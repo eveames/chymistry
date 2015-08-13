@@ -19,7 +19,7 @@ class StudentDataController extends Controller
     //controls API used by angular
     public function getVocabList($type_id) {
     	//returns json object:  {{word: word, prompts: [], alternates: []}, {}, etc}
-    	$type = Type::find($type_id);
+        $type = Type::find($type_id);
     	$vocabList = $type->words;
     	return $vocabList;
     }
@@ -41,7 +41,8 @@ class StudentDataController extends Controller
     public function getTypesList() {
     	//returns json object list all available topics
     	//maybe someday sorts them by course, student progress?
-    	$typesList = Type::all();
+    	$course = Auth::user()->course();
+        $typesList = $course->questions();
     	return $typesList;
     }
 

@@ -31,7 +31,8 @@ an email address you don't care about too much, in case the spambots get it.</p>
 </div>
 </div>
 		
-<div class="form-control">E-Mail Address</label>
+<div class="form-group">
+	<label class="col-md-4 control-label">E-Mail Address</label>
 <div class="col-md-6">
 <input type="email" class="form-control" name="email" value="{{ old('email') }}">
 </div>
@@ -49,6 +50,15 @@ an email address you don't care about too much, in case the spambots get it.</p>
 <div class="col-md-6">
 <input type="password" class="form-control" name="password_confirmation">
 </div>
+</div>
+<div class="form-group">
+	<label class="col-md-4 control-label">Select course</label>
+	<div class="col-md-6">
+		<select class="form-control" name="course_id" value="{{ old('course_id') }}">
+			<option value="1">General Chemistry 1 (Chem 1A)</option>
+			<option value="2">Intro to Medicinal Chemistry (Chem 32)</option>
+		</select>
+	</div>
 </div>
 {{-- later, add type selector --}}
 

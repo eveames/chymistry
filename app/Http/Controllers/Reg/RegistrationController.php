@@ -56,6 +56,7 @@ class RegistrationController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|confirmed|min:6',
+            'course_id' => 'required'
         ]);
     }
 
@@ -71,6 +72,7 @@ class RegistrationController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'course_id' => $data['course_id']
         ]);
     }
 

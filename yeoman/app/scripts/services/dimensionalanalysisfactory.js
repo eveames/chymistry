@@ -216,6 +216,7 @@ angular.module('chemiatriaApp')
               ratioUnit = conv.numUnit + '/' + conv.denomUnit;
               var numVal = number;
               var denomVal = number / answer;
+              denomVal = Number(denomVal.toPrecision(sigFigs));
               qToReturn.qText = 'Find the ' + conv.name + ' of ' + conv.array[itemIndex][0] + ' in ' + ratioUnit + ' if ';
               //use numPhrase
               if (which2) {
@@ -315,6 +316,10 @@ angular.module('chemiatriaApp')
                   answerDetailToReturn.correct = 'close';
                   answerDetailToReturn.messageSent = 'Check your units! ';
                 }
+            }
+            else if (givenArray.number.toPrecision(1) === correctArray.number.toPrecision(1)) {
+              answerDetailToReturn.correct = 'close';
+              answerDetailToReturn.messageSent = 'Your answer isn\'t quite right, but it might just be a sig fig problem. ';
             }
             else if (altArray.length > 0 && givenArray.number === altArray.number){
                 answerDetailToReturn.correct = correctAnswer[1].correct;

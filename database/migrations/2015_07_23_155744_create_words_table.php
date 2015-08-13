@@ -15,8 +15,6 @@ class CreateWordsTable extends Migration
         Schema::create('words', function (Blueprint $table) {
             $table->increments('id');
             $table->string('word', 50)->unique();
-            $table->unsignedInteger('type_id');
-            $table->foreign('type_id')->references('id')->on('types');
             $table->json('prompts');
             $table->timestamps();
         });
