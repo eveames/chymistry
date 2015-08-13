@@ -123,7 +123,30 @@ class AlternatesTableSeeder extends Seeder
         ['word_id' => '84', 'alt' => 'dipole-dipole attraction', 'correct' => 'correct', 'message' => ''],
         ['word_id' => '84', 'alt' => 'dipole-dipole attractions', 'correct' => 'correct', 'message' => ''],
         ['word_id' => '84', 'alt' => 'dipole-dipole forces', 'correct' => 'correct', 'message' => ''],
-        
+        ['word_id' => '85', 'alt' => 'London force', 'correct' => 'correct', 'message' => ''],
+        ['word_id' => '85', 'alt' => 'London dispersion force', 'correct' => 'correct', 'message' => ''],
+        ['word_id' => '85', 'alt' => 'London forces', 'correct' => 'correct', 'message' => ''],
+        ['word_id' => '85', 'alt' => 'London dispersion forces', 'correct' => 'correct', 'message' => ''],
+        ['word_id' => '85', 'alt' => 'dispersion forces', 'correct' => 'correct', 'message' => ''],
+        ['word_id' => '86', 'alt' => 'hydrogen bonds', 'correct' => 'correct', 'message' => ''],
+        ['word_id' => '86', 'alt' => 'hydrogen bonding', 'correct' => 'correct', 'message' => ''],
+        ['word_id' => '88', 'alt' => 'equilibria', 'correct' => 'correct', 'message' => ''],
+        ['word_id' => '88', 'alt' => 'chemical equilibrium', 'correct' => 'correct', 'message' => ''],
+        ['word_id' => '88', 'alt' => 'dynamic equilibria', 'correct' => 'correct', 'message' => ''],
+        ['word_id' => '88', 'alt' => 'dynamic equilibrium', 'correct' => 'correct', 'message' => ''],
+        ['word_id' => '89', 'alt' => 'precipitation reaction', 'correct' => 'correct', 'message' => ''],
+        ['word_id' => '89', 'alt' => 'precipitation reactions', 'correct' => 'correct', 'message' => ''],
+        ['word_id' => '90', 'alt' => 'solubilities', 'correct' => 'correct', 'message' => ''],
+        ['word_id' => '91', 'alt' => 'acids', 'correct' => 'correct', 'message' => ''],
+        ['word_id' => '92', 'alt' => 'bases', 'correct' => 'correct', 'message' => ''],
+        ['word_id' => '93', 'alt' => 'neutralization reaction', 'correct' => 'correct', 'message' => ''],
+        ['word_id' => '93', 'alt' => 'neutralization reactions', 'correct' => 'correct', 'message' => ''],
+        ['word_id' => '94', 'alt' => 'salts', 'correct' => 'correct', 'message' => ''],
+        ['word_id' => '99', 'alt' => 'dilutions', 'correct' => 'correct', 'message' => ''],
+        ['word_id' => '105', 'alt' => 'reactions', 'correct' => 'correct', 'message' => ''],
+        ['word_id' => '105', 'alt' => 'chemical reactions', 'correct' => 'correct', 'message' => ''],
+        ['word_id' => '105', 'alt' => 'chemical reaction', 'correct' => 'correct', 'message' => ''],
+
         ];
 
         for ($i = 0 ; $i < count($altList) ; ++$i) {
