@@ -14,10 +14,10 @@ class CreateTypesTable extends Migration
     {
         Schema::create('types', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 60)->unique();
+            $table->string('name', 60);
             $table->unsignedInteger('course_id');
-            $table->foreign('course_id')->references('course_id')->on('courses');
-            $table->string('type', 20);
+            $table->foreign('course_id')->references('id')->on('courses');
+            $table->string('type', 60);
             $table->string('factory', 50);
             $table->string('listService', 30);
             $table->decimal('level', 5, 2);

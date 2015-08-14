@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Chemiatria: Learn Chemistry</title>
 
-	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+	<link href="{{ asset('/css/main.css') }}" rel="stylesheet">
 
 	<!-- Fonts -->
 	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
@@ -61,7 +61,7 @@
 
 	<footer class="footer navbar-fixed-bottom">
       <div class="container-fluid">
-        <p><span class="glyphicon glyphicon-heart"></span> Chemiatria, by Emily V Eames, is provided 
+        <p> Chemiatria, by Emily V Eames, is provided 
         	free and open source, under a Creative Commons Attribution Noncommercial license. 
         	The code is available on <a href="http://github.com/eveames/chymistry">Github</a> with an MIT license.</p>
       </div>
@@ -77,6 +77,7 @@
     
     <script src="bower_components/angular-aria/angular-aria.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-messages/angular-messages.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
@@ -94,21 +95,30 @@
         <script src="scripts/controllers/about.js"></script>
         <script src="scripts/services/sessionlog.js"></script>
         <script src="scripts/services/sessionmanagerservice.js"></script>
-        <script src="scripts/services/questionfactory.js"></script>
-        <script src="scripts/services/sigfigplfactory.js"></script>
-        <script src="scripts/services/randomfactory.js"></script>
         <script src="scripts/services/topicsservice.js"></script>
-        <script src="scripts/services/vocabfactory.js"></script>
-        <script src="scripts/services/qidservice.js"></script>
         <script src="scripts/services/vocablistservice.js"></script>
         <script src="scripts/services/elementslistservice.js"></script>
         <script src="scripts/services/studyarrayservice.js"></script>
         <script src="scripts/services/plpriorityservice.js"></script>
-        <script src="scripts/services/factpriorityservice.js"></script>
         <script src="scripts/services/metricsservice.js"></script>
+        <script src="scripts/services/qidservice.js"></script>
+        <script src="scripts/services/randomfactory.js"></script>
+        <script src="scripts/services/factpriorityservice.js"></script>
+        <script src="scripts/services/questionfactory.js"></script>
+        <script src="scripts/services/sigfigplfactory.js"></script>
+        <script src="scripts/services/vocabfactory.js"></script>
         <script src="scripts/services/introelementsfactory.js"></script>
-        <script src="scripts/services/chemFormatFilter.js"></script>
-        <script src="scripts/directives/autofocus.js"></script>
+        <script src="scripts/services/lewisatomfactory.js"></script>
+        <script src="scripts/filters/formula.js"></script>
+        <script src="scripts/services/nomenclaturefactory.js"></script>
+        <script src="scripts/services/ionlistservice.js"></script>
+        <script src="scripts/services/formulaservice.js"></script>
+        <script src="scripts/services/ionicformulafactory.js"></script>
+        <script src="scripts/services/dimensionalanalysisfactory.js"></script>
+        <script src="scripts/filters/power.js"></script>
+        <script src="scripts/services/scientificnotationservice.js"></script>
+        <script src="scripts/filters/bignumber.js"></script>
+        <script src="scripts/services/conversionlistservice.js"></script>
         
         <!-- endbuild -->
 	<!--<script type="text/javascript" src="app.js"></script>-->

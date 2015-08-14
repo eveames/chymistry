@@ -34,12 +34,24 @@ angular.module('chemiatriaApp')
           randomString += newDigit;
         }
         return randomString;
-      }
+      },
       getRandomExclude: function randNum(max,excludeNum) {
         var randNumber = Math.floor(Math.random() * max);
         if(randNumber === excludeNum) {
           return randNum(max,excludeNum);
         }else{
+          return randNumber;
+        }
+      },
+      getRandomNear: function randNum(max,excludeNum, maxSeparation) {
+        var randNumber = Math.floor(Math.random() * max);
+        if(randNumber === excludeNum) {
+          return randNum(max,excludeNum, maxSeparation);
+        }
+        else if (randNumber - excludeNum > maxSeparation || randNumber - excludeNum < -1 * maxSeparation) {
+          return randNum(max,excludeNum, maxSeparation);
+        }
+        else{
           return randNumber;
         }
       }

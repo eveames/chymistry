@@ -37,29 +37,29 @@ angular.module('chemiatriaApp')
 
         //for vocab, correctAnswer is an array containing prompt and certain alternates
         qToReturn.checkMethod = function(correctAnswer, givenAnswer) {
-          var answerDetailToReturn = {answer: givenAnswer, messageSent: '', correct: ''};
+          var answerDetailToReturn = {answer: givenAnswer.answer, messageSent: '', correct: ''};
           //console.log('correct is: ', correctAnswer);
           //console.log('correct length: ', correctAnswer.length);
           //console.log('given is: ', givenAnswer);
 
           //set correct (correct/close/knownWrong/unknownWrong/noAnswer/formatError/dontKnow)
           //check for no answer
-          if (!givenAnswer) {
+          if (!givenAnswer.answer) {
             answerDetailToReturn.correct = 'noAnswer';
             answerDetailToReturn.messageSent = 'If you don\'t know the answer to a vocab question, enter zero. ';
           }
-          else if (givenAnswer == 0) {
+          else if (Number(givenAnswer.answer) === 0) {
             answerDetailToReturn.correct = 'dontKnow';
           }
           else {
             for (var i = 0; i < correctAnswer.length ; i++){
               //console.log('i is ', i);
-              if (givenAnswer === correctAnswer[i].alt) {
+              if (givenAnswer.answer === correctAnswer[i].alt) {
                 answerDetailToReturn.correct = correctAnswer[i].correct;
-                if (correctAnswer[i].message) answerDetailToReturn.messageSent = correctAnswer[i].message + ' ';
+                if (correctAnswer[i].message) {answerDetailToReturn.messageSent = correctAnswer[i].message + ' ';}
                 break;
               }
-              else if (givenAnswer.toLowerCase() === correctAnswer[i].alt.toLowerCase()) {
+              else if (givenAnswer.answer.toLowerCase() === correctAnswer[i].alt.toLowerCase()) {
                 if (correctAnswer[i].correct === 'correct') {
                   answerDetailToReturn.correct = 'formatError';
                   answerDetailToReturn.messageSent = 'Almost there, please check your capitalization. ';

@@ -11,6 +11,8 @@ use chymistry\Word;
 use chymistry\User;
 use chymistry\State;
 use chymistry\Action;
+use chymistry\Course;
+use chymistry\Alternate;
 use Auth;
 use Debugbar;
 
@@ -27,8 +29,13 @@ class StudentDataController extends Controller
     public function getFullVocabList() {
     	//returns json object:  {{word: word, prompts: [], alternates: []}, {}, etc}
     	try {
-            $vocabList = Word::orderBy('type_id')->with('alternates')->get();
-            //Debugbar::info($vocabList);
+            $course_id = Auth::user()->course_id;
+            $course = Course::find($course_id);
+            $typesList = $course->questions->where('listService', 'VocabListService');
+            Debugbar::info($typesList);
+            $vocabList = $typesList->words;
+            //->with('alternates')->get();
+            Debugbar::info($vocabList);
             return $vocabList;
         }
         catch (Exception $e) {
@@ -41,8 +48,12 @@ class StudentDataController extends Controller
     public function getTypesList() {
     	//returns json object list all available topics
     	//maybe someday sorts them by course, student progress?
-    	$course = Auth::user()->course();
-        $typesList = $course->questions();
+    	$course_id = Auth::user()->course_id;
+        Debugbar::info($course_id);
+        $course = Course::find($course_id);
+        Debugbar::info($course);
+        $typesList = $course->questions;
+        Debugbar::info($typesList);
     	return $typesList;
     }
 

@@ -10,8 +10,8 @@
 angular.module('chemiatriaApp')
 	//insert complete list of available question generator factories
 	//may want to redesign as provider?
-  .service('SessionManagerService', ['QuestionFactory', 'TopicsService', 'StudyArrayService', 'MetricsService',
-  	function (QuestionFactory, TopicsService, StudyArrayService, MetricsService) {
+  .service('SessionManagerService', ['QuestionFactory', 'TopicsService', 'StudyArrayService', 'MetricsService', 'ENVIRONMENT',
+  	function (QuestionFactory, TopicsService, StudyArrayService, MetricsService, ENVIRONMENT) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     var currentQ = {};
     var currentQResult = {};
@@ -25,6 +25,7 @@ angular.module('chemiatriaApp')
     var studyArray = [];
     var sessionStartTime;
     var studiedToday = [];
+    var finished = false;
     
 
     var setCurrentQ = function(currentQ) {
@@ -75,8 +76,12 @@ angular.module('chemiatriaApp')
     			else {readiestUnready = studyArray[i];}
     		}	 
     	}
+    	//console.log(readiest);
     	if (readiest) {return readiest;}
-    	else {return readiestUnready;}  	
+    	else {
+            if (readiestUnready.priority > currentTime + 1800000) {finished = true;}
+            return readiestUnready;
+        }  	
     };
 
     //when does currentQ/currentQResult get reset??
@@ -94,14 +99,16 @@ angular.module('chemiatriaApp')
         
         studyArray = TopicsService.toStudyArray(selectedTopics);
         //console.log('selectedTopics[1]: ', selectedTopics[1]);
+        console.log('studyArray just after toStudyArray ', studyArray);
         studyArray = StudyArrayService.initializeStudyArray(studyArray);
+        console.log('studyArray just after initializeStudyArray ', studyArray);
         currentQ = QuestionFactory.getQuestion(selectNextQuestion());
-        console.log("in openSession: ", currentQ);
+        console.log('in openSession: ', currentQ);
         setCurrentQ(currentQ);
         //console.log('after setting question: ', studyArray[currentQ.indexInStudyArray]);
         return currentQ;
         
-        //console.log('studyArray: ', studyArray);
+        
         //console.log('sample item: ', studyArray[1]);
 		
 
@@ -110,8 +117,12 @@ angular.module('chemiatriaApp')
     this.closeSession = function() {
         studiedToday = studyArray.filter(studiedThisSession);
         //console.log(studiedToday);
+        var saved;
 
-        var saved = StudyArrayService.updateAllOnDB(studiedToday);
+        if (ENVIRONMENT === 'production') {
+        	saved = StudyArrayService.updateAllOnDB(studiedToday);
+        }
+        else {saved = 'saved';}
         var questionsAnswered = sessionHistory.length;
         var stats = MetricsService.getSessionMetrics(studiedToday);
         return {saved: saved, questionsAnswered: questionsAnswered, stats: stats};
@@ -160,9 +171,9 @@ angular.module('chemiatriaApp')
         //may need to work on this 
     	else {
     		var previousTries = currentQResult.answersGiven.length;
-            var index = Math.min(previousTries, currentQ.responseToWrong.length -1)
-    		answerDetail.messageSent += currentQ.responseToWrong[previousTries];
-    		if (previousTries > currentQ.responseToWrong.length - 1) { moveOn = true;}
+            var index = Math.min(previousTries, currentQ.responseToWrong.length -1);
+    		answerDetail.messageSent += currentQ.responseToWrong[index];
+    		if (previousTries === currentQ.responseToWrong.length - 1) { moveOn = true;}
 
     	}
     	currentQResult.answersGiven.push(answerDetail);
@@ -170,7 +181,7 @@ angular.module('chemiatriaApp')
     	if (moveOn) {
     		sessionHistory.push(currentQResult);
     		studyArray = StudyArrayService.update(studyArray, currentQResult);
-            console.log('in SessionManagerService after update:', studyArray[currentQResult.indexInStudyArray].rtArray);
+            console.log('in SessionManagerService after update:', studyArray);
             qSinceProgressReport++;
     	}
 
@@ -184,6 +195,15 @@ angular.module('chemiatriaApp')
             stats = MetricsService.getSessionMetrics(studiedToday);
             questionsAnswered = sessionHistory.length;
             qSinceProgressReport = 0;
+        }
+        if (finished) {
+            showStats = true;
+            studiedToday = studyArray.filter(studiedThisSession);
+            stats = MetricsService.getSessionMetrics(studiedToday);
+            questionsAnswered = sessionHistory.length;
+            qSinceProgressReport = 0;
+            answerDetail.messageSent += 'Congratulations! You have finished studying the topics you selected for today. ' +
+                'Keep practicing today if you want, or come back another day to review and continue. ';
         }
 
     	return {moveOn: moveOn, answerDetail: answerDetail, showStats: showStats, stats: stats, questionsAnswered: questionsAnswered};

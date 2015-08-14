@@ -176,12 +176,13 @@ class TypeWordTableSeeder extends Seeder
         ["word_id" => 102, "type_id" => 19],
         ["word_id" => 90, "type_id" => 19],
 
-        ]
+        ];
 
         for ($i = 0 ; $i < count($list) ; ++$i) {
       		DB::table('type_word')->insert([
             'word_id' => $list[$i]['word_id'],
             'type_id' => $list[$i]['type_id'],
-        ]);
+        	]);
+      	}
     }
 }

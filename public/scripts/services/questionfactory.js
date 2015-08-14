@@ -9,8 +9,8 @@
  */
 angular.module('chemiatriaApp')
   .factory('QuestionFactory', ['SigFigPLFactory', 'VocabFactory', 'QIDService',
-    'RandomFactory', 'IntroElementsFactory', 
-    function (SigFigPLFactory, VocabFactory, QIDService, RandomFactory, IntroElementsFactory) {
+    'RandomFactory', 'IntroElementsFactory', 'LewisAtomFactory', 'NomenclatureFactory', 'IonicFormulaFactory', 'DimensionalAnalysisFactory',
+    function (SigFigPLFactory, VocabFactory, QIDService, RandomFactory, IntroElementsFactory, LewisAtomFactory, NomenclatureFactory, IonicFormulaFactory, DimensionalAnalysisFactory) {
     // array holds topics available, connection to appropriate factories
     //var qFactoriesAvailable = [{type: 'SigFigPL', factory: 'SigFigPLFactory'},
      // {type: Vocab, factory: 'VocabFactory'}];
@@ -27,10 +27,10 @@ angular.module('chemiatriaApp')
         var type = studyArrayItem.type;
         var factory = studyArrayItem.factory;
         console.log(studyArrayItem);
-        console.log("factory is: ", factory);
+        console.log('factory is: ', factory);
         var type_id = studyArrayItem.type_id;
         //console.log(type);
-        var subtype, qID, idArray, stage;
+        var subtype, qID, idArray, stage, idParseArray;
         //var timesStudied = studyArrayItem.;
 
         //in here, put logic to determine subtype, idArray, flags
@@ -44,7 +44,7 @@ angular.module('chemiatriaApp')
           case 'VocabFactory':
             subtype = 'wordRecall'; 
             qID = studyArrayItem.qID;
-            var idParseArray = QIDService.parseID(qID);
+            idParseArray = QIDService.parseID(qID);
             var numPrompts = idParseArray[4];
             idArray = [qID];
             stage = studyArrayItem.stage;
@@ -61,10 +61,31 @@ angular.module('chemiatriaApp')
             break;
           case 'IntroElementsFactory':
             qID = studyArrayItem.qID;
-            var idParseArray = QIDService.parseID(qID);
+            idParseArray = QIDService.parseID(qID);
             subtype = idParseArray[1];
             idArray = [qID];
             qToReturn = IntroElementsFactory.getQuestion(type_id, type, subtype, idArray);
+            break;
+          case 'LewisAtomFactory':
+            qToReturn = LewisAtomFactory.getQuestion();
+            break;
+          case 'NomenclatureFactory': 
+            qID = studyArrayItem.qID;
+            idParseArray = QIDService.parseID(qID);
+            subtype = idParseArray[1];
+            idArray = [qID];
+            qToReturn = NomenclatureFactory.getQuestion(type_id, type, subtype, idArray);
+            break;
+          case 'IonicFormulaFactory':
+            var level = studyArrayItem.level;
+            subtype = studyArrayItem.subtype[0];
+            qToReturn = IonicFormulaFactory.getQuestion(type, subtype, level);
+
+            break;
+          case 'DimensionalAnalysisFactory':
+            flags = [];
+            subtype = studyArrayItem.subtype[0];
+            qToReturn = DimensionalAnalysisFactory.getQuestion(type, subtype, flags);
             break;
           default:
             qToReturn.qText = 'Question type error';

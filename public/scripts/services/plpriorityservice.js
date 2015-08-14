@@ -84,3 +84,4 @@ angular.module('chemiatriaApp')
     	return thisItem;
     };
   }]);
+

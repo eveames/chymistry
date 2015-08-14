@@ -15,7 +15,7 @@ class AddCourseIdToUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             //
             $table->unsignedInteger('course_id')->nullable();
-            $table->foreign('course_id')->references('course_id')->on('courses');
+            $table->foreign('course_id')->references('id')->on('courses');
         });
     }
 

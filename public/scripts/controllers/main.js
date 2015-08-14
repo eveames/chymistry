@@ -8,8 +8,8 @@
  * Controller of the chemiatriaApp
  */
 angular.module('chemiatriaApp')
-  .controller('MainCtrl', ['$scope', 'SessionLog', 'SessionManagerService', 'TopicsService', 'VocabListService', 'StudyArrayService', function ($scope, 
-  	SessionLog, SessionManagerService, TopicsService, VocabListService, StudyArrayService) {
+  .controller('MainCtrl', ['$scope', 'SessionLog', 'SessionManagerService', 'TopicsService', 'VocabListService', 'StudyArrayService', 'ENVIRONMENT', function ($scope, 
+  	SessionLog, SessionManagerService, TopicsService, VocabListService, StudyArrayService, ENVIRONMENT) {
   	$scope.noQuestion = true;
   	$scope.session = false;
     $scope.isFrustrated = false;
@@ -29,6 +29,7 @@ angular.module('chemiatriaApp')
     $scope.dataSaved = 'One moment please, while we confirm that your progress is saved';
 
     //is this slowing it down? maybe use one-time data binding?
+    
     $scope.questionsNotLoaded = 'Not yet';
     VocabListService.setup().then(function(d) {
         $scope.questionsNotLoaded = d;
@@ -36,19 +37,24 @@ angular.module('chemiatriaApp')
             $scope.dataLoaded = 'alert-success';
         }
     });
-    $scope.historyLoaded = 'Not yet';
-    StudyArrayService.setup().then(function(d) {
-        $scope.historyNotLoaded = d;
-        if ($scope.questionsNotLoaded === 'Loaded') {
-            $scope.dataLoaded = 'alert-success';
-        }
-    });
+    if (ENVIRONMENT === 'production') {
+    	$scope.historyLoaded = 'Not yet';
+    	StudyArrayService.setup().then(function(d) {
+        	$scope.historyNotLoaded = d;
+        	if ($scope.questionsNotLoaded === 'Loaded') {
+            	$scope.dataLoaded = 'alert-success';
+        	}
+    	});
+    }
+    else {$scope.historyNotLoaded = 'Loaded';}
 
     $scope.topicsList = TopicsService.getTopicsList();
     
     $scope.topicsSelected = [];
     $scope.currentQ = {};
-    $scope.field = {answer: ''};
+    console.log('about to define field');
+    $scope.field = {answer: '', columns: [{num: '', denom: ''}, {num: '', denom: ''}]};
+    console.log($scope.field);
     $scope.answerDetail = {}; //used to display message
     //call services here to get db data: vocab list and states list
     var sessionEnded = false;
@@ -67,16 +73,20 @@ angular.module('chemiatriaApp')
                     initializeSession();
                 }
             });
-            $scope.historyLoaded = 'Not yet';
-            StudyArrayService.setup().then(function(d) {
-                $scope.historyNotLoaded = d;
-                if ($scope.questionsNotLoaded === 'Loaded' && !$scope.session) {
-                    $scope.dataLoaded = 'alert-success';
-                    initializeSession();
-                }
-            });
+            
+            $scope.historyLoaded = 'Loaded';
+            if (ENVIRONMENT === 'production') {
+            	$scope.historyLoaded = 'Not yet';
+            	StudyArrayService.setup().then(function(d) {
+                	$scope.historyNotLoaded = d;
+                	if ($scope.questionsNotLoaded === 'Loaded' && !$scope.session) {
+                    	$scope.dataLoaded = 'alert-success';
+                    	initializeSession();
+                	}
+            	});
+            }
         }
-        else initializeSession();
+        else {initializeSession();}
 
         
     };
@@ -93,7 +103,7 @@ angular.module('chemiatriaApp')
         $scope.bugDescription = '';
         $scope.questionsAnswered = 0;
         $scope.responseType = 'alert-success'; 
-        $scope.field = {answer: ''};
+        $scope.field = {answer: '', columns: [{num: '', denom: ''}, {num: '', denom: ''}]};
         $scope.answerDetail = {}; //used to display message
         //call services here to get db data: vocab list and states list
         $scope.loaded = true;
@@ -107,19 +117,19 @@ angular.module('chemiatriaApp')
         });
         //console.log($scope.topicsSelected);
         //start logging
-        SessionLog.openSession($scope.username);
+        SessionLog.openSession();
         //console.log($scope.username);
         $scope.currentQ = SessionManagerService.openSession($scope.username, $scope.topicsSelected);
         SessionLog.addEvent({type: 'question posted', detail: $scope.currentQ});
-        //console.log('in MainCtrl: ', $scope.currentQ);
-    }
+        console.log('in MainCtrl: ', $scope.field);
+    };
 
     //
     $scope.handleAnswer = function() {
         $scope.showHint = false;
         $scope.currentHint = 0;
         $scope.showStats = false;
-    	var responseObj = SessionManagerService.respondToResponse($scope.field.answer);
+    	var responseObj = SessionManagerService.respondToResponse({answer: $scope.field.answer, columns: $scope.field.columns});
     	$scope.answerDetail = responseObj.answerDetail;
         $scope.showStats = responseObj.showStats;
         if ($scope.showStats) {
@@ -133,13 +143,22 @@ angular.module('chemiatriaApp')
             $scope.answerDetail.correct === 'dontKnow') {
             $scope.responseType = 'alert-warning';
         }
-        else $scope.responseType = 'alert-danger';
+        else {$scope.responseType = 'alert-danger';}
     	SessionLog.addEvent({type: 'answer given', detail: $scope.answerDetail});
-    	$scope.field = {answer: ''};
+    	$scope.field = {answer: '', columns: [{num: '', denom: ''}, {num: '', denom: ''}]};
     	if (responseObj.moveOn) {
     		$scope.currentQ = SessionManagerService.getQuestion();
     		SessionLog.addEvent({type: 'question posted', detail: $scope.currentQ});
+    		console.log($scope.currentQ);
     	}
+    };
+    $scope.addDimAnalColumn = function() {
+    	console.log('in addDimAnalColumn');
+    	$scope.field.columns.push({num: '', denom: ''});
+    };
+    $scope.removeDimAnalColumn = function() {
+    	console.log('in addDimAnalColumn');
+    	$scope.field.columns.pop();
     };
     $scope.imFrustrated = function() {
     	$scope.isFrustrated = true;
@@ -181,11 +200,11 @@ angular.module('chemiatriaApp')
 
     $scope.resendProgress = function() {
         $scope.dataSaved = SessionManagerService.closeSession();
-    }
+    };
 
     $scope.giveHint = function() {
         if ($scope.showHint) {
-            if ($scope.currentQ.qHint.length - 1 > $scope.currentHint) $scope.currentHint++;
+            if ($scope.currentQ.qHint.length - 1 > $scope.currentHint) {$scope.currentHint++;}
         }
         else {
             $scope.showHint = true;
@@ -193,7 +212,8 @@ angular.module('chemiatriaApp')
         var eventObj = {type: 'hint given', detail: 
         {hint: $scope.currentQ.qHint[$scope.currentHint], qID: $scope.currentQ.qID}};
         SessionLog.addEvent(eventObj);
-    }
+    };
+
     $scope.describeFrustration = function() {
     	//save description into log
     	var eventObj = {type: 'frustrated'};

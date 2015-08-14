@@ -10,6 +10,7 @@
  */
 angular
   .module('chemiatriaApp', [
+    'ngAnimate',
     'ngAria',
     'ngCookies',
     'ngMessages',
@@ -17,25 +18,22 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'ui.sortable',
-    'ng-autofocus'
+    'ui.sortable'
   ])
-  /*.config(function ($routeProvider) {
+  //change environment to production to switch to using servers
+  .constant('ENVIRONMENT', 'production')
+  .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
+        //controller: 'MainCtrl'
       })
       .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl'
       })
-      .when('/teacher', {
-        templateUrl: 'views/teacher.html',
-        controller: 'TeacherCtrl'
-      })
       .otherwise({
         redirectTo: '/'
       });
   });
-*/
+

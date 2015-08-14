@@ -34,13 +34,13 @@ angular.module('chemiatriaApp')
     	var correct = thisItem.accuracyArray[timesStudied - 1];
     	var stage = Number(thisItem.stage);
     	var newStage;
-    	if (correct == 0 && timesStudied == 1) {
+    	if (correct === 0 && timesStudied === 1) {
     		newStage = 4;
     	}
-    	else if (correct == 0) {
+    	else if (correct === 0) {
     		newStage = stage + 1;
     	}
-    	else if (correct == 1 || stage == 0) {
+    	else if (correct === 1 || stage === 0) {
     		newStage = stage;
     	}
     	else {
