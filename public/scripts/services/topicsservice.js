@@ -42,8 +42,9 @@ angular.module('chemiatriaApp')
         //comment/uncomment correct line below to use server/json
         $http.get('/api/student/typesList').then(function(response) {
         //$resource('/typesList.json').query().$promise.then(function(response) {
+            //var temp = response;
             
-        var temp = response;
+        var temp = response.data;
         console.log('temp', temp);
         
         for (var i = 0; i < temp.length; i++) {

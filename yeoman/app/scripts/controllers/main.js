@@ -49,6 +49,7 @@ angular.module('chemiatriaApp')
     else {$scope.historyNotLoaded = 'Loaded';}
 
     $scope.topicsList = TopicsService.getTopicsList();
+    console.log($scope.topicsList);
     
     $scope.topicsSelected = [];
     $scope.currentQ = {};
@@ -127,6 +128,7 @@ angular.module('chemiatriaApp')
     //
     $scope.handleAnswer = function() {
         $scope.showHint = false;
+        $scope.isFrustrated = false;
         $scope.currentHint = 0;
         $scope.showStats = false;
     	var responseObj = SessionManagerService.respondToResponse({answer: $scope.field.answer, columns: $scope.field.columns});

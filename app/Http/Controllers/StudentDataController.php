@@ -33,7 +33,11 @@ class StudentDataController extends Controller
             $course = Course::find($course_id);
             $typesList = $course->questions->where('listService', 'VocabListService');
             Debugbar::info($typesList);
-            $vocabList = $typesList->words;
+            //$vocabList = Word::where()
+            $vocabList = $typesList->map(function($item) {
+                return $item->words()->with('alternates')->get();
+            });
+            //$vocabList->flatten();
             //->with('alternates')->get();
             Debugbar::info($vocabList);
             return $vocabList;

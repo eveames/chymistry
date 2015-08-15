@@ -125,7 +125,7 @@ angular.module('chemiatriaApp')
         qToReturn.qPrompt = formulaFilter(qToReturn.qPrompt);
         qToReturn.qText = 'Is the Lewis structure shown for ' + qToReturn.qPrompt + ' correct? ';
         qToReturn.qID = 'LewisAtom-' + qToReturn.subtype +'-' + element.symbol;
-        qToReturn.image = '/views/LewisSingle.html';
+        qToReturn.image = 'views/LewisSingle.html';
         qToReturn.imageData = imageData;
         console.log('qToReturn.qText: ', qToReturn.qText);
         console.log('qToReturn.imageData.charge', qToReturn.imageData.charge);

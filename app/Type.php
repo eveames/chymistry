@@ -16,7 +16,7 @@ class Type extends Model
     	return $this->belongsTo('chymistry\Course');
 	}
    	public function words(){
-    	return $this->hasMany('chymistry\Word');
+    	return $this->belongsToMany('chymistry\Word');
   	}
 
   	public function states() {

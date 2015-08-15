@@ -60,20 +60,26 @@ angular.module('chemiatriaApp')
         //comment/uncomment line below to change to/from server
         var promise = $http.get('/api/student/vocabList/').then(function(response) {
         //var promise = $resource('/vocabList.json').query().$promise.then(function(response) {
+            //var temp = response;
             //console.log('response.data is: ',response.data);
-            var temp = response;
+            var temp = response.data;
+            console.log(temp);
+            console.log(temp.length);
             console.log('vocabListArray before setup', vocabListArray);
-            for (var i = 0; i < temp.length; i++) {
+            for (var i in temp) {
+                var type_id = temp[i][0].pivot.type_id;
                 console.log('temp[i] is:', temp[i]);
-                var type_id = temp[i].type_id;
-                temp[i].prompts = JSON.parse(temp[i].prompts);
-                temp[i].alternates = temp[i].alternates;
-                if (!vocabListArray[type_id]) {vocabListArray[type_id] = [];}
-                vocabListArray[type_id].push(temp[i]);
-                console.log(vocabListArray[type_id]);
-                //vocabListArray[type_id].prompts = JSON.parse(vocabListArray[type_id].prompts);
-                //vocabListArray[type_id].alternates = JSON.parse(vocabListArray[type_id].alternates);
-                //console.log(topicsList[i].subtypes);
+                for (var j = 0; j < temp[i].length; j++){
+                    temp[i][j].prompts = JSON.parse(temp[i][j].prompts);
+                    temp[i][j].alternates = temp[i][j].alternates;
+                    if (!vocabListArray[type_id]) {vocabListArray[type_id] = [];}
+                    vocabListArray[type_id].push(temp[i][j]);
+                    console.log(vocabListArray[type_id]);
+                    //vocabListArray[type_id].prompts = JSON.parse(vocabListArray[type_id].prompts);
+                    //vocabListArray[type_id].alternates = JSON.parse(vocabListArray[type_id].alternates);
+                    //console.log(topicsList[i].subtypes);
+                }
+                
             }
             //console.log('vocabList is: ',vocabList);
             //vocabListArray[type_id] = vocabList;
